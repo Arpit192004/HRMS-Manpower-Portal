@@ -27,11 +27,17 @@ const documentRoutes = require("./routes/documentRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const { requestId, securityHeaders, rateLimit } = require("./middleware/securityMiddleware");
 
 dotenv.config();
 connectDB();
 
 const app = express();
+
+app.set("trust proxy", 1);
+app.disable("x-powered-by");
+app.use(requestId);
+app.use(securityHeaders);
 
 const allowedOrigins = [
   process.env.CLIENT_URL,
@@ -60,6 +66,32 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  "/api/auth/login",
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    message: "Too many login attempts. Please try again after 15 minutes."
+  })
+);
+
+app.use(
+  "/api/auth/forgot-password",
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    message: "Too many password reset requests. Please try again after 15 minutes."
+  })
+);
+
+app.use(
+  "/api",
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 500
+  })
+);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

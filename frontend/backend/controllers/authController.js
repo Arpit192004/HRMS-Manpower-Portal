@@ -2,6 +2,7 @@ const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
+const validatePassword = require("../utils/validatePassword");
 
 const formatUserResponse = (user) => ({
   id: user._id,
@@ -19,6 +20,12 @@ const registerCandidate = async (req, res, next) => {
     if (!name || !email || !password) {
       res.status(400);
       throw new Error("Name, email and password are required");
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      res.status(400);
+      throw new Error(passwordError);
     }
 
     const existingUser = await User.findOne({
@@ -145,6 +152,12 @@ const resetPassword = async (req, res, next) => {
     if (!password) {
       res.status(400);
       throw new Error("New password is required");
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      res.status(400);
+      throw new Error(passwordError);
     }
 
     const hashedToken = crypto

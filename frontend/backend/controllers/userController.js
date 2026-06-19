@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const validatePassword = require("../utils/validatePassword");
 
 const allowedRoles = [
   "Super Admin",
@@ -62,6 +63,12 @@ const createUser = async (req, res, next) => {
     if (!allowedRoles.includes(role)) {
       res.status(400);
       throw new Error("Invalid user role");
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      res.status(400);
+      throw new Error(passwordError);
     }
 
     const existingUser = await User.findOne({
@@ -133,6 +140,12 @@ const updateUser = async (req, res, next) => {
     user.isActive = isActive ?? user.isActive;
 
     if (password) {
+      const passwordError = validatePassword(password);
+      if (passwordError) {
+        res.status(400);
+        throw new Error(passwordError);
+      }
+
       user.password = password;
     }
 
