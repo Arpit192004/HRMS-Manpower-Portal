@@ -85,6 +85,10 @@ const EmployeeLogin = () => {
         </button>
 
         <p className="login-switch">
+          <Link to="/forgot-password">Forgot password?</Link>
+        </p>
+
+        <p className="login-switch">
           Admin/HR? <Link to="/login">Admin Login</Link>
         </p>
       </form>

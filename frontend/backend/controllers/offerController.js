@@ -1,5 +1,6 @@
 const Offer = require("../models/Offer");
 const Candidate = require("../models/Candidate");
+const sendEmail = require("../utils/sendEmail");
 
 const calculateSalary = (earnings = [], deductions = []) => {
   const totalEarnings = earnings.reduce(
@@ -198,7 +199,10 @@ const approveOffer = async (req, res, next) => {
       throw new Error("Decision must be Approved or Rejected");
     }
 
-    const offer = await Offer.findById(req.params.id);
+    const offer = await Offer.findById(req.params.id).populate({
+      path: "candidate",
+      populate: { path: "user", select: "name email" }
+    });
 
     if (!offer) {
       res.status(404);
@@ -238,12 +242,19 @@ const sendOffer = async (req, res, next) => {
     offer.status = "Sent";
     await offer.save();
 
-    const candidate = await Candidate.findById(offer.candidate);
+    const candidate = await Candidate.findById(offer.candidate._id || offer.candidate);
 
     if (candidate) {
       candidate.status = "Offered";
       await candidate.save();
     }
+
+    await sendEmail({
+      to: offer.candidate.user?.email,
+      subject: "Your offer letter has been sent",
+      text: `Your offer for ${offer.designation} has been sent. Please login to respond.`,
+      html: `<p>Your offer for <strong>${offer.designation}</strong> has been sent. Please login to respond.</p>`
+    });
 
     res.json({
       success: true,
@@ -284,6 +295,13 @@ const respondToOffer = async (req, res, next) => {
     offer.status = decision;
     offer.candidateRemarks = remarks;
     await offer.save();
+
+    await sendEmail({
+      to: req.user.email,
+      subject: `Offer ${decision}`,
+      text: `Your offer response has been recorded as ${decision}.`,
+      html: `<p>Your offer response has been recorded as <strong>${decision}</strong>.</p>`
+    });
 
     if (decision === "Rejected") {
       await Candidate.findByIdAndUpdate(offer.candidate._id, {

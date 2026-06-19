@@ -2,6 +2,7 @@ const Payroll = require("../models/Payroll");
 const Employee = require("../models/Employee");
 const Attendance = require("../models/Attendance");
 const Offer = require("../models/Offer");
+const sendEmail = require("../utils/sendEmail");
 
 const sumComponents = (components = []) =>
   components.reduce((total, item) => total + Number(item.amount || 0), 0);
@@ -192,7 +193,10 @@ const generatePayroll = async (req, res, next) => {
 
 const confirmPayroll = async (req, res, next) => {
   try {
-    const payroll = await Payroll.findById(req.params.id);
+    const payroll = await Payroll.findById(req.params.id).populate({
+      path: "employee",
+      populate: { path: "user", select: "name email" }
+    });
 
     if (!payroll) {
       res.status(404);
@@ -210,6 +214,13 @@ const confirmPayroll = async (req, res, next) => {
     payroll.confirmedAt = new Date();
 
     await payroll.save();
+
+    await sendEmail({
+      to: payroll.employee?.user?.email,
+      subject: "Payroll paid",
+      text: `Your payroll for ${payroll.month}/${payroll.year} has been marked as paid. Net salary: ${payroll.netSalary}.`,
+      html: `<p>Your payroll for <strong>${payroll.month}/${payroll.year}</strong> has been marked as paid.</p><p>Net salary: <strong>${payroll.netSalary}</strong></p>`
+    });
 
     res.json({
       success: true,

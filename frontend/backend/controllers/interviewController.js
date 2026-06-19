@@ -1,5 +1,6 @@
 const Interview = require("../models/Interview");
 const Candidate = require("../models/Candidate");
+const sendEmail = require("../utils/sendEmail");
 
 const getInterviews = async (req, res, next) => {
   try {
@@ -79,7 +80,9 @@ const scheduleInterview = async (req, res, next) => {
       throw new Error("Please provide all required interview details");
     }
 
-    const candidate = await Candidate.findById(candidateId);
+    const candidate = await Candidate.findById(candidateId)
+      .populate("user", "name email")
+      .populate("job", "title");
 
     if (!candidate) {
       res.status(404);
@@ -105,6 +108,13 @@ const scheduleInterview = async (req, res, next) => {
 
     candidate.status = "Interview";
     await candidate.save();
+
+    await sendEmail({
+      to: candidate.user?.email,
+      subject: "Interview scheduled",
+      text: `Your ${roundName} interview for ${candidate.job?.title || "the role"} is scheduled on ${new Date(scheduledAt).toLocaleString()}.`,
+      html: `<p>Your <strong>${roundName}</strong> interview for <strong>${candidate.job?.title || "the role"}</strong> is scheduled on <strong>${new Date(scheduledAt).toLocaleString()}</strong>.</p>`
+    });
 
     res.status(201).json({
       success: true,

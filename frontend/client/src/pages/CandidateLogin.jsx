@@ -67,6 +67,10 @@ const CandidateLogin = () => {
         </button>
 
         <p className="login-switch">
+          <Link to="/forgot-password">Forgot password?</Link>
+        </p>
+
+        <p className="login-switch">
           New candidate? <Link to="/candidate/register">Create account</Link>
         </p>
 

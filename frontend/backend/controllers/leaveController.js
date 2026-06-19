@@ -1,5 +1,6 @@
 const LeaveRequest = require("../models/LeaveRequest");
 const Employee = require("../models/Employee");
+const sendEmail = require("../utils/sendEmail");
 
 const getEmployeeProfile = async (userId) => {
   return Employee.findOne({ user: userId });
@@ -115,7 +116,10 @@ const processLeaveRequest = async (req, res, next) => {
       throw new Error("Decision must be Approved or Rejected");
     }
 
-    const leaveRequest = await LeaveRequest.findById(req.params.id);
+    const leaveRequest = await LeaveRequest.findById(req.params.id).populate({
+      path: "employee",
+      populate: { path: "user", select: "name email" }
+    });
 
     if (!leaveRequest) {
       res.status(404);
@@ -143,6 +147,13 @@ const processLeaveRequest = async (req, res, next) => {
     leaveRequest.actionAt = new Date();
 
     await leaveRequest.save();
+
+    await sendEmail({
+      to: leaveRequest.employee?.user?.email,
+      subject: `Leave request ${decision}`,
+      text: `Your leave request has been ${decision.toLowerCase()}.`,
+      html: `<p>Your leave request has been <strong>${decision.toLowerCase()}</strong>.</p>`
+    });
 
     res.json({
       success: true,

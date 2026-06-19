@@ -19,9 +19,11 @@ import EmployeeDocuments from "./pages/EmployeeDocuments";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
+import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
 import PublicHome from "./pages/PublicHome";
+import ResetPassword from "./pages/ResetPassword";
 
 const modules = [
   ["clients", "Clients"],
@@ -45,6 +47,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<PublicHome />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route path="/client/login" element={<ClientLogin />} />
       <Route path="/employee/login" element={<EmployeeLogin />} />
       <Route path="/candidate/login" element={<CandidateLogin />} />

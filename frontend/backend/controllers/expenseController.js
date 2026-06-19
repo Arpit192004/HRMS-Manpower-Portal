@@ -2,6 +2,7 @@ const ExpenseClaim = require("../models/ExpenseClaim");
 const Employee = require("../models/Employee");
 const TourRequest = require("../models/TourRequest");
 const Policy = require("../models/Policy");
+const sendEmail = require("../utils/sendEmail");
 
 const getEmployeeProfile = async (userId) => {
   return Employee.findOne({ user: userId });
@@ -149,7 +150,10 @@ const processExpenseClaim = async (req, res, next) => {
       throw new Error("Decision must be Approved or Rejected");
     }
 
-    const claim = await ExpenseClaim.findById(req.params.id);
+    const claim = await ExpenseClaim.findById(req.params.id).populate({
+      path: "employee",
+      populate: { path: "user", select: "name email" }
+    });
 
     if (!claim) {
       res.status(404);
@@ -178,6 +182,13 @@ const processExpenseClaim = async (req, res, next) => {
 
     await claim.save();
 
+    await sendEmail({
+      to: claim.employee?.user?.email,
+      subject: `Expense claim ${decision}`,
+      text: `Your expense claim ${claim.claimNumber} has been ${decision.toLowerCase()}.`,
+      html: `<p>Your expense claim <strong>${claim.claimNumber}</strong> has been <strong>${decision.toLowerCase()}</strong>.</p>`
+    });
+
     res.json({
       success: true,
       message: `Expense claim ${decision.toLowerCase()} successfully`,
@@ -190,7 +201,10 @@ const processExpenseClaim = async (req, res, next) => {
 
 const markClaimProcessed = async (req, res, next) => {
   try {
-    const claim = await ExpenseClaim.findById(req.params.id);
+    const claim = await ExpenseClaim.findById(req.params.id).populate({
+      path: "employee",
+      populate: { path: "user", select: "name email" }
+    });
 
     if (!claim) {
       res.status(404);
@@ -207,6 +221,13 @@ const markClaimProcessed = async (req, res, next) => {
     claim.processedAt = new Date();
 
     await claim.save();
+
+    await sendEmail({
+      to: claim.employee?.user?.email,
+      subject: "Expense claim processed",
+      text: `Your expense claim ${claim.claimNumber} has been processed.`,
+      html: `<p>Your expense claim <strong>${claim.claimNumber}</strong> has been processed.</p>`
+    });
 
     res.json({
       success: true,

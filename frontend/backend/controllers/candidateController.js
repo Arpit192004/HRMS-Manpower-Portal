@@ -1,5 +1,7 @@
 const Candidate = require("../models/Candidate");
 const Job = require("../models/Job");
+const User = require("../models/User");
+const sendEmail = require("../utils/sendEmail");
 
 const getCandidates = async (req, res, next) => {
   try {
@@ -87,6 +89,29 @@ const applyForJob = async (req, res, next) => {
       user: req.user._id,
       job: job._id,
       client: job.client
+    });
+
+    const hrUsers = await User.find({
+      role: { $in: ["Super Admin", "HR Admin"] },
+      isActive: true
+    }).select("email name");
+
+    await Promise.all(
+      hrUsers.map((user) =>
+        sendEmail({
+          to: user.email,
+          subject: "New candidate application received",
+          text: `${req.user.name} applied for ${job.title}.`,
+          html: `<p><strong>${req.user.name}</strong> applied for <strong>${job.title}</strong>.</p>`
+        })
+      )
+    );
+
+    await sendEmail({
+      to: req.user.email,
+      subject: "Application submitted successfully",
+      text: `Your application for ${job.title} has been submitted successfully.`,
+      html: `<p>Your application for <strong>${job.title}</strong> has been submitted successfully.</p>`
     });
 
     res.status(201).json({
