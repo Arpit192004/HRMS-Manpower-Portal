@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import FileUploadField from "../components/FileUploadField";
 
 const initialApplication = {
   phone: "",
@@ -145,6 +146,14 @@ const CandidateJobs = () => {
             Resume URL
             <input value={form.resumeUrl} onChange={(event) => handleChange("resumeUrl", event.target.value)} placeholder="https://drive.google.com/resume.pdf" required />
           </label>
+
+          <div className="wide-field">
+            <FileUploadField
+              label="Upload Resume"
+              folder="resumes"
+              onUploaded={(url) => handleChange("resumeUrl", url)}
+            />
+          </div>
 
           <button className="primary-button" disabled={saving}>
             {saving ? "Submitting..." : "Submit Application"}

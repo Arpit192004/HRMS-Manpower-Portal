@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import downloadFile from "../utils/downloadFile";
+import FileUploadField from "../components/FileUploadField";
 
 const endpointConfiguration = {
   users: { endpoint: "/users", key: "users" },
@@ -929,6 +930,16 @@ const ModulePage = ({ module, title }) => {
               required
             />
           </label>
+
+          <div>
+            <FileUploadField
+              label="Upload Resume"
+              folder="resumes"
+              onUploaded={(url) =>
+                setApplyForm((current) => ({ ...current, resumeUrl: url }))
+              }
+            />
+          </div>
 
           <label>
             Expected Salary

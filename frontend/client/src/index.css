@@ -966,6 +966,31 @@ code {
   text-decoration: none;
 }
 
+.upload-field {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.upload-field label {
+  margin: 0;
+}
+
+.upload-field input {
+  margin-top: 8px;
+}
+
+.upload-field small {
+  color: #64748b;
+}
+
+.upload-field .upload-error {
+  color: #b42318;
+}
+
 .job-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import downloadFile from "../utils/downloadFile";
+import FileUploadField from "../components/FileUploadField";
 
 const documentTypes = [
   "Resume",
@@ -131,6 +132,14 @@ const EmployeeDocuments = () => {
               required
             />
           </label>
+
+          <div className="wide-field">
+            <FileUploadField
+              label="Upload Document"
+              folder="employee-documents"
+              onUploaded={(url) => setForm((current) => ({ ...current, url }))}
+            />
+          </div>
 
           <button className="primary-button" disabled={saving}>
             {saving ? "Saving..." : "Add Document Link"}

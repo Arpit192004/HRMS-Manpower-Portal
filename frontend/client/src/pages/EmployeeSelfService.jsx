@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios";
 import downloadFile from "../utils/downloadFile";
+import FileUploadField from "../components/FileUploadField";
 
 const configs = {
   attendance: {
@@ -313,6 +314,15 @@ const EmployeeSelfService = ({ module }) => {
               )}
             </label>
           ))}
+          {module === "expenses" && (
+            <div className="wide-field">
+              <FileUploadField
+                label="Upload Receipt"
+                folder="expense-receipts"
+                onUploaded={(url) => handleChange("receiptUrl", url)}
+              />
+            </div>
+          )}
           <button className="primary-button" disabled={saving}>
             {saving ? "Saving..." : config.createLabel}
           </button>
