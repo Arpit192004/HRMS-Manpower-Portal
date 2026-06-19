@@ -14,7 +14,8 @@ const Login = () => {
   const getHomePath = (loggedInUser) => {
     if (loggedInUser.role === "Candidate") return "/candidate/jobs";
     if (loggedInUser.role === "Employee") return "/employee/dashboard";
-    return "/";
+    if (loggedInUser.role === "Client Approver") return "/client/dashboard";
+    return "/admin";
   };
 
   if (user) {
@@ -68,6 +69,10 @@ const Login = () => {
 
         <p className="login-switch">
           Candidate ho? <Link to="/candidate/login">Candidate Login</Link>
+        </p>
+
+        <p className="login-switch">
+          Client ho? <Link to="/client/login">Client Portal</Link>
         </p>
       </form>
     </div>

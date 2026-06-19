@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import AdminRoute from "./components/AdminRoute";
 import CandidateRoute from "./components/CandidateRoute";
+import ClientRoute from "./components/ClientRoute";
 import EmployeeRoute from "./components/EmployeeRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CandidateApplications from "./pages/CandidateApplications";
@@ -9,12 +10,15 @@ import CandidateJobs from "./pages/CandidateJobs";
 import CandidateLogin from "./pages/CandidateLogin";
 import CandidatePortalLayout from "./pages/CandidatePortalLayout";
 import CandidateRegister from "./pages/CandidateRegister";
+import ClientDashboard from "./pages/ClientDashboard";
+import ClientPortalLayout from "./pages/ClientPortalLayout";
 import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
+import PublicHome from "./pages/PublicHome";
 
 const modules = [
   ["clients", "Clients"],
@@ -36,7 +40,9 @@ const modules = [
 const App = () => {
   return (
     <Routes>
+      <Route path="/" element={<PublicHome />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/client/login" element={<Login />} />
       <Route path="/candidate/login" element={<CandidateLogin />} />
       <Route path="/candidate/register" element={<CandidateRegister />} />
 
@@ -61,8 +67,18 @@ const App = () => {
         </Route>
       </Route>
 
+      <Route element={<ClientRoute />}>
+        <Route path="/client" element={<ClientPortalLayout />}>
+          <Route index element={<Navigate to="/client/dashboard" replace />} />
+          <Route path="dashboard" element={<ClientDashboard />} />
+          <Route path="jobs" element={<ClientDashboard module="jobs" />} />
+          <Route path="candidates" element={<ClientDashboard module="candidates" />} />
+          <Route path="employees" element={<ClientDashboard module="employees" />} />
+        </Route>
+      </Route>
+
       <Route element={<AdminRoute />}>
-        <Route element={<DashboardLayout />}>
+        <Route path="/admin" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
 
           {modules.map(([path, title]) => (
@@ -80,6 +96,14 @@ const App = () => {
         </Route>
       </Route>
 
+      {modules.map(([path]) => (
+        <Route
+          key={`legacy-${path}`}
+          path={`/${path}`}
+          element={<Navigate to={`/admin/${path}`} replace />}
+        />
+      ))}
+      <Route path="/reports" element={<Navigate to="/admin/reports" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

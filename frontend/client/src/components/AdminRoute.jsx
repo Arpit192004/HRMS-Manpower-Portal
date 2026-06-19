@@ -16,6 +16,10 @@ const AdminRoute = () => {
     return <Navigate to="/employee/dashboard" replace />;
   }
 
+  if (user.role === "Client Approver") {
+    return <Navigate to="/client/dashboard" replace />;
+  }
+
   return <Outlet />;
 };
 

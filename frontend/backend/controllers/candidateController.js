@@ -13,6 +13,10 @@ const getCandidates = async (req, res, next) => {
       filter.user = req.user._id;
     }
 
+    if (req.user.role === "Client Approver") {
+      filter.client = req.user.client;
+    }
+
     const candidates = await Candidate.find(filter)
       .populate("user", "name email")
       .populate("job", "title department grade")

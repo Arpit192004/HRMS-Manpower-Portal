@@ -28,6 +28,10 @@ const getEmployees = async (req, res, next) => {
       filter.user = req.user._id;
     }
 
+    if (req.user.role === "Client Approver") {
+      filter.client = req.user.client;
+    }
+
     const employees = await Employee.find(filter)
       .populate("user", "name email role")
       .populate("client", "name code")

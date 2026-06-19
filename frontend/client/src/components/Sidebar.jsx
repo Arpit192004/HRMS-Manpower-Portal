@@ -17,22 +17,22 @@ import {
 import { useAuth } from "../context/AuthContext";
 
 const links = [
-  { path: "/", label: "Dashboard", icon: BarChart3 },
-  { path: "/clients", label: "Clients", icon: Building2 },
-  { path: "/policies", label: "Policies", icon: Settings },
-  { path: "/jobs", label: "Jobs", icon: Briefcase },
-  { path: "/candidates", label: "Candidates", icon: UserRound },
-  { path: "/interviews", label: "Interviews", icon: FileText },
-  { path: "/offers", label: "Offers", icon: FileText },
-  { path: "/employees", label: "Employees", icon: Users },
-  { path: "/attendance", label: "Attendance", icon: CalendarDays },
-  { path: "/leaves", label: "Leaves", icon: CalendarDays },
-  { path: "/tours", label: "Tours", icon: Plane },
-  { path: "/expenses", label: "Expenses", icon: Receipt },
-  { path: "/payroll", label: "Payroll", icon: CircleDollarSign },
-  { path: "/resignations", label: "Resignations", icon: FileText },
-  { path: "/users", label: "Users & Roles", icon: Users },
-  { path: "/reports", label: "Reports", icon: BarChart3 }
+  { path: "/admin", label: "Dashboard", icon: BarChart3 },
+  { path: "/admin/clients", label: "Clients", icon: Building2 },
+  { path: "/admin/policies", label: "Policies", icon: Settings },
+  { path: "/admin/jobs", label: "Jobs", icon: Briefcase },
+  { path: "/admin/candidates", label: "Candidates", icon: UserRound },
+  { path: "/admin/interviews", label: "Interviews", icon: FileText },
+  { path: "/admin/offers", label: "Offers", icon: FileText },
+  { path: "/admin/employees", label: "Employees", icon: Users },
+  { path: "/admin/attendance", label: "Attendance", icon: CalendarDays },
+  { path: "/admin/leaves", label: "Leaves", icon: CalendarDays },
+  { path: "/admin/tours", label: "Tours", icon: Plane },
+  { path: "/admin/expenses", label: "Expenses", icon: Receipt },
+  { path: "/admin/payroll", label: "Payroll", icon: CircleDollarSign },
+  { path: "/admin/resignations", label: "Resignations", icon: FileText },
+  { path: "/admin/users", label: "Users & Roles", icon: Users },
+  { path: "/admin/reports", label: "Reports", icon: BarChart3 }
 ];
 
 const Sidebar = () => {
@@ -53,7 +53,7 @@ const Sidebar = () => {
           <NavLink
             key={path}
             to={path}
-            end={path === "/"}
+            end={path === "/admin"}
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             <Icon size={18} />

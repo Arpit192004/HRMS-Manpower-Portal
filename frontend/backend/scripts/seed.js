@@ -125,6 +125,26 @@ const seedUsers = async () => {
       console.log("Already exists: employee@hrms.com");
     }
 
+    const clientUser = await User.findOne({ email: "client@hrms.com" });
+
+    if (!clientUser) {
+      await User.create({
+        name: "Demo Client Approver",
+        email: "client@hrms.com",
+        password: "Client@123",
+        role: "Client Approver",
+        client: client._id
+      });
+
+      console.log("Created: client@hrms.com");
+    } else {
+      clientUser.role = "Client Approver";
+      clientUser.client = client._id;
+      clientUser.isActive = true;
+      await clientUser.save();
+      console.log("Already exists: client@hrms.com");
+    }
+
     const candidate = await Candidate.findOneAndUpdate(
       { user: activeEmployeeUser._id, job: job._id },
       {
@@ -242,6 +262,7 @@ const seedUsers = async () => {
     );
 
     console.log("Demo employee portal user ready: employee@hrms.com / Employee@123");
+    console.log("Demo client portal user ready: client@hrms.com / Client@123");
 
     console.log("Seed completed successfully");
     process.exit(0);
