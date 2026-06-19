@@ -11,8 +11,14 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const getHomePath = (loggedInUser) => {
+    if (loggedInUser.role === "Candidate") return "/candidate/jobs";
+    if (loggedInUser.role === "Employee") return "/employee/dashboard";
+    return "/";
+  };
+
   if (user) {
-    return <Navigate to={user.role === "Candidate" ? "/candidate/jobs" : "/"} replace />;
+    return <Navigate to={getHomePath(user)} replace />;
   }
 
   const handleSubmit = async (event) => {
@@ -22,7 +28,7 @@ const Login = () => {
 
     try {
       const loggedInUser = await login(email, password);
-      navigate(loggedInUser.role === "Candidate" ? "/candidate/jobs" : "/");
+      navigate(getHomePath(loggedInUser));
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Login failed");
     } finally {

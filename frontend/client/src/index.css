@@ -493,6 +493,12 @@ code {
   background: #f4f7fb;
 }
 
+.employee-portal {
+  min-height: 100vh;
+  display: flex;
+  background: #f4f7fb;
+}
+
 .candidate-sidebar {
   position: fixed;
   width: 250px;
@@ -505,12 +511,39 @@ code {
   overflow-y: auto;
 }
 
+.employee-sidebar {
+  position: fixed;
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+  background: #102033;
+  color: white;
+  overflow-y: auto;
+}
+
 .candidate-sidebar nav {
   display: grid;
   gap: 4px;
 }
 
+.employee-sidebar nav {
+  display: grid;
+  gap: 4px;
+}
+
 .candidate-sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  border-radius: 9px;
+  color: #bdc8dd;
+  text-decoration: none;
+}
+
+.employee-sidebar a {
   display: flex;
   align-items: center;
   gap: 11px;
@@ -526,7 +559,19 @@ code {
   color: white;
 }
 
+.employee-sidebar a:hover,
+.employee-sidebar a.active {
+  background: #23415f;
+  color: white;
+}
+
 .candidate-main {
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  padding: 28px;
+}
+
+.employee-main {
   width: calc(100% - 250px);
   margin-left: 250px;
   padding: 28px;
@@ -540,14 +585,135 @@ code {
   margin-bottom: 24px;
 }
 
+.employee-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
 .candidate-heading h1,
 .candidate-heading p {
+  margin: 0;
+}
+
+.employee-heading h1,
+.employee-heading p {
   margin: 0;
 }
 
 .candidate-heading p {
   margin-top: 6px;
   color: #778198;
+}
+
+.employee-heading p {
+  margin-top: 6px;
+  color: #778198;
+}
+
+.profile-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.profile-card h2,
+.profile-card p {
+  margin: 8px 0 0;
+}
+
+.profile-card p {
+  color: #68738a;
+}
+
+.profile-meta,
+.leave-balance-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-meta span {
+  height: fit-content;
+  padding: 9px 11px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-weight: 700;
+}
+
+.employee-stats {
+  margin-top: 18px;
+}
+
+.leave-balance-grid {
+  margin-top: 14px;
+}
+
+.leave-balance-grid div {
+  min-width: 180px;
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f6f8fc;
+}
+
+.leave-balance-grid span {
+  color: #2563eb;
+  font-weight: 800;
+}
+
+.leave-balance-grid small {
+  color: #68738a;
+}
+
+.approver-strip {
+  margin-bottom: 16px;
+}
+
+.approver-strip code {
+  margin-left: 8px;
+}
+
+.employee-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.employee-form-grid label {
+  display: grid;
+  gap: 7px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.employee-form-grid input,
+.employee-form-grid select,
+.employee-form-grid textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #d6dcea;
+  border-radius: 9px;
+}
+
+.employee-form-grid textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.employee-form-grid .wide-field {
+  grid-column: 1 / -1;
+}
+
+.employee-form-grid button {
+  align-self: end;
+  min-height: 43px;
 }
 
 .job-grid {
@@ -704,7 +870,17 @@ code {
     height: auto;
   }
 
+  .employee-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
   .candidate-portal {
+    display: block;
+  }
+
+  .employee-portal {
     display: block;
   }
 
@@ -714,15 +890,24 @@ code {
     padding: 20px;
   }
 
+  .employee-main {
+    width: 100%;
+    margin-left: 0;
+    padding: 20px;
+  }
+
   .candidate-heading,
+  .employee-heading,
   .form-title-row,
-  .application-header {
+  .application-header,
+  .profile-card {
     align-items: flex-start;
     flex-direction: column;
   }
 
   .job-grid,
-  .candidate-apply-form {
+  .candidate-apply-form,
+  .employee-form-grid {
     grid-template-columns: 1fr;
   }
 

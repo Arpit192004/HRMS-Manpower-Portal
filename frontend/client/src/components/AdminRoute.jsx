@@ -12,6 +12,10 @@ const AdminRoute = () => {
     return <Navigate to="/candidate/jobs" replace />;
   }
 
+  if (user.role === "Employee") {
+    return <Navigate to="/employee/dashboard" replace />;
+  }
+
   return <Outlet />;
 };
 
