@@ -78,6 +78,44 @@ const employeeSchema = new mongoose.Schema(
         percentage: Number
       }
     ],
+    documents: [
+      {
+        type: {
+          type: String,
+          enum: [
+            "Resume",
+            "Offer Letter",
+            "Appointment Letter",
+            "Salary Slip",
+            "Aadhaar",
+            "PAN",
+            "Qualification",
+            "Experience Letter",
+            "Other"
+          ],
+          required: true
+        },
+        title: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        url: {
+          type: String,
+          required: true,
+          trim: true
+        },
+        uploadedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true
+        },
+        uploadedAt: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ],
     roster: {
       type: String,
       default: "General"

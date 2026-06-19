@@ -947,6 +947,25 @@ code {
   min-height: 43px;
 }
 
+.document-actions-card {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.mini-link {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: #e8f0ff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
 .job-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

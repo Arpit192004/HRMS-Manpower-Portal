@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios";
+import downloadFile from "../utils/downloadFile";
 
 const configs = {
   attendance: {
@@ -365,6 +366,19 @@ const EmployeeSelfService = ({ module }) => {
                             }
                           >
                             Complete
+                          </button>
+                        )}
+                        {module === "payroll" && (
+                          <button
+                            className="mini-button"
+                            onClick={() =>
+                              downloadFile(
+                                `/documents/payslip/${record._id}`,
+                                `payslip-${record.month}-${record.year}.pdf`
+                              )
+                            }
+                          >
+                            Payslip
                           </button>
                         )}
                         {(!record.status || !config.pendingAction) && "-"}

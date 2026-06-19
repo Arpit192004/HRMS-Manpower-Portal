@@ -15,6 +15,7 @@ import ClientLogin from "./pages/ClientLogin";
 import ClientPortalLayout from "./pages/ClientPortalLayout";
 import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
+import EmployeeDocuments from "./pages/EmployeeDocuments";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="tours" element={<EmployeeSelfService module="tours" />} />
           <Route path="expenses" element={<EmployeeSelfService module="expenses" />} />
           <Route path="payroll" element={<EmployeeSelfService module="payroll" />} />
+          <Route path="documents" element={<EmployeeDocuments />} />
           <Route path="resignation" element={<EmployeeSelfService module="resignation" />} />
         </Route>
       </Route>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import downloadFile from "../utils/downloadFile";
 
 const endpointConfiguration = {
   users: { endpoint: "/users", key: "users" },
@@ -644,6 +645,18 @@ const ModulePage = ({ module, title }) => {
     }
 
     if (module === "offers" && ["Super Admin", "HR Admin"].includes(user?.role)) {
+      actions.push(
+        <button
+          key="offer-letter"
+          className="mini-button"
+          onClick={() =>
+            downloadFile(`/documents/offer/${record._id}`, `offer-letter-${record._id}.pdf`)
+          }
+        >
+          Offer PDF
+        </button>
+      );
+
       if (record.status === "Pending Approval") {
         actions.push(
           <button
@@ -753,6 +766,18 @@ const ModulePage = ({ module, title }) => {
     }
 
     if (module === "payroll" && ["Super Admin", "Payroll Team"].includes(user?.role)) {
+      actions.push(
+        <button
+          key="payslip"
+          className="mini-button"
+          onClick={() =>
+            downloadFile(`/documents/payslip/${record._id}`, `payslip-${record.month}-${record.year}.pdf`)
+          }
+        >
+          Payslip
+        </button>
+      );
+
       if (record.status === "Draft") {
         actions.push(
           <button
@@ -776,6 +801,23 @@ const ModulePage = ({ module, title }) => {
           </button>
         );
       }
+    }
+
+    if (module === "employees" && ["Super Admin", "HR Admin"].includes(user?.role)) {
+      actions.push(
+        <button
+          key="appointment"
+          className="mini-button"
+          onClick={() =>
+            downloadFile(
+              `/documents/appointment/${record._id}`,
+              `appointment-letter-${record.employeeCode || record._id}.pdf`
+            )
+          }
+        >
+          Appointment PDF
+        </button>
+      );
     }
 
     if (!actions.length) return "-";

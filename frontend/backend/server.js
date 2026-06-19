@@ -23,6 +23,7 @@ const resignationRoutes = require("./routes/resignationRoutes");
 const workflowRoutes = require("./routes/workflowRoutes");
 const changeLogRoutes = require("./routes/changeLogRoutes");
 const reportRoutes = require("./routes/reportRoutes");
+const documentRoutes = require("./routes/documentRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
@@ -97,6 +98,7 @@ app.use("/api/resignations", resignationRoutes);
 app.use("/api/workflows", workflowRoutes);
 app.use("/api/change-logs", changeLogRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/documents", documentRoutes);
 
 // Error middleware hamesha API routes ke baad rahega
 app.use(notFound);

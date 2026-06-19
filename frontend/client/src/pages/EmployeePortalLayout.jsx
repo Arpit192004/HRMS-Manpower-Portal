@@ -7,7 +7,8 @@ import {
   Gauge,
   LogOut,
   Plane,
-  Receipt
+  Receipt,
+  FolderOpen
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -18,6 +19,7 @@ const links = [
   { path: "/employee/tours", label: "Tours", icon: Plane },
   { path: "/employee/expenses", label: "Expenses", icon: Receipt },
   { path: "/employee/payroll", label: "Payroll", icon: Banknote },
+  { path: "/employee/documents", label: "Documents", icon: FolderOpen },
   { path: "/employee/resignation", label: "Resignation", icon: FileText }
 ];
 
