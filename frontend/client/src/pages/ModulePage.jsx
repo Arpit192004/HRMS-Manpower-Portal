@@ -501,6 +501,8 @@ const ModulePage = ({ module, title }) => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const configuration = endpointConfiguration[module];
   const formFields = formConfigurations[module] || [];
@@ -526,6 +528,8 @@ const ModulePage = ({ module, title }) => {
     setForm({});
     setSelectedJob(null);
     setShowForm(false);
+    setSearchTerm("");
+    setStatusFilter("All");
     loadRecords();
   }, [module]);
 
@@ -536,6 +540,53 @@ const ModulePage = ({ module, title }) => {
       .filter((key) => !["_id", "__v", "createdAt", "updatedAt", "password"].includes(key))
       .slice(0, 7);
   }, [records]);
+
+  const statusOptions = useMemo(() => {
+    const statuses = records
+      .map((record) => record.status)
+      .filter((status) => status !== undefined && status !== null && status !== "");
+
+    return ["All", ...new Set(statuses.map(String))];
+  }, [records]);
+
+  const filteredRecords = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase();
+
+    return records.filter((record) => {
+      const matchesStatus =
+        statusFilter === "All" || String(record.status || "") === statusFilter;
+
+      const matchesSearch =
+        !query ||
+        Object.values(record).some((value) =>
+          getDisplayValue(value).toLowerCase().includes(query)
+        );
+
+      return matchesStatus && matchesSearch;
+    });
+  }, [records, searchTerm, statusFilter]);
+
+  const renderCellValue = (column, value) => {
+    const displayValue = getDisplayValue(value);
+
+    if (column === "status") {
+      return (
+        <span className={`status-pill ${displayValue.toLowerCase().replace(/\s+/g, "-")}`}>
+          {displayValue}
+        </span>
+      );
+    }
+
+    if (String(displayValue).startsWith("http")) {
+      return (
+        <a className="mini-link" href={displayValue} target="_blank" rel="noreferrer">
+          Open
+        </a>
+      );
+    }
+
+    return displayValue;
+  };
 
   const handleChange = (name, value) => {
     setForm((current) => ({
@@ -861,6 +912,29 @@ const ModulePage = ({ module, title }) => {
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
 
+      <div className="content-card module-toolbar">
+        <div>
+          <strong>{filteredRecords.length}</strong>
+          <span> of {records.length} records</span>
+        </div>
+
+        <input
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder={`Search ${title.toLowerCase()}...`}
+        />
+
+        {statusOptions.length > 1 && (
+          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>
+                {status === "All" ? "All statuses" : status}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+
       {showForm && canCreate && (
         <form className="content-card form-grid" onSubmit={submitCreate}>
           {formFields.map((field) => (
@@ -973,10 +1047,10 @@ const ModulePage = ({ module, title }) => {
       <div className="content-card table-card">
         {loading ? (
           <p className="table-padding">Loading...</p>
-        ) : records.length === 0 ? (
+        ) : filteredRecords.length === 0 ? (
           <div className="empty-state">
             <h3>No records found</h3>
-            <p>New records will appear here.</p>
+            <p>Try changing your search or filter, or add a new record.</p>
           </div>
         ) : (
           <div className="table-wrapper">
@@ -992,14 +1066,14 @@ const ModulePage = ({ module, title }) => {
               </thead>
 
               <tbody>
-                {records.map((record) => (
+                {filteredRecords.map((record) => (
                   <tr key={record._id}>
                     <td>
                       <code>{record._id}</code>
                     </td>
 
                     {columns.map((column) => (
-                      <td key={column}>{getDisplayValue(record[column])}</td>
+                      <td key={column}>{renderCellValue(column, record[column])}</td>
                     ))}
 
                     <td>{renderActions(record)}</td>

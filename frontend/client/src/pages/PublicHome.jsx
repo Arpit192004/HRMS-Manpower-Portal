@@ -5,6 +5,7 @@ import {
   Building2,
   CalendarCheck,
   FileText,
+  MailCheck,
   ShieldCheck,
   Users
 } from "lucide-react";
@@ -40,8 +41,11 @@ const PublicHome = () => {
           <div className="brand-logo">HR</div>
           <span>HRMS Manpower Portal</span>
         </div>
+
         <div className="public-nav-links">
+          <Link to="/candidate/jobs">Open Jobs</Link>
           <Link to="/candidate/register">Candidate Apply</Link>
+          <Link to="/employee/login">Employee Login</Link>
           <Link to="/client/login">Client Login</Link>
           <Link to="/login" className="nav-button">Admin Login</Link>
         </div>
@@ -50,11 +54,12 @@ const PublicHome = () => {
       <section className="public-hero">
         <div>
           <span className="eyebrow">Full-stack HRMS + Manpower Services</span>
-          <h1>Run hiring, employees, payroll and client manpower operations from one live portal.</h1>
+          <h1>Modern HRMS built for staffing, payroll and manpower operations.</h1>
           <p>
             A production-ready HRMS workflow for staffing companies: candidates apply,
             HR processes hiring, employees manage self-service, and clients track manpower.
           </p>
+
           <div className="hero-actions">
             <Link to="/candidate/register" className="primary-button">Apply as Candidate</Link>
             <Link to="/login" className="secondary-button">Open Admin Portal</Link>
@@ -62,13 +67,19 @@ const PublicHome = () => {
         </div>
 
         <div className="hero-panel">
+          <div className="hero-panel-header">
+            <span className="status-pill">Live Production Portal</span>
+            <strong>End-to-end workflow</strong>
+          </div>
+
           <div className="hero-card-row">
             <BadgeCheck />
             <div>
               <strong>Live Hiring Flow</strong>
-              <span>Job → Candidate → Interview → Offer → Employee</span>
+              <span>Job to candidate to interview to offer to employee</span>
             </div>
           </div>
+
           <div className="hero-card-row">
             <CalendarCheck />
             <div>
@@ -76,6 +87,7 @@ const PublicHome = () => {
               <span>Attendance, leaves, tours and claims</span>
             </div>
           </div>
+
           <div className="hero-card-row">
             <FileText />
             <div>
@@ -83,6 +95,33 @@ const PublicHome = () => {
               <span>Management visibility for every module</span>
             </div>
           </div>
+
+          <div className="hero-card-row">
+            <MailCheck />
+            <div>
+              <strong>Email & Document Ready</strong>
+              <span>Password reset, uploads and generated PDFs</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="public-metrics">
+        <div>
+          <strong>4</strong>
+          <span>Role-based portals</span>
+        </div>
+        <div>
+          <strong>18+</strong>
+          <span>Business modules</span>
+        </div>
+        <div>
+          <strong>Live</strong>
+          <span>MongoDB, email and uploads</span>
+        </div>
+        <div>
+          <strong>PDF</strong>
+          <span>Payslip and letters</span>
         </div>
       </section>
 
@@ -115,6 +154,10 @@ const PublicHome = () => {
         <Link to="/client/login">
           <strong>Client Portal</strong>
           <span>Track jobs, candidates and assigned manpower.</span>
+        </Link>
+        <Link to="/login">
+          <strong>Admin Control Center</strong>
+          <span>Manage recruitment, payroll, approvals and reports.</span>
         </Link>
       </section>
     </main>

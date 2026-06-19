@@ -2,6 +2,230 @@
   box-sizing: border-box;
 }
 
+/* Production polish */
+a {
+  transition: 0.2s ease;
+}
+
+.stat-card-pro {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card-pro::after {
+  position: absolute;
+  right: -28px;
+  top: -28px;
+  width: 90px;
+  height: 90px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  content: "";
+}
+
+.stat-card small {
+  display: block;
+  margin-top: 7px;
+  color: #7c879b;
+}
+
+.dashboard-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 22px;
+  background:
+    radial-gradient(circle at right top, rgba(37, 99, 235, 0.18), transparent 30%),
+    white;
+}
+
+.dashboard-hero h1 {
+  margin: 12px 0 8px;
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -1px;
+}
+
+.dashboard-hero p,
+.card-heading p {
+  margin: 0;
+  color: #68738a;
+}
+
+.dashboard-hero-actions,
+.card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 18px;
+}
+
+.queue-list,
+.readiness-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.queue-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #e6ebf3;
+  border-radius: 14px;
+  background: #f8fafc;
+  color: #172033;
+  text-decoration: none;
+}
+
+.queue-item:hover {
+  border-color: #bcd0f8;
+  background: #f0f6ff;
+  transform: translateY(-1px);
+}
+
+.queue-item svg,
+.readiness-list svg {
+  color: #2563eb;
+}
+
+.queue-item span {
+  display: block;
+  margin-top: 3px;
+  color: #68738a;
+}
+
+.queue-item b {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e8f0ff;
+  color: #2563eb;
+}
+
+.readiness-list span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 700;
+}
+
+.module-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(240px, 1fr) minmax(180px, auto);
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.module-toolbar input,
+.module-toolbar select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d6dcea;
+  border-radius: 10px;
+  background: white;
+}
+
+.module-toolbar strong {
+  color: #2563eb;
+  font-size: 22px;
+}
+
+.module-toolbar span {
+  color: #68738a;
+}
+
+.status-pill.pending,
+.status-pill.pending-approval,
+.status-pill.draft {
+  background: #fff1df;
+  color: #b45309;
+}
+
+.status-pill.approved,
+.status-pill.paid,
+.status-pill.open,
+.status-pill.active,
+.status-pill.joined,
+.status-pill.sent,
+.status-pill.confirmed {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
+.status-pill.rejected,
+.status-pill.closed,
+.status-pill.cancelled,
+.status-pill.inactive {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
+.hero-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.public-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0 7vw 30px;
+}
+
+.public-metrics div {
+  display: grid;
+  gap: 4px;
+  padding: 20px;
+  border: 1px solid #e3e8f1;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 8px 28px rgba(31, 46, 79, 0.06);
+}
+
+.public-metrics strong {
+  color: #2563eb;
+  font-size: 28px;
+}
+
+.public-metrics span {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.portal-cta-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 760px) {
+  .public-metrics,
+  .dashboard-grid,
+  .module-toolbar,
+  .portal-cta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-hero,
+  .dashboard-hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 body {
   margin: 0;
   font-family: Inter, Arial, sans-serif;
@@ -1222,5 +1446,18 @@ code {
 
   .public-hero {
     padding-top: 36px;
+  }
+}
+
+.portal-cta-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 760px) {
+  .portal-cta-grid,
+  .public-metrics,
+  .dashboard-grid,
+  .module-toolbar {
+    grid-template-columns: 1fr;
   }
 }
