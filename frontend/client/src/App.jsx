@@ -13,6 +13,7 @@ import CandidateRegister from "./pages/CandidateRegister";
 import ClientDashboard from "./pages/ClientDashboard";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortalLayout from "./pages/ClientPortalLayout";
+import CompanySettings from "./pages/CompanySettings";
 import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import EmployeeDocuments from "./pages/EmployeeDocuments";
@@ -20,6 +21,7 @@ import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
 import ForgotPassword from "./pages/ForgotPassword";
+import LeadManagement from "./pages/LeadManagement";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
 import PublicHome from "./pages/PublicHome";
@@ -102,6 +104,8 @@ const App = () => {
             path="reports"
             element={<ModulePage module="payroll" title="Reports" />}
           />
+          <Route path="leads" element={<LeadManagement />} />
+          <Route path="settings" element={<CompanySettings />} />
         </Route>
       </Route>
 

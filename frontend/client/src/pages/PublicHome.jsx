@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import {
   BadgeCheck,
   Briefcase,
@@ -9,6 +10,8 @@ import {
   ShieldCheck,
   Users
 } from "lucide-react";
+import api from "../api/axios";
+import { useCompany } from "../context/CompanyContext";
 
 const services = [
   {
@@ -34,12 +37,55 @@ const services = [
 ];
 
 const PublicHome = () => {
+  const { settings } = useCompany();
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    requirement: ""
+  });
+  const [leadMessage, setLeadMessage] = useState("");
+  const [leadError, setLeadError] = useState("");
+  const [leadSaving, setLeadSaving] = useState(false);
+
+  const handleLeadChange = (name, value) => {
+    setLeadForm((current) => ({ ...current, [name]: value }));
+  };
+
+  const submitLead = async (event) => {
+    event.preventDefault();
+    setLeadSaving(true);
+    setLeadError("");
+    setLeadMessage("");
+
+    try {
+      const { data } = await api.post("/leads", leadForm);
+      setLeadMessage(data.message || "Requirement submitted successfully.");
+      setLeadForm({
+        name: "",
+        company: "",
+        email: "",
+        phone: "",
+        requirement: ""
+      });
+    } catch (requestError) {
+      setLeadError(requestError.response?.data?.message || "Unable to submit requirement");
+    } finally {
+      setLeadSaving(false);
+    }
+  };
+
   return (
     <main className="public-site">
       <nav className="public-nav">
         <div className="public-brand">
-          <div className="brand-logo">HR</div>
-          <span>HRMS Manpower Portal</span>
+          {settings.logoUrl ? (
+            <img className="brand-image" src={settings.logoUrl} alt={settings.companyName} />
+          ) : (
+            <div className="brand-logo">HR</div>
+          )}
+          <span>{settings.companyName}</span>
         </div>
 
         <div className="public-nav-links">
@@ -54,7 +100,7 @@ const PublicHome = () => {
       <section className="public-hero">
         <div>
           <span className="eyebrow">Full-stack HRMS + Manpower Services</span>
-          <h1>Modern HRMS built for staffing, payroll and manpower operations.</h1>
+          <h1>{settings.tagline || "Modern HRMS built for staffing, payroll and manpower operations."}</h1>
           <p>
             A production-ready HRMS workflow for staffing companies: candidates apply,
             HR processes hiring, employees manage self-service, and clients track manpower.
@@ -159,6 +205,73 @@ const PublicHome = () => {
           <strong>Admin Control Center</strong>
           <span>Manage recruitment, payroll, approvals and reports.</span>
         </Link>
+      </section>
+
+      <section className="lead-section" id="request-manpower">
+        <div>
+          <span className="eyebrow">Need manpower?</span>
+          <h2>Send your requirement. Our team will contact you.</h2>
+          <p>
+            Share your staffing need and we will respond with candidates, hiring support and
+            manpower deployment options.
+          </p>
+          <div className="lead-contact-card">
+            {settings.email && <span>Email: {settings.email}</span>}
+            {settings.phone && <span>Phone: {settings.phone}</span>}
+            {settings.address && <span>{settings.address}</span>}
+          </div>
+        </div>
+
+        <form className="lead-form-card" onSubmit={submitLead}>
+          {leadMessage && <div className="success-message">{leadMessage}</div>}
+          {leadError && <div className="error-message">{leadError}</div>}
+
+          <label>
+            Your Name
+            <input
+              value={leadForm.name}
+              onChange={(event) => handleLeadChange("name", event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Company
+            <input
+              value={leadForm.company}
+              onChange={(event) => handleLeadChange("company", event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Email
+            <input
+              type="email"
+              value={leadForm.email}
+              onChange={(event) => handleLeadChange("email", event.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Phone
+            <input
+              value={leadForm.phone}
+              onChange={(event) => handleLeadChange("phone", event.target.value)}
+              required
+            />
+          </label>
+          <label className="wide-field">
+            Requirement
+            <textarea
+              value={leadForm.requirement}
+              onChange={(event) => handleLeadChange("requirement", event.target.value)}
+              placeholder="Example: Need 20 warehouse staff in Delhi within 10 days"
+              required
+            />
+          </label>
+          <button className="primary-button" disabled={leadSaving}>
+            {leadSaving ? "Submitting..." : "Submit Requirement"}
+          </button>
+        </form>
       </section>
     </main>
   );

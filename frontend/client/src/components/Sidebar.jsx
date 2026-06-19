@@ -10,11 +10,13 @@ import {
   Plane,
   Receipt,
   Settings,
+  Sparkles,
   UserRound,
   Users
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { useCompany } from "../context/CompanyContext";
 
 const links = [
   { path: "/admin", label: "Dashboard", icon: BarChart3 },
@@ -31,19 +33,26 @@ const links = [
   { path: "/admin/expenses", label: "Expenses", icon: Receipt },
   { path: "/admin/payroll", label: "Payroll", icon: CircleDollarSign },
   { path: "/admin/resignations", label: "Resignations", icon: FileText },
+  { path: "/admin/leads", label: "Website Leads", icon: Sparkles },
   { path: "/admin/users", label: "Users & Roles", icon: Users },
-  { path: "/admin/reports", label: "Reports", icon: BarChart3 }
+  { path: "/admin/reports", label: "Reports", icon: BarChart3 },
+  { path: "/admin/settings", label: "Company Settings", icon: Settings }
 ];
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
+  const { settings } = useCompany();
 
   return (
     <aside className="sidebar">
       <div className="brand">
-        <div className="brand-logo">HR</div>
+        {settings.logoUrl ? (
+          <img className="brand-image" src={settings.logoUrl} alt={settings.companyName} />
+        ) : (
+          <div className="brand-logo">HR</div>
+        )}
         <div>
-          <strong>HRMS Portal</strong>
+          <strong>{settings.companyName || "HRMS Portal"}</strong>
           <small>{user?.role}</small>
         </div>
       </div>
