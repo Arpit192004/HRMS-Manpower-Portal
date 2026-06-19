@@ -11,9 +11,11 @@ import CandidateLogin from "./pages/CandidateLogin";
 import CandidatePortalLayout from "./pages/CandidatePortalLayout";
 import CandidateRegister from "./pages/CandidateRegister";
 import ClientDashboard from "./pages/ClientDashboard";
+import ClientLogin from "./pages/ClientLogin";
 import ClientPortalLayout from "./pages/ClientPortalLayout";
 import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
+import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
 import Login from "./pages/Login";
@@ -42,7 +44,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<PublicHome />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/client/login" element={<Login />} />
+      <Route path="/client/login" element={<ClientLogin />} />
+      <Route path="/employee/login" element={<EmployeeLogin />} />
       <Route path="/candidate/login" element={<CandidateLogin />} />
       <Route path="/candidate/register" element={<CandidateRegister />} />
 

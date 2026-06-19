@@ -2,17 +2,35 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const CandidateLogin = () => {
+const EmployeeLogin = () => {
   const { user, login, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("employee@hrms.com");
+  const [password, setPassword] = useState("Employee@123");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   if (user) {
-    return <Navigate to={user.role === "Candidate" ? "/candidate/jobs" : "/"} replace />;
+    if (user.role === "Employee") {
+      return <Navigate to="/employee/dashboard" replace />;
+    }
+
+    return (
+      <div className="candidate-auth-page">
+        <div className="candidate-auth-card">
+          <div className="logo">EP</div>
+          <h1>Employee Portal</h1>
+          <div className="error-message">
+            You are logged in as {user.role}. Please logout before employee login.
+          </div>
+          <button type="button" onClick={logout}>Logout</button>
+          <p className="login-switch">
+            <Link to="/">Back to website</Link>
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const handleSubmit = async (event) => {
@@ -23,15 +41,15 @@ const CandidateLogin = () => {
     try {
       const loggedInUser = await login(email, password);
 
-      if (loggedInUser.role !== "Candidate") {
+      if (loggedInUser.role !== "Employee") {
         logout();
-        setError("Only candidate accounts can login here.");
+        setError("Only employee accounts can login here.");
         return;
       }
 
-      navigate("/candidate/jobs");
+      navigate("/employee/dashboard");
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Candidate login failed");
+      setError(requestError.response?.data?.message || "Employee login failed");
     } finally {
       setLoading(false);
     }
@@ -40,9 +58,9 @@ const CandidateLogin = () => {
   return (
     <div className="candidate-auth-page">
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
-        <div className="logo">CP</div>
-        <h1>Candidate Login</h1>
-        <p>Track jobs, applications and hiring status.</p>
+        <div className="logo">EP</div>
+        <h1>Employee Login</h1>
+        <p>Open your attendance, leave, expense and payroll portal.</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -63,12 +81,8 @@ const CandidateLogin = () => {
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Login as Candidate"}
+          {loading ? "Signing in..." : "Login as Employee"}
         </button>
-
-        <p className="login-switch">
-          New candidate? <Link to="/candidate/register">Create account</Link>
-        </p>
 
         <p className="login-switch">
           Admin/HR? <Link to="/login">Admin Login</Link>
@@ -78,4 +92,4 @@ const CandidateLogin = () => {
   );
 };
 
-export default CandidateLogin;
+export default EmployeeLogin;

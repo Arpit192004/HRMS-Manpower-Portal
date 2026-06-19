@@ -108,7 +108,7 @@ const PublicHome = () => {
           <strong>Candidate Portal</strong>
           <span>View jobs, apply and track application status.</span>
         </Link>
-        <Link to="/employee/dashboard">
+        <Link to="/employee/login">
           <strong>Employee Portal</strong>
           <span>Attendance, leaves, expenses and salary slips.</span>
         </Link>

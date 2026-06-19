@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const { user, login } = useAuth();
+  const { user, login, logout } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("admin@hrms.com");
@@ -12,9 +12,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const getHomePath = (loggedInUser) => {
-    if (loggedInUser.role === "Candidate") return "/candidate/jobs";
-    if (loggedInUser.role === "Employee") return "/employee/dashboard";
-    if (loggedInUser.role === "Client Approver") return "/client/dashboard";
     return "/admin";
   };
 
@@ -29,6 +26,13 @@ const Login = () => {
 
     try {
       const loggedInUser = await login(email, password);
+
+      if (["Candidate", "Employee", "Client Approver"].includes(loggedInUser.role)) {
+        logout();
+        setError("Please use your dedicated portal login.");
+        return;
+      }
+
       navigate(getHomePath(loggedInUser));
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Login failed");
@@ -73,6 +77,10 @@ const Login = () => {
 
         <p className="login-switch">
           Client ho? <Link to="/client/login">Client Portal</Link>
+        </p>
+
+        <p className="login-switch">
+          Employee ho? <Link to="/employee/login">Employee Portal</Link>
         </p>
       </form>
     </div>
