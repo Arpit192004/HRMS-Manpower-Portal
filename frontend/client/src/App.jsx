@@ -1,7 +1,13 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import CandidateRoute from "./components/CandidateRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
+import CandidateApplications from "./pages/CandidateApplications";
+import CandidateJobs from "./pages/CandidateJobs";
+import CandidateLogin from "./pages/CandidateLogin";
+import CandidatePortalLayout from "./pages/CandidatePortalLayout";
+import CandidateRegister from "./pages/CandidateRegister";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
@@ -27,8 +33,18 @@ const App = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/candidate/login" element={<CandidateLogin />} />
+      <Route path="/candidate/register" element={<CandidateRegister />} />
 
-      <Route element={<ProtectedRoute />}>
+      <Route element={<CandidateRoute />}>
+        <Route path="/candidate" element={<CandidatePortalLayout />}>
+          <Route index element={<Navigate to="/candidate/jobs" replace />} />
+          <Route path="jobs" element={<CandidateJobs />} />
+          <Route path="applications" element={<CandidateApplications />} />
+        </Route>
+      </Route>
+
+      <Route element={<AdminRoute />}>
         <Route element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
 

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
+const CandidateLogin = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("admin@hrms.com");
-  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -24,19 +24,18 @@ const Login = () => {
       const loggedInUser = await login(email, password);
       navigate(loggedInUser.role === "Candidate" ? "/candidate/jobs" : "/");
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Login failed");
+      setError(requestError.response?.data?.message || "Candidate login failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <div className="logo">HR</div>
-
-        <h1>HRMS Manpower Portal</h1>
-        <p>Sign in to manage your workforce</p>
+    <div className="candidate-auth-page">
+      <form className="candidate-auth-card" onSubmit={handleSubmit}>
+        <div className="logo">CP</div>
+        <h1>Candidate Login</h1>
+        <p>Track jobs, applications and hiring status.</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -57,15 +56,19 @@ const Login = () => {
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
+          {loading ? "Signing in..." : "Login as Candidate"}
         </button>
 
         <p className="login-switch">
-          Candidate ho? <Link to="/candidate/login">Candidate Login</Link>
+          New candidate? <Link to="/candidate/register">Create account</Link>
+        </p>
+
+        <p className="login-switch">
+          Admin/HR? <Link to="/login">Admin Login</Link>
         </p>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default CandidateLogin;
