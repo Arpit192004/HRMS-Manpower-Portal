@@ -3,6 +3,7 @@ import {
   BarChart3,
   Briefcase,
   Building2,
+  Bell,
   CalendarDays,
   CircleDollarSign,
   FileText,
@@ -34,6 +35,7 @@ const links = [
   { path: "/admin/payroll", label: "Payroll", icon: CircleDollarSign },
   { path: "/admin/resignations", label: "Resignations", icon: FileText },
   { path: "/admin/leads", label: "Website Leads", icon: Sparkles },
+  { path: "/admin/notifications", label: "Notifications", icon: Bell },
   { path: "/admin/users", label: "Users & Roles", icon: Users },
   { path: "/admin/reports", label: "Reports", icon: BarChart3 },
   { path: "/admin/settings", label: "Company Settings", icon: Settings }

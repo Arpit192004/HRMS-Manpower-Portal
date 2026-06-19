@@ -49,6 +49,21 @@ const LeadManagement = () => {
     }
   };
 
+  const convertLead = async (leadId) => {
+    setError("");
+    setSuccess("");
+
+    try {
+      const { data } = await api.post(`/leads/${leadId}/convert`, {});
+      setSuccess(
+        `Converted to client: ${data.client?.name}. Client login email: ${data.user?.email}`
+      );
+      await loadLeads();
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to convert lead");
+    }
+  };
+
   return (
     <section>
       <div className="page-heading">
@@ -115,14 +130,22 @@ const LeadManagement = () => {
                       </span>
                     </td>
                     <td>
-                      <select
-                        value={lead.status}
-                        onChange={(event) => updateStatus(lead._id, event.target.value)}
-                      >
-                        {statuses.map((status) => (
-                          <option key={status} value={status}>{status}</option>
-                        ))}
-                      </select>
+                      <div className="row-actions">
+                        <select
+                          value={lead.status}
+                          onChange={(event) => updateStatus(lead._id, event.target.value)}
+                        >
+                          {statuses.map((status) => (
+                            <option key={status} value={status}>{status}</option>
+                          ))}
+                        </select>
+
+                        {lead.status !== "Converted" && (
+                          <button className="mini-button" onClick={() => convertLead(lead._id)}>
+                            Convert
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

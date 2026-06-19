@@ -24,6 +24,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import LeadManagement from "./pages/LeadManagement";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
+import Notifications from "./pages/Notifications";
+import PublicInfoPage from "./pages/PublicInfoPage";
 import PublicHome from "./pages/PublicHome";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -48,6 +50,12 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<PublicHome />} />
+      <Route path="/about" element={<PublicInfoPage page="about" />} />
+      <Route path="/services" element={<PublicInfoPage page="services" />} />
+      <Route path="/industries" element={<PublicInfoPage page="industries" />} />
+      <Route path="/contact" element={<PublicInfoPage page="contact" />} />
+      <Route path="/privacy" element={<PublicInfoPage page="privacy" />} />
+      <Route path="/terms" element={<PublicInfoPage page="terms" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -106,6 +114,7 @@ const App = () => {
           />
           <Route path="leads" element={<LeadManagement />} />
           <Route path="settings" element={<CompanySettings />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
       </Route>
 

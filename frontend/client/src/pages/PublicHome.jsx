@@ -89,6 +89,9 @@ const PublicHome = () => {
         </div>
 
         <div className="public-nav-links">
+          <Link to="/about">About</Link>
+          <Link to="/services">Services</Link>
+          <Link to="/industries">Industries</Link>
           <Link to="/candidate/jobs">Open Jobs</Link>
           <Link to="/candidate/register">Candidate Apply</Link>
           <Link to="/employee/login">Employee Login</Link>
@@ -273,6 +276,15 @@ const PublicHome = () => {
           </button>
         </form>
       </section>
+
+      <footer className="public-footer">
+        <span>{settings.companyName}</span>
+        <div>
+          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/terms">Terms</Link>
+          <Link to="/contact">Contact</Link>
+        </div>
+      </footer>
     </main>
   );
 };

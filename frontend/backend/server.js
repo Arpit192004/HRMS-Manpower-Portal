@@ -27,6 +27,7 @@ const documentRoutes = require("./routes/documentRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const settingRoutes = require("./routes/settingRoutes");
 const leadRoutes = require("./routes/leadRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const { requestId, securityHeaders, rateLimit } = require("./middleware/securityMiddleware");
@@ -137,6 +138,7 @@ app.use("/api/documents", documentRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/settings", settingRoutes);
 app.use("/api/leads", leadRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Error middleware hamesha API routes ke baad rahega
 app.use(notFound);
