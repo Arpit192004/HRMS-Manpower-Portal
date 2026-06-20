@@ -34,6 +34,7 @@ import PublicHome from "./pages/PublicHome";
 import RequirementManagement from "./pages/RequirementManagement";
 import SlaDashboard from "./pages/SlaDashboard";
 import ResetPassword from "./pages/ResetPassword";
+import ShiftRoster from "./pages/ShiftRoster";
 
 const modules = [
   ["clients", "Clients"],
@@ -103,6 +104,7 @@ const App = () => {
           <Route path="invoices" element={<InvoiceManagement clientView />} />
           <Route path="sla" element={<SlaDashboard clientView />} />
           <Route path="compliance" element={<ComplianceDashboard clientView />} />
+          <Route path="attendance-health" element={<ShiftRoster clientView />} />
         </Route>
       </Route>
 
@@ -130,6 +132,7 @@ const App = () => {
           <Route path="invoices" element={<InvoiceManagement />} />
           <Route path="sla" element={<SlaDashboard />} />
           <Route path="compliance" element={<ComplianceDashboard />} />
+          <Route path="shifts" element={<ShiftRoster />} />
         </Route>
       </Route>
 

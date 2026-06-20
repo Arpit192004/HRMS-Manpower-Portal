@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Briefcase, Building2, CircleDollarSign, FileText, LogOut, Users } from "lucide-react";
+import { Briefcase, Building2, CalendarDays, CircleDollarSign, FileText, LogOut, Users } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const links = [
@@ -8,6 +8,7 @@ const links = [
   { path: "/client/requirements", label: "Requirements", icon: Briefcase },
   { path: "/client/candidates", label: "Candidates", icon: FileText },
   { path: "/client/employees", label: "Employees", icon: Users },
+  { path: "/client/attendance-health", label: "Attendance Health", icon: CalendarDays },
   { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign },
   { path: "/client/sla", label: "SLA Dashboard", icon: Building2 },
   { path: "/client/compliance", label: "Compliance", icon: FileText }

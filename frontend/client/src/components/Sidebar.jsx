@@ -31,6 +31,7 @@ const links = [
   { path: "/admin/offers", label: "Offers", icon: FileText },
   { path: "/admin/employees", label: "Employees", icon: Users },
   { path: "/admin/attendance", label: "Attendance", icon: CalendarDays },
+  { path: "/admin/shifts", label: "Shift Roster", icon: CalendarDays },
   { path: "/admin/leaves", label: "Leaves", icon: CalendarDays },
   { path: "/admin/tours", label: "Tours", icon: Plane },
   { path: "/admin/expenses", label: "Expenses", icon: Receipt },

@@ -12,6 +12,11 @@ const attendanceSchema = new mongoose.Schema(
       ref: "Client",
       required: true
     },
+    shift: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shift",
+      default: null
+    },
     date: {
       type: Date,
       required: true
@@ -21,6 +26,38 @@ const attendanceSchema = new mongoose.Schema(
     workingHours: {
       type: Number,
       default: 0
+    },
+    scheduledStart: Date,
+    scheduledEnd: Date,
+    graceMinutes: {
+      type: Number,
+      default: 0
+    },
+    workMinutes: {
+      type: Number,
+      default: 0
+    },
+    lateMinutes: {
+      type: Number,
+      default: 0
+    },
+    earlyLeaveMinutes: {
+      type: Number,
+      default: 0
+    },
+    overtimeMinutes: {
+      type: Number,
+      default: 0
+    },
+    smartStatus: {
+      type: String,
+      enum: ["On Time", "Late", "Early Leave", "Overtime", "Absent", "Manual"],
+      default: "Manual"
+    },
+    location: {
+      latitude: Number,
+      longitude: Number,
+      address: String
     },
     status: {
       type: String,

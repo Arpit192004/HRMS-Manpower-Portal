@@ -137,6 +137,11 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       default: "General"
     },
+    shift: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shift",
+      default: null
+    },
     attendancePolicy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Policy",

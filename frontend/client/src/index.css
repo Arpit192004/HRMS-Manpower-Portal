@@ -1942,6 +1942,42 @@ code {
   color: #64748b;
 }
 
+.shift-admin-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.inline-heading {
+  grid-column: 1 / -1;
+  padding: 0;
+}
+
+.muted-block {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.status-pill.late {
+  background: #fff1df;
+  color: #b45309;
+}
+
+.status-pill.early-leave,
+.status-pill.absent {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
+.status-pill.overtime,
+.status-pill.on-time {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -1951,7 +1987,8 @@ code {
   .lead-form-card,
   .lead-summary,
   .info-points,
-  .sla-card-grid {
+  .sla-card-grid,
+  .shift-admin-grid {
     grid-template-columns: 1fr;
   }
 
