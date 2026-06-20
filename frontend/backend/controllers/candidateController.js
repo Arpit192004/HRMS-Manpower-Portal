@@ -3,6 +3,7 @@ const Job = require("../models/Job");
 const User = require("../models/User");
 const sendEmail = require("../utils/sendEmail");
 const calculateCandidateMatch = require("../utils/candidateMatch");
+const createNotification = require("../utils/createNotification");
 
 const getCandidates = async (req, res, next) => {
   try {
@@ -25,6 +26,8 @@ const getCandidates = async (req, res, next) => {
       .populate("job", "title department grade location skills salaryRange experience")
       .populate("client", "name code")
       .populate("shortlistedBy", "name email")
+      .populate("submittedToClientBy", "name email")
+      .populate("clientReviewedBy", "name email")
       .sort({ createdAt: -1 });
 
     res.json({ success: true, count: candidates.length, candidates });
@@ -142,6 +145,10 @@ const updateCandidateStatus = async (req, res, next) => {
       "Shortlisted",
       "Rejected",
       "Interview",
+      "Submitted to Client",
+      "Client Shortlisted",
+      "Client Rejected",
+      "More Profiles Requested",
       "Pre-Offer",
       "Offered",
       "Joined"
@@ -171,6 +178,105 @@ const updateCandidateStatus = async (req, res, next) => {
     res.json({
       success: true,
       message: "Candidate status updated successfully",
+      candidate
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const submitCandidateToClient = async (req, res, next) => {
+  try {
+    const candidate = await Candidate.findById(req.params.id)
+      .populate("user", "name email")
+      .populate("job", "title")
+      .populate("client", "name code");
+
+    if (!candidate) {
+      res.status(404);
+      throw new Error("Candidate application not found");
+    }
+
+    if (!["Shortlisted", "Interview", "Pre-Offer"].includes(candidate.status)) {
+      res.status(400);
+      throw new Error("Only internally shortlisted candidates can be submitted to client");
+    }
+
+    candidate.status = "Submitted to Client";
+    candidate.submittedToClientBy = req.user._id;
+    candidate.submittedToClientAt = new Date();
+    candidate.clientReviewRemarks = "";
+    await candidate.save();
+
+    await createNotification({
+      title: "Candidate submitted to client",
+      message: `${candidate.user?.name || "Candidate"} submitted to ${candidate.client?.name || "client"} for review.`,
+      type: "Hiring",
+      link: "/admin/pipeline",
+      audienceRoles: ["Super Admin", "HR Admin"],
+      entityType: "Candidate",
+      entityId: candidate._id
+    });
+
+    res.json({
+      success: true,
+      message: "Candidate submitted to client successfully",
+      candidate
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const reviewCandidateByClient = async (req, res, next) => {
+  try {
+    const { decision, remarks } = req.body;
+    const allowedDecisions = ["Client Shortlisted", "Client Rejected", "More Profiles Requested"];
+
+    if (!allowedDecisions.includes(decision)) {
+      res.status(400);
+      throw new Error("Invalid client review decision");
+    }
+
+    const candidate = await Candidate.findById(req.params.id)
+      .populate("user", "name email")
+      .populate("job", "title")
+      .populate("client", "name code");
+
+    if (!candidate) {
+      res.status(404);
+      throw new Error("Candidate application not found");
+    }
+
+    if (candidate.client._id.toString() !== req.user.client?.toString()) {
+      res.status(403);
+      throw new Error("You cannot review another client's candidate");
+    }
+
+    if (candidate.status !== "Submitted to Client") {
+      res.status(400);
+      throw new Error("Candidate is not pending client review");
+    }
+
+    candidate.status = decision;
+    candidate.clientReviewRemarks = remarks || "";
+    candidate.clientReviewedBy = req.user._id;
+    candidate.clientReviewedAt = new Date();
+    await candidate.save();
+
+    await createNotification({
+      title: "Client reviewed candidate",
+      message: `${candidate.client?.name || "Client"} marked ${candidate.user?.name || "candidate"} as ${decision}.`,
+      type: "Hiring",
+      link: "/admin/pipeline",
+      audienceRoles: ["Super Admin", "HR Admin"],
+      entityType: "Candidate",
+      entityId: candidate._id
+    });
+
+    res.json({
+      success: true,
+      message: "Candidate review submitted successfully",
       candidate
     });
   } catch (error) {
@@ -266,6 +372,8 @@ module.exports = {
   getCandidateById,
   applyForJob,
   updateCandidateStatus,
+  submitCandidateToClient,
+  reviewCandidateByClient,
   refreshCandidateMatch,
   refreshAllCandidateMatches,
   withdrawApplication

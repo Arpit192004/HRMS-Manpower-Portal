@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 
-const stages = ["Applied", "Shortlisted", "Interview", "Pre-Offer", "Offered", "Joined"];
+const stages = [
+  "Applied",
+  "Shortlisted",
+  "Interview",
+  "Submitted to Client",
+  "Client Shortlisted",
+  "Pre-Offer",
+  "Offered",
+  "Joined"
+];
 
 const CandidateApplications = () => {
   const [applications, setApplications] = useState([]);

@@ -1,7 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios";
 
-const stages = ["Applied", "Shortlisted", "Interview", "Pre-Offer", "Offered", "Joined", "Rejected"];
+const stages = [
+  "Applied",
+  "Shortlisted",
+  "Interview",
+  "Submitted to Client",
+  "Client Shortlisted",
+  "Client Rejected",
+  "More Profiles Requested",
+  "Pre-Offer",
+  "Offered",
+  "Joined",
+  "Rejected"
+];
 
 const PipelineBoard = () => {
   const [candidates, setCandidates] = useState([]);
@@ -75,6 +87,19 @@ const PipelineBoard = () => {
     }
   };
 
+  const submitToClient = async (candidate) => {
+    setError("");
+    setSuccess("");
+
+    try {
+      await api.patch(`/candidates/${candidate._id}/submit-to-client`);
+      setSuccess(`${candidate.user?.name || "Candidate"} submitted to client`);
+      await loadCandidates();
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to submit candidate to client");
+    }
+  };
+
   return (
     <section>
       <div className="page-heading">
@@ -133,6 +158,11 @@ const PipelineBoard = () => {
                   <button className="mini-button" onClick={() => refreshMatch(candidate)}>
                     Recalculate Match
                   </button>
+                  {["Shortlisted", "Interview", "Pre-Offer"].includes(candidate.status) && (
+                    <button className="mini-button" onClick={() => submitToClient(candidate)}>
+                      Submit to Client
+                    </button>
+                  )}
                 </article>
               ))}
             </div>

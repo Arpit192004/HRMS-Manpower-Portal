@@ -5,6 +5,8 @@ const {
   getCandidateById,
   applyForJob,
   updateCandidateStatus,
+  submitCandidateToClient,
+  reviewCandidateByClient,
   refreshCandidateMatch,
   refreshAllCandidateMatches,
   withdrawApplication
@@ -32,6 +34,18 @@ router.patch(
   "/:id/status",
   authorize("Super Admin", "HR Admin"),
   updateCandidateStatus
+);
+
+router.patch(
+  "/:id/submit-to-client",
+  authorize("Super Admin", "HR Admin"),
+  submitCandidateToClient
+);
+
+router.patch(
+  "/:id/client-review",
+  authorize("Client Approver"),
+  reviewCandidateByClient
 );
 
 router.patch(

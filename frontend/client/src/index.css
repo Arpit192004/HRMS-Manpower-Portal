@@ -159,6 +159,7 @@ a {
 .status-pill.open,
 .status-pill.active,
 .status-pill.joined,
+.status-pill.client-shortlisted,
 .status-pill.sent,
 .status-pill.confirmed {
   background: #e7f8ef;
@@ -166,11 +167,18 @@ a {
 }
 
 .status-pill.rejected,
+.status-pill.client-rejected,
 .status-pill.closed,
 .status-pill.cancelled,
 .status-pill.inactive {
   background: #ffe7e7;
   color: #b42318;
+}
+
+.status-pill.submitted-to-client,
+.status-pill.more-profiles-requested {
+  background: #e8f0ff;
+  color: #2563eb;
 }
 
 .hero-panel-header {

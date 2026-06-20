@@ -33,6 +33,10 @@ const candidateSchema = new mongoose.Schema(
         "Shortlisted",
         "Rejected",
         "Interview",
+        "Submitted to Client",
+        "Client Shortlisted",
+        "Client Rejected",
+        "More Profiles Requested",
         "Pre-Offer",
         "Offered",
         "Joined"
@@ -45,6 +49,23 @@ const candidateSchema = new mongoose.Schema(
       default: null
     },
     shortlistedAt: Date,
+    submittedToClientBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    },
+    submittedToClientAt: Date,
+    clientReviewRemarks: {
+      type: String,
+      default: "",
+      trim: true
+    },
+    clientReviewedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    },
+    clientReviewedAt: Date,
     matchScore: {
       type: Number,
       default: 0

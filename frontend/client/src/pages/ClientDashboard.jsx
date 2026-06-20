@@ -32,6 +32,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
     invoices: 0
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
 
   const clientQuery = user?.client ? `?client=${user.client}` : "";
@@ -39,6 +40,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
   const loadData = async () => {
     setLoading(true);
     setError("");
+    setSuccess("");
 
     try {
       if (module === "dashboard") {
@@ -81,6 +83,22 @@ const ClientDashboard = ({ module = "dashboard" }) => {
       .filter((key) => !["_id", "__v", "createdAt", "updatedAt"].includes(key))
       .slice(0, 7);
   }, [records]);
+
+  const reviewCandidate = async (candidateId, decision) => {
+    setError("");
+    setSuccess("");
+
+    try {
+      await api.patch(`/candidates/${candidateId}/client-review`, {
+        decision,
+        remarks: `Client marked candidate as ${decision}`
+      });
+      setSuccess("Candidate review submitted");
+      await loadData();
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to submit candidate review");
+    }
+  };
 
   if (module === "dashboard") {
     const cards = [
@@ -136,6 +154,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
       </div>
 
       {error && <div className="error-message">{error}</div>}
+      {success && <div className="success-message">{success}</div>}
 
       <div className="content-card table-card">
         {loading ? (
@@ -154,6 +173,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
                   {columns.map((column) => (
                     <th key={column}>{column.replace(/([A-Z])/g, " $1")}</th>
                   ))}
+                  {module === "candidates" && <th>Review</th>}
                 </tr>
               </thead>
               <tbody>
@@ -163,6 +183,36 @@ const ClientDashboard = ({ module = "dashboard" }) => {
                     {columns.map((column) => (
                       <td key={column}>{getDisplayValue(record[column])}</td>
                     ))}
+                    {module === "candidates" && (
+                      <td>
+                        {record.status === "Submitted to Client" ? (
+                          <div className="row-actions">
+                            <button
+                              className="mini-button"
+                              onClick={() => reviewCandidate(record._id, "Client Shortlisted")}
+                            >
+                              Shortlist
+                            </button>
+                            <button
+                              className="mini-button danger"
+                              onClick={() => reviewCandidate(record._id, "Client Rejected")}
+                            >
+                              Reject
+                            </button>
+                            <button
+                              className="mini-button"
+                              onClick={() => reviewCandidate(record._id, "More Profiles Requested")}
+                            >
+                              More Profiles
+                            </button>
+                          </div>
+                        ) : (
+                          <span className={`status-pill ${String(record.status || "").toLowerCase().replace(/\s+/g, "-")}`}>
+                            {record.status || "-"}
+                          </span>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

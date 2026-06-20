@@ -694,6 +694,22 @@ const ModulePage = ({ module, title }) => {
           </button>
         );
       }
+
+      if (["Shortlisted", "Interview", "Pre-Offer"].includes(record.status)) {
+        actions.push(
+          <button
+            key="submit-client"
+            className="mini-button"
+            onClick={() =>
+              runAction("Submit to client", () =>
+                api.patch(`/candidates/${record._id}/submit-to-client`)
+              )
+            }
+          >
+            Submit to Client
+          </button>
+        );
+      }
     }
 
     if (module === "offers" && ["Super Admin", "HR Admin"].includes(user?.role)) {
