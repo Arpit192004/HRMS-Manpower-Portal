@@ -2,10 +2,13 @@ const express = require("express");
 
 const {
   getWorkflows,
+  getWorkflowSummary,
   getWorkflowById,
   createWorkflow,
   processWorkflowStep,
-  cancelWorkflow
+  cancelWorkflow,
+  escalateWorkflow,
+  seedDemoWorkflows
 } = require("../controllers/workflowController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -29,10 +32,24 @@ router
     createWorkflow
   );
 
+router.get("/summary", getWorkflowSummary);
+
+router.post(
+  "/demo",
+  authorize("Super Admin", "HR Admin"),
+  seedDemoWorkflows
+);
+
 router.patch(
   "/:id/process",
   authorize("Super Admin", "HR Admin", "Manager", "Client Approver"),
   processWorkflowStep
+);
+
+router.patch(
+  "/:id/escalate",
+  authorize("Super Admin", "HR Admin", "Manager"),
+  escalateWorkflow
 );
 
 router.patch("/:id/cancel", cancelWorkflow);

@@ -67,6 +67,24 @@ const workflowSchema = new mongoose.Schema(
       type: Number,
       default: 1
     },
+    priority: {
+      type: String,
+      enum: ["Low", "Medium", "High", "Critical"],
+      default: "Medium"
+    },
+    slaHours: {
+      type: Number,
+      default: 24
+    },
+    dueAt: {
+      type: Date,
+      default: null
+    },
+    escalatedAt: Date,
+    escalationLevel: {
+      type: Number,
+      default: 0
+    },
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected", "Cancelled"],
@@ -80,5 +98,7 @@ workflowSchema.index(
   { requestModel: 1, requestId: 1 },
   { unique: true }
 );
+workflowSchema.index({ status: 1, dueAt: 1 });
+workflowSchema.index({ "steps.approver": 1, status: 1 });
 
 module.exports = mongoose.model("Workflow", workflowSchema);

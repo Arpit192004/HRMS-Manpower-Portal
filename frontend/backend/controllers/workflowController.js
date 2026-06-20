@@ -16,12 +16,27 @@ const getWorkflows = async (req, res, next) => {
     if (req.query.client) filter.client = req.query.client;
     if (req.query.requestType) filter.requestType = req.query.requestType;
     if (req.query.status) filter.status = req.query.status;
+    if (req.query.priority) filter.priority = req.query.priority;
+    if (req.query.overdue === "true") {
+      filter.status = "Pending";
+      filter.dueAt = { $lt: new Date() };
+    }
 
     if (!["Super Admin", "HR Admin"].includes(req.user.role)) {
       filter.$or = [
         { requestedBy: req.user._id },
         { "steps.approver": req.user._id }
       ];
+    }
+
+    if (req.query.mine === "true") {
+      filter.status = "Pending";
+      filter.steps = {
+        $elemMatch: {
+          approver: req.user._id,
+          status: "Pending"
+        }
+      };
     }
 
     const workflows = await Workflow.find(filter)
@@ -35,6 +50,64 @@ const getWorkflows = async (req, res, next) => {
       success: true,
       count: workflows.length,
       workflows
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getWorkflowSummary = async (req, res, next) => {
+  try {
+    const baseFilter = {};
+
+    if (req.query.client) baseFilter.client = req.query.client;
+
+    if (!["Super Admin", "HR Admin"].includes(req.user.role)) {
+      baseFilter.$or = [
+        { requestedBy: req.user._id },
+        { "steps.approver": req.user._id }
+      ];
+    }
+
+    const now = new Date();
+
+    const [pending, approved, rejected, overdue, highPriority, myPending] =
+      await Promise.all([
+        Workflow.countDocuments({ ...baseFilter, status: "Pending" }),
+        Workflow.countDocuments({ ...baseFilter, status: "Approved" }),
+        Workflow.countDocuments({ ...baseFilter, status: "Rejected" }),
+        Workflow.countDocuments({
+          ...baseFilter,
+          status: "Pending",
+          dueAt: { $lt: now }
+        }),
+        Workflow.countDocuments({
+          ...baseFilter,
+          status: "Pending",
+          priority: { $in: ["High", "Critical"] }
+        }),
+        Workflow.countDocuments({
+          ...baseFilter,
+          status: "Pending",
+          steps: {
+            $elemMatch: {
+              approver: req.user._id,
+              status: "Pending"
+            }
+          }
+        })
+      ]);
+
+    res.json({
+      success: true,
+      summary: {
+        pending,
+        approved,
+        rejected,
+        overdue,
+        highPriority,
+        myPending
+      }
     });
   } catch (error) {
     next(error);
@@ -81,7 +154,9 @@ const createWorkflow = async (req, res, next) => {
       requestType,
       requestId,
       requestModel,
-      approvers
+      approvers,
+      priority,
+      slaHours
     } = req.body;
 
     if (
@@ -134,7 +209,10 @@ const createWorkflow = async (req, res, next) => {
       requestId,
       requestModel,
       requestedBy: req.user._id,
-      steps
+      steps,
+      priority: priority || "Medium",
+      slaHours: Number(slaHours || 24),
+      dueAt: new Date(Date.now() + Number(slaHours || 24) * 60 * 60 * 1000)
     });
 
     res.status(201).json({
@@ -205,6 +283,10 @@ const processWorkflowStep = async (req, res, next) => {
       }
     }
 
+    if (workflow.status !== "Pending") {
+      workflow.escalationLevel = 0;
+    }
+
     await workflow.save();
 
     res.json({
@@ -254,10 +336,101 @@ const cancelWorkflow = async (req, res, next) => {
   }
 };
 
+const escalateWorkflow = async (req, res, next) => {
+  try {
+    const workflow = await Workflow.findById(req.params.id);
+
+    if (!workflow) {
+      res.status(404);
+      throw new Error("Workflow not found");
+    }
+
+    if (workflow.status !== "Pending") {
+      res.status(400);
+      throw new Error("Only pending workflows can be escalated");
+    }
+
+    workflow.escalationLevel = (workflow.escalationLevel || 0) + 1;
+    workflow.escalatedAt = new Date();
+    workflow.priority =
+      workflow.priority === "Critical"
+        ? "Critical"
+        : workflow.priority === "High"
+          ? "Critical"
+          : "High";
+
+    await workflow.save();
+
+    res.json({
+      success: true,
+      message: "Workflow escalated successfully",
+      workflow
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const seedDemoWorkflows = async (req, res, next) => {
+  try {
+    const currentUser = await User.findById(req.user._id);
+
+    const demoClient = req.user.client || req.body.client;
+
+    if (!demoClient) {
+      res.status(400);
+      throw new Error("Client is required to create demo workflows");
+    }
+
+    const samples = [
+      ["Leave", "LeaveRequest", "665000000000000000000001", "High", 8],
+      ["Expense", "ExpenseClaim", "665000000000000000000002", "Critical", 4],
+      ["Tour", "TourRequest", "665000000000000000000003", "Medium", 24]
+    ];
+
+    const created = [];
+
+    for (const [requestType, requestModel, requestId, priority, slaHours] of samples) {
+      const existing = await Workflow.findOne({ requestModel, requestId });
+
+      if (!existing) {
+        const workflow = await Workflow.create({
+          client: demoClient,
+          requestType,
+          requestId,
+          requestModel,
+          requestedBy: req.user._id,
+          priority,
+          slaHours,
+          dueAt: new Date(Date.now() + slaHours * 60 * 60 * 1000),
+          steps: [
+            {
+              sequence: 1,
+              approver: currentUser._id
+            }
+          ]
+        });
+        created.push(workflow);
+      }
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "Demo approval workflows ready",
+      created
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getWorkflows,
+  getWorkflowSummary,
   getWorkflowById,
   createWorkflow,
   processWorkflowStep,
-  cancelWorkflow
+  cancelWorkflow,
+  escalateWorkflow,
+  seedDemoWorkflows
 };

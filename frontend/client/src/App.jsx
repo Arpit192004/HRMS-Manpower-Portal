@@ -5,6 +5,7 @@ import CandidateRoute from "./components/CandidateRoute";
 import ClientRoute from "./components/ClientRoute";
 import EmployeeRoute from "./components/EmployeeRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
+import ApprovalCommandCenter from "./pages/ApprovalCommandCenter";
 import CandidateApplications from "./pages/CandidateApplications";
 import CandidateJobs from "./pages/CandidateJobs";
 import CandidateLogin from "./pages/CandidateLogin";
@@ -131,6 +132,7 @@ const App = () => {
           <Route path="security" element={<SecurityCenter />} />
           <Route path="security-logs" element={<SecurityLogs />} />
           <Route path="notifications" element={<Notifications />} />
+          <Route path="approvals" element={<ApprovalCommandCenter />} />
           <Route path="requirements" element={<RequirementManagement />} />
           <Route path="pipeline" element={<PipelineBoard />} />
           <Route path="invoices" element={<InvoiceManagement />} />

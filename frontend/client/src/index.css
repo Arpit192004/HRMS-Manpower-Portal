@@ -2076,6 +2076,119 @@ code {
   color: #172033;
 }
 
+.approval-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(130px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.approval-board {
+  display: grid;
+  gap: 14px;
+}
+
+.approval-card {
+  display: grid;
+  gap: 16px;
+}
+
+.approval-card.overdue-card {
+  border-color: #f59e0b;
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.12);
+}
+
+.approval-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.approval-card-header h3,
+.approval-card-header p {
+  margin: 0;
+}
+
+.approval-card-header h3 {
+  margin-top: 8px;
+}
+
+.approval-card-header p {
+  margin-top: 5px;
+  color: #64748b;
+}
+
+.priority-badge {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.priority-badge.high {
+  background: #fff1df;
+  color: #b45309;
+}
+
+.priority-badge.critical {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
+.approval-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.approval-meta-grid div {
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.approval-meta-grid small,
+.approval-meta-grid strong {
+  display: block;
+}
+
+.approval-meta-grid small {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.approval-meta-grid strong {
+  margin-top: 5px;
+}
+
+.approval-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.approval-steps span {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.approval-steps .approved {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
+.approval-steps .rejected {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -2088,7 +2201,9 @@ code {
   .sla-card-grid,
   .shift-admin-grid,
   .security-grid,
-  .security-log-summary {
+  .security-log-summary,
+  .approval-kpi-grid,
+  .approval-meta-grid {
     grid-template-columns: 1fr;
   }
 
