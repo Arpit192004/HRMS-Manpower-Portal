@@ -8,7 +8,8 @@ const links = [
   { path: "/client/requirements", label: "Requirements", icon: Briefcase },
   { path: "/client/candidates", label: "Candidates", icon: FileText },
   { path: "/client/employees", label: "Employees", icon: Users },
-  { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign }
+  { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign },
+  { path: "/client/sla", label: "SLA Dashboard", icon: Building2 }
 ];
 
 const ClientPortalLayout = () => {

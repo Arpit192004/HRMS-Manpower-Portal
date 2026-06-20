@@ -6,7 +6,8 @@ const {
   getLeaveReport,
   getAttendanceReport,
   getPayrollReport,
-  getHiringReport
+  getHiringReport,
+  getSlaReport
 } = require("../controllers/reportController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -16,10 +17,11 @@ const router = express.Router();
 
 router.use(protect);
 router.use(
-  authorize("Super Admin", "HR Admin", "Payroll Team", "Manager")
+  authorize("Super Admin", "HR Admin", "Payroll Team", "Manager", "Client Approver")
 );
 
 router.get("/dashboard", getDashboardReport);
+router.get("/sla", getSlaReport);
 router.get("/employees", getEmployeeReport);
 router.get("/leaves", getLeaveReport);
 router.get("/attendance", getAttendanceReport);

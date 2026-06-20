@@ -41,6 +41,7 @@ const links = [
   { path: "/admin/notifications", label: "Notifications", icon: Bell },
   { path: "/admin/users", label: "Users & Roles", icon: Users },
   { path: "/admin/reports", label: "Reports", icon: BarChart3 },
+  { path: "/admin/sla", label: "SLA Dashboard", icon: BarChart3 },
   { path: "/admin/settings", label: "Company Settings", icon: Settings }
 ];
 

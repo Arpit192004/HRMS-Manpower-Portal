@@ -1824,6 +1824,59 @@ code {
   color: #b45309;
 }
 
+.sla-card-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.sla-kpi-card {
+  display: grid;
+  gap: 8px;
+}
+
+.sla-kpi-card span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.sla-kpi-card strong {
+  color: #172033;
+  font-size: 24px;
+}
+
+.table-section-heading {
+  padding: 20px 22px 8px;
+}
+
+.table-section-heading h3,
+.table-section-heading p {
+  margin: 0;
+}
+
+.table-section-heading p {
+  margin-top: 5px;
+  color: #68738a;
+}
+
+.status-pill.at-risk {
+  background: #fff1df;
+  color: #b45309;
+}
+
+.status-pill.delayed,
+.status-pill.overdue {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
+.status-pill.closed,
+.status-pill.on-track {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -1832,7 +1885,8 @@ code {
   .lead-section,
   .lead-form-card,
   .lead-summary,
-  .info-points {
+  .info-points,
+  .sla-card-grid {
     grid-template-columns: 1fr;
   }
 

@@ -31,6 +31,7 @@ import PipelineBoard from "./pages/PipelineBoard";
 import PublicInfoPage from "./pages/PublicInfoPage";
 import PublicHome from "./pages/PublicHome";
 import RequirementManagement from "./pages/RequirementManagement";
+import SlaDashboard from "./pages/SlaDashboard";
 import ResetPassword from "./pages/ResetPassword";
 
 const modules = [
@@ -99,6 +100,7 @@ const App = () => {
           <Route path="candidates" element={<ClientDashboard module="candidates" />} />
           <Route path="employees" element={<ClientDashboard module="employees" />} />
           <Route path="invoices" element={<InvoiceManagement clientView />} />
+          <Route path="sla" element={<SlaDashboard clientView />} />
         </Route>
       </Route>
 
@@ -124,6 +126,7 @@ const App = () => {
           <Route path="requirements" element={<RequirementManagement />} />
           <Route path="pipeline" element={<PipelineBoard />} />
           <Route path="invoices" element={<InvoiceManagement />} />
+          <Route path="sla" element={<SlaDashboard />} />
         </Route>
       </Route>
 
