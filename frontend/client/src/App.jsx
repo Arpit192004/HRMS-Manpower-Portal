@@ -13,6 +13,7 @@ import CandidateRegister from "./pages/CandidateRegister";
 import ClientDashboard from "./pages/ClientDashboard";
 import ClientLogin from "./pages/ClientLogin";
 import ClientPortalLayout from "./pages/ClientPortalLayout";
+import ClientRequirements from "./pages/ClientRequirements";
 import CompanySettings from "./pages/CompanySettings";
 import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
@@ -21,12 +22,15 @@ import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
 import ForgotPassword from "./pages/ForgotPassword";
+import InvoiceManagement from "./pages/InvoiceManagement";
 import LeadManagement from "./pages/LeadManagement";
 import Login from "./pages/Login";
 import ModulePage from "./pages/ModulePage";
 import Notifications from "./pages/Notifications";
+import PipelineBoard from "./pages/PipelineBoard";
 import PublicInfoPage from "./pages/PublicInfoPage";
 import PublicHome from "./pages/PublicHome";
+import RequirementManagement from "./pages/RequirementManagement";
 import ResetPassword from "./pages/ResetPassword";
 
 const modules = [
@@ -91,8 +95,10 @@ const App = () => {
           <Route index element={<Navigate to="/client/dashboard" replace />} />
           <Route path="dashboard" element={<ClientDashboard />} />
           <Route path="jobs" element={<ClientDashboard module="jobs" />} />
+          <Route path="requirements" element={<ClientRequirements />} />
           <Route path="candidates" element={<ClientDashboard module="candidates" />} />
           <Route path="employees" element={<ClientDashboard module="employees" />} />
+          <Route path="invoices" element={<InvoiceManagement clientView />} />
         </Route>
       </Route>
 
@@ -115,6 +121,9 @@ const App = () => {
           <Route path="leads" element={<LeadManagement />} />
           <Route path="settings" element={<CompanySettings />} />
           <Route path="notifications" element={<Notifications />} />
+          <Route path="requirements" element={<RequirementManagement />} />
+          <Route path="pipeline" element={<PipelineBoard />} />
+          <Route path="invoices" element={<InvoiceManagement />} />
         </Route>
       </Route>
 

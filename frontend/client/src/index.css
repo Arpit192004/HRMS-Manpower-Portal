@@ -1701,6 +1701,70 @@ code {
   text-decoration: none;
 }
 
+.pipeline-board {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(220px, 1fr));
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.pipeline-column {
+  min-height: 420px;
+  padding: 14px;
+  border: 1px solid #e3e8f1;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.pipeline-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pipeline-column-header span {
+  min-width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #e8f0ff;
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.pipeline-card {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid #e6ebf3;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(31, 46, 79, 0.05);
+}
+
+.pipeline-card h3,
+.pipeline-card p {
+  margin: 0;
+}
+
+.pipeline-card p,
+.pipeline-card small {
+  color: #64748b;
+}
+
+.pipeline-card select,
+.row-actions select,
+.page-actions select {
+  padding: 8px 10px;
+  border: 1px solid #d6dcea;
+  border-radius: 8px;
+  background: white;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,

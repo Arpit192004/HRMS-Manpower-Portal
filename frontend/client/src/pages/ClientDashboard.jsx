@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Briefcase, FileText, Users } from "lucide-react";
+import { Briefcase, CircleDollarSign, ClipboardList, FileText, Users } from "lucide-react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
@@ -24,7 +24,13 @@ const getDisplayValue = (value) => {
 const ClientDashboard = ({ module = "dashboard" }) => {
   const { user } = useAuth();
   const [records, setRecords] = useState([]);
-  const [summary, setSummary] = useState({ jobs: 0, candidates: 0, employees: 0 });
+  const [summary, setSummary] = useState({
+    jobs: 0,
+    candidates: 0,
+    employees: 0,
+    requirements: 0,
+    invoices: 0
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -36,16 +42,20 @@ const ClientDashboard = ({ module = "dashboard" }) => {
 
     try {
       if (module === "dashboard") {
-        const [jobsRes, candidatesRes, employeesRes] = await Promise.all([
+        const [jobsRes, candidatesRes, employeesRes, requirementsRes, invoicesRes] = await Promise.all([
           api.get(`/jobs${clientQuery}`),
           api.get(`/candidates${clientQuery}`),
-          api.get(`/employees${clientQuery}`)
+          api.get(`/employees${clientQuery}`),
+          api.get("/requirements"),
+          api.get("/invoices")
         ]);
 
         setSummary({
           jobs: jobsRes.data.jobs?.length || 0,
           candidates: candidatesRes.data.candidates?.length || 0,
-          employees: employeesRes.data.employees?.length || 0
+          employees: employeesRes.data.employees?.length || 0,
+          requirements: requirementsRes.data.requirements?.length || 0,
+          invoices: invoicesRes.data.invoices?.length || 0
         });
       } else {
         const selected = config[module];
@@ -75,8 +85,10 @@ const ClientDashboard = ({ module = "dashboard" }) => {
   if (module === "dashboard") {
     const cards = [
       { title: "Client Jobs", value: summary.jobs, icon: Briefcase, color: "blue" },
+      { title: "Requirements", value: summary.requirements, icon: ClipboardList, color: "orange" },
       { title: "Candidate Pipeline", value: summary.candidates, icon: FileText, color: "purple" },
-      { title: "Assigned Employees", value: summary.employees, icon: Users, color: "green" }
+      { title: "Assigned Employees", value: summary.employees, icon: Users, color: "green" },
+      { title: "Invoices", value: summary.invoices, icon: CircleDollarSign, color: "blue" }
     ];
 
     return (
