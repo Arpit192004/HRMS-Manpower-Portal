@@ -2189,6 +2189,115 @@ code {
   color: #b42318;
 }
 
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.analytics-kpi-card {
+  display: grid;
+  gap: 8px;
+}
+
+.analytics-kpi-card svg {
+  color: #2563eb;
+}
+
+.analytics-kpi-card span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.analytics-kpi-card strong {
+  color: #172033;
+  font-size: 21px;
+}
+
+.analytics-kpi-card small {
+  color: #64748b;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.analytics-funnel,
+.mini-bars {
+  display: grid;
+  gap: 12px;
+  padding: 0 22px 22px;
+}
+
+.funnel-row,
+.mini-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.funnel-row span,
+.mini-bar-row span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.funnel-row div,
+.mini-bar-row div {
+  overflow: hidden;
+  height: 12px;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.funnel-row i,
+.mini-bar-row i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2563eb, #14b8a6);
+}
+
+.funnel-row strong,
+.mini-bar-row strong {
+  min-width: 55px;
+  text-align: right;
+}
+
+.attendance-health-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 0 22px 22px;
+}
+
+.attendance-health-grid div {
+  padding: 14px;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.attendance-health-grid span,
+.attendance-health-grid strong {
+  display: block;
+}
+
+.attendance-health-grid span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.attendance-health-grid strong {
+  margin-top: 6px;
+  color: #172033;
+  font-size: 22px;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -2203,7 +2312,15 @@ code {
   .security-grid,
   .security-log-summary,
   .approval-kpi-grid,
-  .approval-meta-grid {
+  .approval-meta-grid,
+  .analytics-kpi-grid,
+  .analytics-grid,
+  .attendance-health-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .funnel-row,
+  .mini-bar-row {
     grid-template-columns: 1fr;
   }
 

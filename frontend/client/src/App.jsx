@@ -23,6 +23,7 @@ import EmployeeDocuments from "./pages/EmployeeDocuments";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
+import ExecutiveAnalytics from "./pages/ExecutiveAnalytics";
 import ForgotPassword from "./pages/ForgotPassword";
 import InvoiceManagement from "./pages/InvoiceManagement";
 import LeadManagement from "./pages/LeadManagement";
@@ -108,6 +109,7 @@ const App = () => {
           <Route path="sla" element={<SlaDashboard clientView />} />
           <Route path="compliance" element={<ComplianceDashboard clientView />} />
           <Route path="attendance-health" element={<ShiftRoster clientView />} />
+          <Route path="analytics" element={<ExecutiveAnalytics clientView />} />
         </Route>
       </Route>
 
@@ -139,6 +141,7 @@ const App = () => {
           <Route path="sla" element={<SlaDashboard />} />
           <Route path="compliance" element={<ComplianceDashboard />} />
           <Route path="shifts" element={<ShiftRoster />} />
+          <Route path="analytics" element={<ExecutiveAnalytics />} />
         </Route>
       </Route>
 

@@ -7,7 +7,8 @@ const {
   getAttendanceReport,
   getPayrollReport,
   getHiringReport,
-  getSlaReport
+  getSlaReport,
+  getExecutiveAnalytics
 } = require("../controllers/reportController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -21,6 +22,7 @@ router.use(
 );
 
 router.get("/dashboard", getDashboardReport);
+router.get("/executive", getExecutiveAnalytics);
 router.get("/sla", getSlaReport);
 router.get("/employees", getEmployeeReport);
 router.get("/leaves", getLeaveReport);

@@ -10,6 +10,7 @@ const links = [
   { path: "/client/employees", label: "Employees", icon: Users },
   { path: "/client/attendance-health", label: "Attendance Health", icon: CalendarDays },
   { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign },
+  { path: "/client/analytics", label: "Analytics", icon: Building2 },
   { path: "/client/sla", label: "SLA Dashboard", icon: Building2 },
   { path: "/client/compliance", label: "Compliance", icon: FileText }
 ];

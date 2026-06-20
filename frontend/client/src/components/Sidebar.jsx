@@ -44,6 +44,7 @@ const links = [
   { path: "/admin/approvals", label: "Approval Center", icon: FileText },
   { path: "/admin/users", label: "Users & Roles", icon: Users },
   { path: "/admin/reports", label: "Reports", icon: BarChart3 },
+  { path: "/admin/analytics", label: "Executive Analytics", icon: BarChart3 },
   { path: "/admin/sla", label: "SLA Dashboard", icon: BarChart3 },
   { path: "/admin/security", label: "Security Center", icon: Settings },
   { path: "/admin/security-logs", label: "Security Logs", icon: FileText },
