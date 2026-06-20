@@ -46,6 +46,27 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    loginAttempts: {
+      type: Number,
+      default: 0,
+      select: false
+    },
+    lockUntil: {
+      type: Date,
+      default: null,
+      select: false
+    },
+    lastLoginAt: Date,
+    lastFailedLoginAt: {
+      type: Date,
+      select: false
+    },
+    passwordChangedAt: Date,
+    tokenVersion: {
+      type: Number,
+      default: 0,
+      select: false
+    },
     passwordResetToken: {
       type: String,
       select: false
@@ -71,6 +92,28 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.isLocked = function () {
+  return Boolean(this.lockUntil && this.lockUntil > Date.now());
+};
+
+userSchema.methods.registerFailedLogin = async function () {
+  this.loginAttempts = (this.loginAttempts || 0) + 1;
+  this.lastFailedLoginAt = new Date();
+
+  if (this.loginAttempts >= 5) {
+    this.lockUntil = new Date(Date.now() + 15 * 60 * 1000);
+  }
+
+  await this.save({ validateBeforeSave: false });
+};
+
+userSchema.methods.registerSuccessfulLogin = async function () {
+  this.loginAttempts = 0;
+  this.lockUntil = null;
+  this.lastLoginAt = new Date();
+  await this.save({ validateBeforeSave: false });
 };
 
 userSchema.methods.createPasswordResetToken = function () {

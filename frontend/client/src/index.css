@@ -1978,6 +1978,81 @@ code {
   color: #147a45;
 }
 
+.security-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: 18px;
+}
+
+.security-card {
+  display: grid;
+  gap: 14px;
+}
+
+.security-card svg {
+  color: #2563eb;
+}
+
+.security-card h3,
+.security-card p {
+  margin: 0;
+}
+
+.security-card p {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.security-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.security-card dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid #e6ebf3;
+}
+
+.security-card dt {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.security-card dd {
+  margin: 0;
+  text-align: right;
+  color: #172033;
+  font-weight: 800;
+}
+
+.password-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.password-checklist span {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.password-checklist .passed {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
+.danger-action {
+  color: #b42318;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -1988,7 +2063,8 @@ code {
   .lead-summary,
   .info-points,
   .sla-card-grid,
-  .shift-admin-grid {
+  .shift-admin-grid,
+  .security-grid {
     grid-template-columns: 1fr;
   }
 

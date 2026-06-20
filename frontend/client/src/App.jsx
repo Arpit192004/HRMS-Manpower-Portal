@@ -34,6 +34,7 @@ import PublicHome from "./pages/PublicHome";
 import RequirementManagement from "./pages/RequirementManagement";
 import SlaDashboard from "./pages/SlaDashboard";
 import ResetPassword from "./pages/ResetPassword";
+import SecurityCenter from "./pages/SecurityCenter";
 import ShiftRoster from "./pages/ShiftRoster";
 
 const modules = [
@@ -126,6 +127,7 @@ const App = () => {
           />
           <Route path="leads" element={<LeadManagement />} />
           <Route path="settings" element={<CompanySettings />} />
+          <Route path="security" element={<SecurityCenter />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="requirements" element={<RequirementManagement />} />
           <Route path="pipeline" element={<PipelineBoard />} />

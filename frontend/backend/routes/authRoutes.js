@@ -4,6 +4,8 @@ const {
   registerCandidate,
   login,
   getCurrentUser,
+  changePassword,
+  logoutAllSessions,
   forgotPassword,
   resetPassword
 } = require("../controllers/authController");
@@ -17,5 +19,7 @@ router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 router.get("/me", protect, getCurrentUser);
+router.patch("/change-password", protect, changePassword);
+router.post("/logout-all", protect, logoutAllSessions);
 
 module.exports = router;

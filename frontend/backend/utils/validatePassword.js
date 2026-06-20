@@ -15,6 +15,22 @@ const validatePassword = (password) => {
     return "Password must include at least one number";
   }
 
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    return "Password must include at least one special character";
+  }
+
+  const weakPasswords = [
+    "password",
+    "password@123",
+    "admin@123",
+    "qwerty@123",
+    "welcome@123"
+  ];
+
+  if (weakPasswords.includes(password.toLowerCase())) {
+    return "Password is too common. Please choose a stronger password";
+  }
+
   return null;
 };
 

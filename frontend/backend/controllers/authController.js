@@ -10,7 +10,9 @@ const formatUserResponse = (user) => ({
   email: user.email,
   role: user.role,
   client: user.client,
-  isActive: user.isActive
+  isActive: user.isActive,
+  lastLoginAt: user.lastLoginAt,
+  passwordChangedAt: user.passwordChangedAt
 });
 
 const registerCandidate = async (req, res, next) => {
@@ -54,7 +56,7 @@ const registerCandidate = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: "Candidate registered successfully",
-      token: generateToken(user._id),
+      token: generateToken(user),
       user: formatUserResponse(user)
     });
   } catch (error) {
@@ -73,9 +75,20 @@ const login = async (req, res, next) => {
 
     const user = await User.findOne({
       email: email.toLowerCase()
-    }).select("+password");
+    }).select("+password +loginAttempts +lockUntil +tokenVersion");
 
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user) {
+      res.status(401);
+      throw new Error("Invalid email or password");
+    }
+
+    if (user.isLocked()) {
+      res.status(423);
+      throw new Error("Account temporarily locked. Please try again after 15 minutes or reset your password");
+    }
+
+    if (!(await user.comparePassword(password))) {
+      await user.registerFailedLogin();
       res.status(401);
       throw new Error("Invalid email or password");
     }
@@ -85,10 +98,12 @@ const login = async (req, res, next) => {
       throw new Error("Your account is inactive");
     }
 
+    await user.registerSuccessfulLogin();
+
     res.json({
       success: true,
       message: "Login successful",
-      token: generateToken(user._id),
+      token: generateToken(user),
       user: formatUserResponse(user)
     });
   } catch (error) {
@@ -101,6 +116,70 @@ const getCurrentUser = async (req, res) => {
     success: true,
     user: formatUserResponse(req.user)
   });
+};
+
+const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      res.status(400);
+      throw new Error("Current password and new password are required");
+    }
+
+    const passwordError = validatePassword(newPassword);
+    if (passwordError) {
+      res.status(400);
+      throw new Error(passwordError);
+    }
+
+    const user = await User.findById(req.user._id).select("+password +tokenVersion");
+
+    if (!user || !(await user.comparePassword(currentPassword))) {
+      res.status(401);
+      throw new Error("Current password is incorrect");
+    }
+
+    if (await user.comparePassword(newPassword)) {
+      res.status(400);
+      throw new Error("New password must be different from current password");
+    }
+
+    user.password = newPassword;
+    user.passwordChangedAt = new Date();
+    user.tokenVersion = (user.tokenVersion || 0) + 1;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Password changed successfully. Please login again"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const logoutAllSessions = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select("+tokenVersion");
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    user.tokenVersion = (user.tokenVersion || 0) + 1;
+    await user.save({ validateBeforeSave: false });
+
+    res.json({
+      success: true,
+      message: "All sessions have been logged out"
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const forgotPassword = async (req, res, next) => {
@@ -168,7 +247,7 @@ const resetPassword = async (req, res, next) => {
     const user = await User.findOne({
       passwordResetToken: hashedToken,
       passwordResetExpires: { $gt: Date.now() }
-    }).select("+passwordResetToken +passwordResetExpires +password");
+    }).select("+passwordResetToken +passwordResetExpires +password +tokenVersion");
 
     if (!user) {
       res.status(400);
@@ -176,6 +255,10 @@ const resetPassword = async (req, res, next) => {
     }
 
     user.password = password;
+    user.passwordChangedAt = new Date();
+    user.tokenVersion = (user.tokenVersion || 0) + 1;
+    user.loginAttempts = 0;
+    user.lockUntil = null;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();
@@ -183,7 +266,7 @@ const resetPassword = async (req, res, next) => {
     res.json({
       success: true,
       message: "Password reset successful",
-      token: generateToken(user._id),
+      token: generateToken(user),
       user: formatUserResponse(user)
     });
   } catch (error) {
@@ -195,6 +278,8 @@ module.exports = {
   registerCandidate,
   login,
   getCurrentUser,
+  changePassword,
+  logoutAllSessions,
   forgotPassword,
   resetPassword
 };

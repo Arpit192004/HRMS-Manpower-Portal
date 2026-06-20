@@ -13,11 +13,16 @@ const protect = async (req, res, next) => {
     const token = authorization.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id).select("+tokenVersion");
 
     if (!user || !user.isActive) {
       res.status(401);
       throw new Error("User not found or inactive");
+    }
+
+    if ((user.tokenVersion || 0) !== (decoded.tokenVersion || 0)) {
+      res.status(401);
+      throw new Error("Session expired. Please login again");
     }
 
     req.user = user;
