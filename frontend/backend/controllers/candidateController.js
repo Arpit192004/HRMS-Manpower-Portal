@@ -2,6 +2,7 @@ const Candidate = require("../models/Candidate");
 const Job = require("../models/Job");
 const User = require("../models/User");
 const sendEmail = require("../utils/sendEmail");
+const calculateCandidateMatch = require("../utils/candidateMatch");
 
 const getCandidates = async (req, res, next) => {
   try {
@@ -21,7 +22,7 @@ const getCandidates = async (req, res, next) => {
 
     const candidates = await Candidate.find(filter)
       .populate("user", "name email")
-      .populate("job", "title department grade")
+      .populate("job", "title department grade location skills salaryRange experience")
       .populate("client", "name code")
       .populate("shortlistedBy", "name email")
       .sort({ createdAt: -1 });
@@ -90,6 +91,16 @@ const applyForJob = async (req, res, next) => {
       job: job._id,
       client: job.client
     });
+
+    const match = calculateCandidateMatch(candidate, job);
+    candidate.matchScore = match.score;
+    candidate.matchRecommendation = match.recommendation;
+    candidate.matchedSkills = match.matchedSkills;
+    candidate.missingSkills = match.missingSkills;
+    candidate.matchBreakdown = match.breakdown;
+    candidate.matchSummary = match.summary;
+    candidate.matchCalculatedAt = new Date();
+    await candidate.save();
 
     const hrUsers = await User.find({
       role: { $in: ["Super Admin", "HR Admin"] },
@@ -167,6 +178,66 @@ const updateCandidateStatus = async (req, res, next) => {
   }
 };
 
+const refreshCandidateMatch = async (req, res, next) => {
+  try {
+    const candidate = await Candidate.findById(req.params.id).populate("job");
+
+    if (!candidate) {
+      res.status(404);
+      throw new Error("Candidate application not found");
+    }
+
+    const match = calculateCandidateMatch(candidate, candidate.job);
+    candidate.matchScore = match.score;
+    candidate.matchRecommendation = match.recommendation;
+    candidate.matchedSkills = match.matchedSkills;
+    candidate.missingSkills = match.missingSkills;
+    candidate.matchBreakdown = match.breakdown;
+    candidate.matchSummary = match.summary;
+    candidate.matchCalculatedAt = new Date();
+    await candidate.save();
+
+    res.json({
+      success: true,
+      message: "Candidate match refreshed successfully",
+      match,
+      candidate
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const refreshAllCandidateMatches = async (req, res, next) => {
+  try {
+    const candidates = await Candidate.find().populate("job");
+    let updated = 0;
+
+    for (const candidate of candidates) {
+      if (!candidate.job) continue;
+
+      const match = calculateCandidateMatch(candidate, candidate.job);
+      candidate.matchScore = match.score;
+      candidate.matchRecommendation = match.recommendation;
+      candidate.matchedSkills = match.matchedSkills;
+      candidate.missingSkills = match.missingSkills;
+      candidate.matchBreakdown = match.breakdown;
+      candidate.matchSummary = match.summary;
+      candidate.matchCalculatedAt = new Date();
+      await candidate.save();
+      updated += 1;
+    }
+
+    res.json({
+      success: true,
+      message: `${updated} candidate match score(s) refreshed`,
+      updated
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const withdrawApplication = async (req, res, next) => {
   try {
     const candidate = await Candidate.findOne({
@@ -195,5 +266,7 @@ module.exports = {
   getCandidateById,
   applyForJob,
   updateCandidateStatus,
+  refreshCandidateMatch,
+  refreshAllCandidateMatches,
   withdrawApplication
 };

@@ -1765,6 +1765,65 @@ code {
   background: white;
 }
 
+.match-meter {
+  display: grid;
+  gap: 7px;
+}
+
+.match-meter div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.match-meter strong {
+  color: #2563eb;
+}
+
+.match-meter span {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.match-meter i {
+  height: 8px;
+  display: block;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2563eb, #149153);
+}
+
+.match-meter::after {
+  height: 8px;
+  display: block;
+  margin-top: -15px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  content: "";
+  z-index: -1;
+}
+
+.match-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.match-tags span {
+  padding: 5px 7px;
+  border-radius: 999px;
+  background: #e7f8ef;
+  color: #147a45;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.match-tags .missing {
+  background: #fff1df;
+  color: #b45309;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,

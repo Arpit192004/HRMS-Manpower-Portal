@@ -44,7 +44,29 @@ const candidateSchema = new mongoose.Schema(
       ref: "User",
       default: null
     },
-    shortlistedAt: Date
+    shortlistedAt: Date,
+    matchScore: {
+      type: Number,
+      default: 0
+    },
+    matchRecommendation: {
+      type: String,
+      enum: ["Strong Match", "Good Match", "Review", "Weak Match"],
+      default: "Review"
+    },
+    matchedSkills: [String],
+    missingSkills: [String],
+    matchBreakdown: {
+      skills: { type: Number, default: 0 },
+      experience: { type: Number, default: 0 },
+      salary: { type: Number, default: 0 },
+      profile: { type: Number, default: 0 }
+    },
+    matchSummary: {
+      type: String,
+      default: ""
+    },
+    matchCalculatedAt: Date
   },
   { timestamps: true }
 );

@@ -5,6 +5,8 @@ const {
   getCandidateById,
   applyForJob,
   updateCandidateStatus,
+  refreshCandidateMatch,
+  refreshAllCandidateMatches,
   withdrawApplication
 } = require("../controllers/candidateController");
 
@@ -21,9 +23,21 @@ router
   .post(authorize("Candidate"), applyForJob);
 
 router.patch(
+  "/match/recalculate-all",
+  authorize("Super Admin", "HR Admin"),
+  refreshAllCandidateMatches
+);
+
+router.patch(
   "/:id/status",
   authorize("Super Admin", "HR Admin"),
   updateCandidateStatus
+);
+
+router.patch(
+  "/:id/match",
+  authorize("Super Admin", "HR Admin"),
+  refreshCandidateMatch
 );
 
 router

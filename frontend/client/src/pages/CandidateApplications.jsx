@@ -93,6 +93,7 @@ const CandidateApplications = () => {
                   <span>Phone: {application.phone}</span>
                   <span>Experience: {application.totalExperience || 0} years</span>
                   <span>Expected: {application.expectedSalary || 0}</span>
+                  <span>Match: {application.matchScore || 0}% - {application.matchRecommendation || "Review"}</span>
                 </div>
 
                 {application.status === "Applied" && (
