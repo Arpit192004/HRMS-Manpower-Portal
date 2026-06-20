@@ -2067,6 +2067,15 @@ code {
   line-height: 1.4;
 }
 
+.unauthorized-card .logo {
+  display: grid;
+  place-items: center;
+}
+
+.unauthorized-card strong {
+  color: #172033;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,

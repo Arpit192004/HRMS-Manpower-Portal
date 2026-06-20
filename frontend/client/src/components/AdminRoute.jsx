@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import UnauthorizedAccess from "../pages/UnauthorizedAccess";
 
 const AdminRoute = () => {
   const { user } = useAuth();
@@ -8,16 +9,8 @@ const AdminRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.role === "Candidate") {
-    return <Navigate to="/candidate/jobs" replace />;
-  }
-
-  if (user.role === "Employee") {
-    return <Navigate to="/employee/dashboard" replace />;
-  }
-
-  if (user.role === "Client Approver") {
-    return <Navigate to="/client/dashboard" replace />;
+  if (["Candidate", "Employee", "Client Approver"].includes(user.role)) {
+    return <UnauthorizedAccess area="the admin portal" loginPath="/login" />;
   }
 
   return <Outlet />;
