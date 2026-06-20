@@ -9,7 +9,8 @@ const links = [
   { path: "/client/candidates", label: "Candidates", icon: FileText },
   { path: "/client/employees", label: "Employees", icon: Users },
   { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign },
-  { path: "/client/sla", label: "SLA Dashboard", icon: Building2 }
+  { path: "/client/sla", label: "SLA Dashboard", icon: Building2 },
+  { path: "/client/compliance", label: "Compliance", icon: FileText }
 ];
 
 const ClientPortalLayout = () => {

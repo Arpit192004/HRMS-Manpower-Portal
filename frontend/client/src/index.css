@@ -1877,6 +1877,63 @@ code {
   color: #147a45;
 }
 
+.status-pill.verified {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
+.status-pill.expired {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
+.compliance-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.compliance-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.compliance-card-header h3,
+.compliance-card-header p {
+  margin: 0;
+}
+
+.compliance-card-header p,
+.muted-text {
+  margin-top: 5px;
+  color: #64748b;
+}
+
+.document-compliance-list {
+  display: grid;
+  gap: 10px;
+}
+
+.document-compliance-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) auto auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e6ebf3;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.document-compliance-row span,
+.document-compliance-row small {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -1891,8 +1948,13 @@ code {
   }
 
   .notification-card,
-  .public-footer {
+  .public-footer,
+  .compliance-card-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .document-compliance-row {
+    grid-template-columns: 1fr;
   }
 }

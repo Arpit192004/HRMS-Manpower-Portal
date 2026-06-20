@@ -5,7 +5,9 @@ const {
   downloadAppointmentLetter,
   downloadOfferLetter,
   downloadPayslip,
-  getEmployeeDocuments
+  getEmployeeDocuments,
+  getComplianceReport,
+  updateDocumentVerification
 } = require("../controllers/documentController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -14,6 +16,12 @@ const { authorize } = require("../middleware/roleMiddleware");
 const router = express.Router();
 
 router.use(protect);
+
+router.get(
+  "/compliance",
+  authorize("Super Admin", "HR Admin", "Client Approver"),
+  getComplianceReport
+);
 
 router.get(
   "/payslip/:id",
@@ -43,5 +51,11 @@ router
     authorize("Super Admin", "HR Admin", "Employee"),
     addEmployeeDocument
   );
+
+router.patch(
+  "/employees/:employeeId/:documentId/verify",
+  authorize("Super Admin", "HR Admin"),
+  updateDocumentVerification
+);
 
 module.exports = router;

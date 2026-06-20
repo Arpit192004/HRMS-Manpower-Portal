@@ -21,7 +21,8 @@ const EmployeeDocuments = () => {
   const [form, setForm] = useState({
     type: "Other",
     title: "",
-    url: ""
+    url: "",
+    expiryDate: ""
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -61,7 +62,7 @@ const EmployeeDocuments = () => {
     try {
       await api.post(`/documents/employees/${employee._id}`, form);
       setSuccess("Document link added successfully");
-      setForm({ type: "Other", title: "", url: "" });
+      setForm({ type: "Other", title: "", url: "", expiryDate: "" });
       await loadDocuments();
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Unable to add document");
@@ -133,6 +134,15 @@ const EmployeeDocuments = () => {
             />
           </label>
 
+          <label>
+            Expiry Date optional
+            <input
+              type="date"
+              value={form.expiryDate}
+              onChange={(event) => setForm((current) => ({ ...current, expiryDate: event.target.value }))}
+            />
+          </label>
+
           <div className="wide-field">
             <FileUploadField
               label="Upload Document"
@@ -163,6 +173,8 @@ const EmployeeDocuments = () => {
                   <th>Type</th>
                   <th>Title</th>
                   <th>Uploaded At</th>
+                  <th>Verification</th>
+                  <th>Expiry</th>
                   <th>Open</th>
                 </tr>
               </thead>
@@ -172,6 +184,12 @@ const EmployeeDocuments = () => {
                     <td>{document.type}</td>
                     <td>{document.title}</td>
                     <td>{new Date(document.uploadedAt).toLocaleDateString()}</td>
+                    <td>
+                      <span className={`status-pill ${(document.verificationStatus || "Pending").toLowerCase()}`}>
+                        {document.verificationStatus || "Pending"}
+                      </span>
+                    </td>
+                    <td>{document.expiryDate ? new Date(document.expiryDate).toLocaleDateString() : "-"}</td>
                     <td>
                       <a href={document.url} target="_blank" rel="noreferrer" className="mini-link">
                         Open

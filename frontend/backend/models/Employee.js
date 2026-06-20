@@ -113,7 +113,24 @@ const employeeSchema = new mongoose.Schema(
         uploadedAt: {
           type: Date,
           default: Date.now
-        }
+        },
+        verificationStatus: {
+          type: String,
+          enum: ["Pending", "Verified", "Rejected", "Expired"],
+          default: "Pending"
+        },
+        verificationRemarks: {
+          type: String,
+          default: "",
+          trim: true
+        },
+        expiryDate: Date,
+        verifiedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          default: null
+        },
+        verifiedAt: Date
       }
     ],
     roster: {

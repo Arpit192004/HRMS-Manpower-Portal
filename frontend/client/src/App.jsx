@@ -15,6 +15,7 @@ import ClientLogin from "./pages/ClientLogin";
 import ClientPortalLayout from "./pages/ClientPortalLayout";
 import ClientRequirements from "./pages/ClientRequirements";
 import CompanySettings from "./pages/CompanySettings";
+import ComplianceDashboard from "./pages/ComplianceDashboard";
 import Dashboard from "./pages/Dashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import EmployeeDocuments from "./pages/EmployeeDocuments";
@@ -101,6 +102,7 @@ const App = () => {
           <Route path="employees" element={<ClientDashboard module="employees" />} />
           <Route path="invoices" element={<InvoiceManagement clientView />} />
           <Route path="sla" element={<SlaDashboard clientView />} />
+          <Route path="compliance" element={<ComplianceDashboard clientView />} />
         </Route>
       </Route>
 
@@ -127,6 +129,7 @@ const App = () => {
           <Route path="pipeline" element={<PipelineBoard />} />
           <Route path="invoices" element={<InvoiceManagement />} />
           <Route path="sla" element={<SlaDashboard />} />
+          <Route path="compliance" element={<ComplianceDashboard />} />
         </Route>
       </Route>
 

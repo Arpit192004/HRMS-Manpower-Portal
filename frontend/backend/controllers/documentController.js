@@ -263,7 +263,7 @@ const getEmployeeDocuments = async (req, res, next) => {
 
 const addEmployeeDocument = async (req, res, next) => {
   try {
-    const { type, title, url } = req.body;
+    const { type, title, url, expiryDate } = req.body;
 
     if (!type || !title || !url) {
       res.status(400);
@@ -276,7 +276,8 @@ const addEmployeeDocument = async (req, res, next) => {
       type,
       title,
       url,
-      uploadedBy: req.user._id
+      uploadedBy: req.user._id,
+      expiryDate: expiryDate || undefined
     });
 
     await employee.save();
@@ -291,10 +292,136 @@ const addEmployeeDocument = async (req, res, next) => {
   }
 };
 
+const getComplianceReport = async (req, res, next) => {
+  try {
+    const filter = {};
+
+    if (req.user.role === "Client Approver") {
+      filter.client = req.user.client;
+    } else if (req.query.client) {
+      filter.client = req.query.client;
+    }
+
+    const employees = await Employee.find(filter)
+      .populate("user", "name email")
+      .populate("client", "name code")
+      .populate("documents.uploadedBy", "name email")
+      .populate("documents.verifiedBy", "name email")
+      .sort({ createdAt: -1 });
+
+    const today = new Date();
+    const rows = employees.map((employee) => {
+      const documents = employee.documents.map((document) => {
+        const doc = document.toObject();
+        const isExpired =
+          doc.expiryDate &&
+          new Date(doc.expiryDate) < today &&
+          doc.verificationStatus !== "Rejected";
+
+        return {
+          ...doc,
+          effectiveStatus: isExpired ? "Expired" : doc.verificationStatus
+        };
+      });
+
+      const total = documents.length;
+      const verified = documents.filter((doc) => doc.effectiveStatus === "Verified").length;
+      const pending = documents.filter((doc) => doc.effectiveStatus === "Pending").length;
+      const rejected = documents.filter((doc) => doc.effectiveStatus === "Rejected").length;
+      const expired = documents.filter((doc) => doc.effectiveStatus === "Expired").length;
+
+      return {
+        employee: {
+          id: employee._id,
+          employeeCode: employee.employeeCode,
+          name: employee.user?.name,
+          email: employee.user?.email,
+          designation: employee.designation,
+          client: employee.client
+        },
+        score: total ? Math.round((verified / total) * 100) : 0,
+        total,
+        verified,
+        pending,
+        rejected,
+        expired,
+        documents
+      };
+    });
+
+    const summary = rows.reduce(
+      (acc, row) => {
+        acc.totalDocuments += row.total;
+        acc.verified += row.verified;
+        acc.pending += row.pending;
+        acc.rejected += row.rejected;
+        acc.expired += row.expired;
+        return acc;
+      },
+      { totalDocuments: 0, verified: 0, pending: 0, rejected: 0, expired: 0 }
+    );
+
+    summary.score = summary.totalDocuments
+      ? Math.round((summary.verified / summary.totalDocuments) * 100)
+      : 0;
+
+    res.json({
+      success: true,
+      summary,
+      employees: rows
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateDocumentVerification = async (req, res, next) => {
+  try {
+    const { status, remarks, expiryDate } = req.body;
+
+    if (!["Pending", "Verified", "Rejected", "Expired"].includes(status)) {
+      res.status(400);
+      throw new Error("Invalid verification status");
+    }
+
+    const employee = await Employee.findById(req.params.employeeId);
+
+    if (!employee) {
+      res.status(404);
+      throw new Error("Employee not found");
+    }
+
+    const document = employee.documents.id(req.params.documentId);
+
+    if (!document) {
+      res.status(404);
+      throw new Error("Document not found");
+    }
+
+    document.verificationStatus = status;
+    document.verificationRemarks = remarks || "";
+    document.expiryDate = expiryDate || document.expiryDate;
+    document.verifiedBy = req.user._id;
+    document.verifiedAt = new Date();
+
+    await employee.save();
+
+    res.json({
+      success: true,
+      message: "Document verification updated successfully",
+      document
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   downloadPayslip,
   downloadOfferLetter,
   downloadAppointmentLetter,
   getEmployeeDocuments,
-  addEmployeeDocument
+  addEmployeeDocument,
+  getComplianceReport,
+  updateDocumentVerification
 };
