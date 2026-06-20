@@ -45,6 +45,7 @@ const links = [
   { path: "/admin/reports", label: "Reports", icon: BarChart3 },
   { path: "/admin/sla", label: "SLA Dashboard", icon: BarChart3 },
   { path: "/admin/security", label: "Security Center", icon: Settings },
+  { path: "/admin/security-logs", label: "Security Logs", icon: FileText },
   { path: "/admin/settings", label: "Company Settings", icon: Settings }
 ];
 

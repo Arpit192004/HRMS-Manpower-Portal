@@ -2053,6 +2053,20 @@ code {
   color: #b42318;
 }
 
+.security-log-summary {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(130px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.security-user-agent {
+  max-width: 280px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -2064,7 +2078,8 @@ code {
   .info-points,
   .sla-card-grid,
   .shift-admin-grid,
-  .security-grid {
+  .security-grid,
+  .security-log-summary {
     grid-template-columns: 1fr;
   }
 

@@ -3,6 +3,7 @@ const generateToken = require("../utils/generateToken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const validatePassword = require("../utils/validatePassword");
+const logSecurityEvent = require("../utils/securityLogger");
 
 const formatUserResponse = (user) => ({
   id: user._id,
@@ -78,17 +79,43 @@ const login = async (req, res, next) => {
     }).select("+password +loginAttempts +lockUntil +tokenVersion");
 
     if (!user) {
+      await logSecurityEvent(req, {
+        email: email.toLowerCase(),
+        event: "LOGIN_FAILED",
+        status: "Failed",
+        details: { reason: "User not found" }
+      });
       res.status(401);
       throw new Error("Invalid email or password");
     }
 
     if (user.isLocked()) {
+      await logSecurityEvent(req, {
+        user: user._id,
+        email: user.email,
+        role: user.role,
+        event: "ACCOUNT_LOCKED",
+        status: "Warning",
+        details: { lockUntil: user.lockUntil }
+      });
       res.status(423);
       throw new Error("Account temporarily locked. Please try again after 15 minutes or reset your password");
     }
 
     if (!(await user.comparePassword(password))) {
       await user.registerFailedLogin();
+      await logSecurityEvent(req, {
+        user: user._id,
+        email: user.email,
+        role: user.role,
+        event: user.loginAttempts >= 5 ? "ACCOUNT_LOCKED" : "LOGIN_FAILED",
+        status: user.loginAttempts >= 5 ? "Warning" : "Failed",
+        details: {
+          reason: "Invalid password",
+          loginAttempts: user.loginAttempts,
+          lockUntil: user.lockUntil
+        }
+      });
       res.status(401);
       throw new Error("Invalid email or password");
     }
@@ -99,6 +126,13 @@ const login = async (req, res, next) => {
     }
 
     await user.registerSuccessfulLogin();
+    await logSecurityEvent(req, {
+      user: user._id,
+      email: user.email,
+      role: user.role,
+      event: "LOGIN_SUCCESS",
+      status: "Success"
+    });
 
     res.json({
       success: true,
@@ -152,6 +186,14 @@ const changePassword = async (req, res, next) => {
     user.passwordResetExpires = undefined;
     await user.save();
 
+    await logSecurityEvent(req, {
+      user: user._id,
+      email: user.email,
+      role: user.role,
+      event: "PASSWORD_CHANGED",
+      status: "Success"
+    });
+
     res.json({
       success: true,
       message: "Password changed successfully. Please login again"
@@ -172,6 +214,14 @@ const logoutAllSessions = async (req, res, next) => {
 
     user.tokenVersion = (user.tokenVersion || 0) + 1;
     await user.save({ validateBeforeSave: false });
+
+    await logSecurityEvent(req, {
+      user: user._id,
+      email: user.email,
+      role: user.role,
+      event: "LOGOUT_ALL_SESSIONS",
+      status: "Success"
+    });
 
     res.json({
       success: true,
@@ -204,6 +254,14 @@ const forgotPassword = async (req, res, next) => {
 
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
+
+    await logSecurityEvent(req, {
+      user: user._id,
+      email: user.email,
+      role: user.role,
+      event: "PASSWORD_RESET_REQUEST",
+      status: "Success"
+    });
 
     const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
     const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
@@ -262,6 +320,14 @@ const resetPassword = async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();
+
+    await logSecurityEvent(req, {
+      user: user._id,
+      email: user.email,
+      role: user.role,
+      event: "PASSWORD_RESET_SUCCESS",
+      status: "Success"
+    });
 
     res.json({
       success: true,
