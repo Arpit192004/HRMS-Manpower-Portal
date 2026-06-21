@@ -20,6 +20,7 @@ const links = [
   { path: "/employee/expenses", label: "Expenses", icon: Receipt },
   { path: "/employee/payroll", label: "Payroll", icon: Banknote },
   { path: "/employee/documents", label: "Documents", icon: FolderOpen },
+  { path: "/employee/esign", label: "E-Sign", icon: FileText },
   { path: "/employee/resignation", label: "Resignation", icon: FileText }
 ];
 

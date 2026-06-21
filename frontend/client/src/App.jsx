@@ -23,6 +23,7 @@ import EmployeeDocuments from "./pages/EmployeeDocuments";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
+import ESignCenter from "./pages/ESignCenter";
 import ExecutiveAnalytics from "./pages/ExecutiveAnalytics";
 import ForgotPassword from "./pages/ForgotPassword";
 import HrCopilot from "./pages/HrCopilot";
@@ -81,6 +82,7 @@ const App = () => {
           <Route index element={<Navigate to="/candidate/jobs" replace />} />
           <Route path="jobs" element={<CandidateJobs />} />
           <Route path="applications" element={<CandidateApplications />} />
+          <Route path="documents" element={<ESignCenter signerView headingClass="candidate-heading" />} />
         </Route>
       </Route>
 
@@ -94,6 +96,7 @@ const App = () => {
           <Route path="expenses" element={<EmployeeSelfService module="expenses" />} />
           <Route path="payroll" element={<EmployeeSelfService module="payroll" />} />
           <Route path="documents" element={<EmployeeDocuments />} />
+          <Route path="esign" element={<ESignCenter signerView headingClass="employee-heading" />} />
           <Route path="resignation" element={<EmployeeSelfService module="resignation" />} />
         </Route>
       </Route>
@@ -145,6 +148,7 @@ const App = () => {
           <Route path="shifts" element={<ShiftRoster />} />
           <Route path="analytics" element={<ExecutiveAnalytics />} />
           <Route path="copilot" element={<HrCopilot />} />
+          <Route path="esign" element={<ESignCenter />} />
         </Route>
       </Route>
 

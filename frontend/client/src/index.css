@@ -2434,6 +2434,70 @@ code {
   gap: 7px;
 }
 
+.esign-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.esign-card {
+  display: grid;
+  gap: 15px;
+}
+
+.esign-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.esign-card-head h3,
+.esign-card-head p {
+  margin: 0;
+}
+
+.esign-card-head h3 {
+  margin-top: 8px;
+}
+
+.esign-card-head p {
+  margin-top: 5px;
+  color: #64748b;
+}
+
+.esign-sign-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.esign-sign-panel label {
+  display: grid;
+  gap: 7px;
+  color: #475569;
+  font-weight: 800;
+}
+
+.esign-sign-panel input {
+  padding: 12px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+}
+
+.status-pill.signed {
+  background: #e7f8ef;
+  color: #147a45;
+}
+
+.status-pill.declined,
+.status-pill.expired {
+  background: #ffe7e7;
+  color: #b42318;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -2467,7 +2531,8 @@ code {
 
   .notification-card,
   .public-footer,
-  .compliance-card-header {
+  .compliance-card-header,
+  .esign-card-head {
     align-items: flex-start;
     flex-direction: column;
   }

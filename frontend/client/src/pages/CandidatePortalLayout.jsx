@@ -25,6 +25,10 @@ const CandidatePortalLayout = () => {
             <FileText size={18} />
             My Applications
           </NavLink>
+          <NavLink to="/candidate/documents">
+            <FileText size={18} />
+            Documents
+          </NavLink>
         </nav>
 
         <button className="logout-button" onClick={logout}>
