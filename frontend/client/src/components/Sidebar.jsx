@@ -40,6 +40,7 @@ const links = [
   { path: "/admin/compliance", label: "Compliance", icon: FileText },
   { path: "/admin/resignations", label: "Resignations", icon: FileText },
   { path: "/admin/leads", label: "Website Leads", icon: Sparkles },
+  { path: "/admin/copilot", label: "AI HR Copilot", icon: Sparkles },
   { path: "/admin/notifications", label: "Notifications", icon: Bell },
   { path: "/admin/approvals", label: "Approval Center", icon: FileText },
   { path: "/admin/users", label: "Users & Roles", icon: Users },

@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Briefcase, Building2, CalendarDays, CircleDollarSign, FileText, LogOut, Users } from "lucide-react";
+import { Briefcase, Building2, CalendarDays, CircleDollarSign, FileText, LogOut, Sparkles, Users } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const links = [
@@ -11,6 +11,7 @@ const links = [
   { path: "/client/attendance-health", label: "Attendance Health", icon: CalendarDays },
   { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign },
   { path: "/client/analytics", label: "Analytics", icon: Building2 },
+  { path: "/client/copilot", label: "AI Copilot", icon: Sparkles },
   { path: "/client/sla", label: "SLA Dashboard", icon: Building2 },
   { path: "/client/compliance", label: "Compliance", icon: FileText }
 ];

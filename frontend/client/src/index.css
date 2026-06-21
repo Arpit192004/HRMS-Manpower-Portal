@@ -2298,6 +2298,142 @@ code {
   font-size: 22px;
 }
 
+.copilot-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.35fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.copilot-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.copilot-sidebar svg {
+  color: #2563eb;
+}
+
+.copilot-sidebar h3,
+.copilot-sidebar p {
+  margin: 0;
+}
+
+.copilot-sidebar p {
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.copilot-suggestions {
+  display: grid;
+  gap: 8px;
+}
+
+.copilot-suggestions button {
+  padding: 10px 12px;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #172033;
+  text-align: left;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.copilot-chat {
+  display: grid;
+  min-height: 560px;
+  grid-template-rows: 1fr auto;
+  gap: 16px;
+}
+
+.copilot-messages {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  overflow: auto;
+  max-height: 590px;
+}
+
+.copilot-message {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.copilot-message.user {
+  opacity: 0.86;
+}
+
+.copilot-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #eaf1ff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.copilot-message > div:last-child {
+  padding: 14px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.copilot-message.assistant > div:last-child {
+  background: #eef6ff;
+}
+
+.copilot-message h3,
+.copilot-message p {
+  margin: 0;
+}
+
+.copilot-message p {
+  margin-top: 5px;
+  color: #334155;
+  line-height: 1.55;
+}
+
+.copilot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.copilot-actions a {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: white;
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.copilot-input {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.copilot-input input {
+  padding: 13px 14px;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+}
+
+.copilot-input button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
 @media (max-width: 760px) {
   .portal-cta-grid,
   .public-metrics,
@@ -2315,7 +2451,12 @@ code {
   .approval-meta-grid,
   .analytics-kpi-grid,
   .analytics-grid,
-  .attendance-health-grid {
+  .attendance-health-grid,
+  .copilot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .copilot-input {
     grid-template-columns: 1fr;
   }
 

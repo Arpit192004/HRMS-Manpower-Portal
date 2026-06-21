@@ -25,6 +25,7 @@ import EmployeePortalLayout from "./pages/EmployeePortalLayout";
 import EmployeeSelfService from "./pages/EmployeeSelfService";
 import ExecutiveAnalytics from "./pages/ExecutiveAnalytics";
 import ForgotPassword from "./pages/ForgotPassword";
+import HrCopilot from "./pages/HrCopilot";
 import InvoiceManagement from "./pages/InvoiceManagement";
 import LeadManagement from "./pages/LeadManagement";
 import Login from "./pages/Login";
@@ -110,6 +111,7 @@ const App = () => {
           <Route path="compliance" element={<ComplianceDashboard clientView />} />
           <Route path="attendance-health" element={<ShiftRoster clientView />} />
           <Route path="analytics" element={<ExecutiveAnalytics clientView />} />
+          <Route path="copilot" element={<HrCopilot clientView />} />
         </Route>
       </Route>
 
@@ -142,6 +144,7 @@ const App = () => {
           <Route path="compliance" element={<ComplianceDashboard />} />
           <Route path="shifts" element={<ShiftRoster />} />
           <Route path="analytics" element={<ExecutiveAnalytics />} />
+          <Route path="copilot" element={<HrCopilot />} />
         </Route>
       </Route>
 

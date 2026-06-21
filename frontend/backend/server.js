@@ -32,6 +32,7 @@ const clientRequirementRoutes = require("./routes/clientRequirementRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 const shiftRoutes = require("./routes/shiftRoutes");
 const securityLogRoutes = require("./routes/securityLogRoutes");
+const copilotRoutes = require("./routes/copilotRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const { requestId, securityHeaders, rateLimit } = require("./middleware/securityMiddleware");
@@ -147,6 +148,7 @@ app.use("/api/requirements", clientRequirementRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/shifts", shiftRoutes);
 app.use("/api/security-logs", securityLogRoutes);
+app.use("/api/copilot", copilotRoutes);
 
 // Error middleware hamesha API routes ke baad rahega
 app.use(notFound);
