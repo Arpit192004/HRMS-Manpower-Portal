@@ -1,275 +1,632 @@
 const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
 const connectDB = require("../config/db");
-const User = require("../models/User");
-const Client = require("../models/Client");
-const Job = require("../models/Job");
+const Attendance = require("../models/Attendance");
 const Candidate = require("../models/Candidate");
-const Offer = require("../models/Offer");
+const Client = require("../models/Client");
+const ClientRequirement = require("../models/ClientRequirement");
 const Employee = require("../models/Employee");
+const ESignRequest = require("../models/ESignRequest");
+const ExpenseClaim = require("../models/ExpenseClaim");
+const Invoice = require("../models/Invoice");
+const Job = require("../models/Job");
+const LeaveRequest = require("../models/LeaveRequest");
+const Offer = require("../models/Offer");
 const Payroll = require("../models/Payroll");
+const Shift = require("../models/Shift");
+const User = require("../models/User");
+const Workflow = require("../models/Workflow");
 
 dotenv.config();
 
-const seedUsers = async () => {
+const now = new Date();
+const currentMonth = now.getMonth() + 1;
+const currentYear = now.getFullYear();
+
+const daysFromNow = (days) => {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
+const atTime = (baseDate, hours, minutes = 0) => {
+  const date = new Date(baseDate);
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+};
+
+const ensureUser = async ({ name, email, password, role, client = null }) => {
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    user = await User.create({ name, email, password, role, client });
+    console.log(`Created user: ${email}`);
+  } else {
+    user.name = name;
+    user.role = role;
+    user.client = client;
+    user.isActive = true;
+    await user.save({ validateBeforeSave: false });
+    console.log(`Ready user: ${email}`);
+  }
+
+  return user;
+};
+
+const upsertByKey = async (Model, filter, payload) => {
+  return Model.findOneAndUpdate(filter, payload, {
+    new: true,
+    upsert: true,
+    runValidators: true,
+    setDefaultsOnInsert: true
+  });
+};
+
+const seed = async () => {
   try {
     await connectDB();
 
-    const users = [
+    const adminUser = await ensureUser({
+      name: "Super Admin",
+      email: "admin@hrms.com",
+      password: "Admin@123",
+      role: "Super Admin"
+    });
+
+    const hrUser = await ensureUser({
+      name: "HR Administrator",
+      email: "hr@hrms.com",
+      password: "Hr@12345",
+      role: "HR Admin"
+    });
+
+    const payrollUser = await ensureUser({
+      name: "Payroll User",
+      email: "payroll@hrms.com",
+      password: "Payroll@123",
+      role: "Payroll Team"
+    });
+
+    const clients = [];
+    const clientSeeds = [
       {
-        name: "Super Admin",
-        email: "admin@hrms.com",
-        password: "Admin@123",
-        role: "Super Admin"
+        name: "TechNova Solutions",
+        code: "TECH",
+        industry: "IT Services",
+        contactPerson: { name: "Aarav Mehta", email: "aarav@technova.example", phone: "9876500011" },
+        address: { line1: "Sector 62", city: "Noida", state: "Uttar Pradesh", postalCode: "201301" },
+        gstNumber: "09TECH1234F1Z5"
       },
       {
-        name: "HR Administrator",
-        email: "hr@hrms.com",
-        password: "Hr@12345",
-        role: "HR Admin"
+        name: "QuickServe Logistics",
+        code: "QSL",
+        industry: "Logistics",
+        contactPerson: { name: "Nisha Kapoor", email: "nisha@quickserve.example", phone: "9876500022" },
+        address: { line1: "NH-48 Hub", city: "Gurugram", state: "Haryana", postalCode: "122001" },
+        gstNumber: "06QSL1234F1Z7"
       },
       {
-        name: "Payroll User",
-        email: "payroll@hrms.com",
-        password: "Payroll@123",
-        role: "Payroll Team"
+        name: "RetailEdge Mart",
+        code: "REM",
+        industry: "Retail",
+        contactPerson: { name: "Kabir Suri", email: "kabir@retailedge.example", phone: "9876500033" },
+        address: { line1: "Connaught Place", city: "Delhi", state: "Delhi", postalCode: "110001" },
+        gstNumber: "07REM1234F1Z9"
       }
     ];
 
-    let adminUser = null;
-
-    for (const userData of users) {
-      const existingUser = await User.findOne({ email: userData.email });
-
-      if (!existingUser) {
-        const createdUser = await User.create(userData);
-        console.log(`Created: ${userData.email}`);
-
-        if (userData.email === "admin@hrms.com") {
-          adminUser = createdUser;
-        }
-      } else {
-        console.log(`Already exists: ${userData.email}`);
-
-        if (userData.email === "admin@hrms.com") {
-          adminUser = existingUser;
-        }
-      }
+    for (const clientData of clientSeeds) {
+      const client = await upsertByKey(Client, { code: clientData.code }, {
+        ...clientData,
+        isActive: true,
+        createdBy: adminUser._id
+      });
+      clients.push(client);
     }
 
-    const client = await Client.findOneAndUpdate(
-      { code: "DEMO" },
-      {
-        name: "Demo Manpower Client",
-        code: "DEMO",
-        industry: "IT Services",
-        contactPerson: {
-          name: "Demo Client HR",
-          email: "client.hr@demo.com",
-          phone: "9999999999"
-        },
-        address: {
-          city: "Noida",
-          state: "Uttar Pradesh",
-          country: "India"
-        },
-        gstNumber: "09DEMO1234F1Z5",
-        createdBy: adminUser._id
-      },
-      { new: true, upsert: true, runValidators: true }
-    );
+    const clientUser = await ensureUser({
+      name: "TechNova Client Approver",
+      email: "client@hrms.com",
+      password: "Client@123",
+      role: "Client Approver",
+      client: clients[0]._id
+    });
 
-    const job = await Job.findOneAndUpdate(
-      { title: "Employee Portal Test Role", client: client._id },
-      {
-        client: client._id,
-        title: "Employee Portal Test Role",
-        department: "Operations",
-        grade: "A",
-        vacancies: 2,
-        salaryRange: {
-          minimum: 30000,
-          maximum: 60000
-        },
-        experience: {
-          minimum: 1,
-          maximum: 5
-        },
-        skills: ["HRMS", "Operations", "Excel"],
-        description: "Demo open role for testing candidate and employee portal.",
-        location: "Noida",
-        status: "Open",
-        createdBy: adminUser._id
-      },
-      { new: true, upsert: true, runValidators: true }
-    );
+    const shifts = [];
+    const shiftSeeds = [
+      { client: clients[0], name: "General Shift", code: "GEN", startTime: "09:30", endTime: "18:30", graceMinutes: 10 },
+      { client: clients[1], name: "Warehouse Morning", code: "MORN", startTime: "08:00", endTime: "17:00", graceMinutes: 15 },
+      { client: clients[2], name: "Retail Evening", code: "EVE", startTime: "12:00", endTime: "21:00", graceMinutes: 10 }
+    ];
 
-    const employeeUser = await User.findOne({ email: "employee@hrms.com" });
-    let activeEmployeeUser = employeeUser;
+    for (const item of shiftSeeds) {
+      const shift = await upsertByKey(
+        Shift,
+        { client: item.client._id, code: item.code },
+        {
+          client: item.client._id,
+          name: item.name,
+          code: item.code,
+          startTime: item.startTime,
+          endTime: item.endTime,
+          graceMinutes: item.graceMinutes,
+          weeklyOffs: ["Sunday"],
+          isNightShift: false,
+          isActive: true,
+          createdBy: adminUser._id
+        }
+      );
+      shifts.push(shift);
+    }
 
-    if (!activeEmployeeUser) {
-      activeEmployeeUser = await User.create({
-        name: "Test Employee",
-        email: "employee@hrms.com",
-        password: "Employee@123",
+    const jobs = [];
+    const jobSeeds = [
+      { client: clients[0], title: "React Frontend Developer", department: "Engineering", grade: "A", vacancies: 4, location: "Noida", skills: ["React", "JavaScript", "REST API"], min: 45000, max: 90000 },
+      { client: clients[0], title: "HR Operations Executive", department: "Operations", grade: "A", vacancies: 2, location: "Noida", skills: ["HRMS", "Excel", "Payroll"], min: 30000, max: 55000 },
+      { client: clients[1], title: "Warehouse Supervisor", department: "Logistics", grade: "B", vacancies: 6, location: "Gurugram", skills: ["Inventory", "Team Handling", "Shift Planning"], min: 28000, max: 52000 },
+      { client: clients[2], title: "Store Associate", department: "Retail", grade: "C", vacancies: 12, location: "Delhi", skills: ["Customer Service", "POS", "Sales"], min: 18000, max: 32000 }
+    ];
+
+    for (const jobData of jobSeeds) {
+      const job = await upsertByKey(
+        Job,
+        { title: jobData.title, client: jobData.client._id },
+        {
+          client: jobData.client._id,
+          title: jobData.title,
+          department: jobData.department,
+          grade: jobData.grade,
+          vacancies: jobData.vacancies,
+          salaryRange: { minimum: jobData.min, maximum: jobData.max },
+          experience: { minimum: 1, maximum: 6 },
+          skills: jobData.skills,
+          description: `${jobData.title} requirement for ${jobData.client.name}.`,
+          location: jobData.location,
+          status: "Open",
+          createdBy: adminUser._id
+        }
+      );
+      jobs.push(job);
+    }
+
+    for (const job of jobs) {
+      await upsertByKey(
+        ClientRequirement,
+        { client: job.client, title: job.title },
+        {
+          client: job.client,
+          title: job.title,
+          department: job.department,
+          location: job.location,
+          vacancies: job.vacancies,
+          requiredBy: daysFromNow(job.title.includes("Store") ? 7 : 14),
+          budgetMin: job.salaryRange.minimum,
+          budgetMax: job.salaryRange.maximum,
+          experienceMin: job.experience.minimum,
+          experienceMax: job.experience.maximum,
+          skills: job.skills,
+          description: `Need ${job.vacancies} ${job.title} profiles with quick turnaround.`,
+          status: "Converted",
+          priority: job.vacancies >= 6 ? "Urgent" : "High",
+          job: job._id,
+          requestedBy: clientUser._id,
+          processedBy: adminUser._id,
+          processedAt: new Date(),
+          remarks: "Converted into live job for demo pipeline."
+        }
+      );
+    }
+
+    const employeeSeeds = [
+      ["employee@hrms.com", "Test Employee", clients[0], jobs[1], shifts[0], "Operations Executive", "Operations", "A", 42000],
+      ["priya.employee@hrms.com", "Priya Sharma", clients[0], jobs[0], shifts[0], "Frontend Developer", "Engineering", "A", 68000],
+      ["rahul.employee@hrms.com", "Rahul Verma", clients[0], jobs[0], shifts[0], "Frontend Developer", "Engineering", "A", 72000],
+      ["sana.employee@hrms.com", "Sana Khan", clients[1], jobs[2], shifts[1], "Warehouse Supervisor", "Logistics", "B", 46000],
+      ["vikram.employee@hrms.com", "Vikram Singh", clients[1], jobs[2], shifts[1], "Shift Lead", "Logistics", "B", 39000],
+      ["isha.employee@hrms.com", "Isha Malhotra", clients[2], jobs[3], shifts[2], "Store Associate", "Retail", "C", 26000]
+    ];
+
+    const employees = [];
+    const offers = [];
+
+    for (let index = 0; index < employeeSeeds.length; index += 1) {
+      const [email, name, client, job, shift, designation, department, grade, salary] = employeeSeeds[index];
+      const user = await ensureUser({
+        name,
+        email,
+        password: email === "employee@hrms.com" ? "Employee@123" : "Employee@123",
         role: "Employee",
         client: client._id
       });
 
-      console.log("Created: employee@hrms.com");
-    } else {
-      activeEmployeeUser.role = "Employee";
-      activeEmployeeUser.client = client._id;
-      activeEmployeeUser.isActive = true;
-      await activeEmployeeUser.save();
-      console.log("Already exists: employee@hrms.com");
+      const candidate = await upsertByKey(
+        Candidate,
+        { user: user._id, job: job._id },
+        {
+          user: user._id,
+          job: job._id,
+          client: client._id,
+          phone: `98765432${String(index).padStart(2, "0")}`,
+          currentCompany: "Demo Previous Employer",
+          currentDesignation: designation,
+          totalExperience: 2 + index,
+          currentSalary: Math.round(salary * 0.75),
+          expectedSalary: salary,
+          noticePeriod: index % 2 === 0 ? "Immediate" : "15 Days",
+          skills: job.skills,
+          resumeUrl: "https://example.com/demo-resume.pdf",
+          status: "Joined",
+          shortlistedBy: adminUser._id,
+          shortlistedAt: daysFromNow(-20),
+          matchScore: 86,
+          matchRecommendation: "Strong Match",
+          matchedSkills: job.skills,
+          missingSkills: [],
+          matchSummary: "Strong demo profile for role.",
+          matchCalculatedAt: new Date()
+        }
+      );
+
+      const earnings = [
+        { name: "Basic", amount: Math.round(salary * 0.55) },
+        { name: "HRA", amount: Math.round(salary * 0.25) },
+        { name: "Special Allowance", amount: Math.round(salary * 0.2) }
+      ];
+      const deductions = [
+        { name: "PF", amount: 1800 },
+        { name: "Professional Tax", amount: 200 }
+      ];
+      const totalEarnings = earnings.reduce((sum, item) => sum + item.amount, 0);
+      const totalDeductions = deductions.reduce((sum, item) => sum + item.amount, 0);
+
+      const offer = await upsertByKey(
+        Offer,
+        { candidate: candidate._id },
+        {
+          candidate: candidate._id,
+          client: client._id,
+          job: job._id,
+          designation,
+          joiningDate: daysFromNow(-45 + index),
+          earnings,
+          deductions,
+          totalEarnings,
+          totalDeductions,
+          netSalary: totalEarnings - totalDeductions,
+          ctc: totalEarnings * 12,
+          status: "Accepted",
+          internalApprovalStatus: "Not Required",
+          requiresInternalApproval: false,
+          createdBy: adminUser._id,
+          approvedBy: adminUser._id
+        }
+      );
+      offers.push(offer);
+
+      const employee = await upsertByKey(
+        Employee,
+        { user: user._id },
+        {
+          employeeCode: `${client.code}-EMP-${String(index + 1).padStart(4, "0")}`,
+          user: user._id,
+          client: client._id,
+          offer: offer._id,
+          designation,
+          department,
+          grade,
+          joiningDate: offer.joiningDate,
+          personalDetails: {
+            phone: `98765432${String(index).padStart(2, "0")}`,
+            aadhaar: `12341234123${index}`,
+            pan: `ABCDE123${index}F`,
+            address: `${client.address.city}, ${client.address.state}`
+          },
+          bankDetails: {
+            accountHolderName: name,
+            accountNumber: `123456789${index}`,
+            bankName: "HDFC Bank",
+            ifscCode: "HDFC0001234"
+          },
+          documents: [
+            {
+              type: "Aadhaar",
+              title: "Aadhaar Card",
+              url: "https://example.com/aadhaar.pdf",
+              uploadedBy: adminUser._id,
+              verificationStatus: index % 3 === 0 ? "Pending" : "Verified",
+              verifiedBy: index % 3 === 0 ? null : adminUser._id,
+              verifiedAt: index % 3 === 0 ? null : new Date()
+            },
+            {
+              type: "PAN",
+              title: "PAN Card",
+              url: "https://example.com/pan.pdf",
+              uploadedBy: adminUser._id,
+              verificationStatus: "Verified",
+              verifiedBy: adminUser._id,
+              verifiedAt: new Date()
+            }
+          ],
+          roster: shift.name,
+          shift: shift._id,
+          approvers: [hrUser._id, adminUser._id],
+          status: "Active",
+          createdBy: adminUser._id
+        }
+      );
+      employees.push(employee);
+
+      await upsertByKey(
+        Payroll,
+        { employee: employee._id, month: currentMonth, year: currentYear },
+        {
+          employee: employee._id,
+          client: client._id,
+          month: currentMonth,
+          year: currentYear,
+          totalWorkingDays: 30,
+          payableDays: index % 4 === 0 ? 29 : 30,
+          earnings,
+          deductions,
+          grossSalary: totalEarnings,
+          attendanceDeduction: index % 4 === 0 ? 1000 : 0,
+          totalDeductions: totalDeductions + (index % 4 === 0 ? 1000 : 0),
+          netSalary: totalEarnings - totalDeductions - (index % 4 === 0 ? 1000 : 0),
+          status: index % 2 === 0 ? "Paid" : "Confirmed",
+          isLocked: true,
+          generatedBy: payrollUser._id,
+          confirmedBy: payrollUser._id,
+          confirmedAt: new Date(),
+          paidAt: index % 2 === 0 ? new Date() : null
+        }
+      );
     }
 
-    const clientUser = await User.findOne({ email: "client@hrms.com" });
-
-    if (!clientUser) {
-      await User.create({
-        name: "Demo Client Approver",
-        email: "client@hrms.com",
-        password: "Client@123",
-        role: "Client Approver",
-        client: client._id
+    const candidateStages = ["Applied", "Shortlisted", "Interview", "Submitted to Client", "Client Shortlisted", "Offered"];
+    for (let index = 0; index < 12; index += 1) {
+      const job = jobs[index % jobs.length];
+      const user = await ensureUser({
+        name: `Candidate ${index + 1}`,
+        email: `candidate${index + 1}@hrms.com`,
+        password: "Candidate@123",
+        role: "Candidate"
       });
 
-      console.log("Created: client@hrms.com");
-    } else {
-      clientUser.role = "Client Approver";
-      clientUser.client = client._id;
-      clientUser.isActive = true;
-      await clientUser.save();
-      console.log("Already exists: client@hrms.com");
+      await upsertByKey(
+        Candidate,
+        { user: user._id, job: job._id },
+        {
+          user: user._id,
+          job: job._id,
+          client: job.client,
+          phone: `90000000${String(index).padStart(2, "0")}`,
+          currentCompany: index % 2 ? "Fresh Talent Pool" : "Previous Employer",
+          currentDesignation: job.title,
+          totalExperience: 1 + (index % 5),
+          currentSalary: job.salaryRange.minimum - 5000,
+          expectedSalary: job.salaryRange.minimum + 8000,
+          noticePeriod: ["Immediate", "15 Days", "30 Days"][index % 3],
+          skills: job.skills.slice(0, 2),
+          resumeUrl: "https://example.com/candidate-resume.pdf",
+          status: candidateStages[index % candidateStages.length],
+          shortlistedBy: index % 3 ? adminUser._id : null,
+          shortlistedAt: index % 3 ? daysFromNow(-index) : null,
+          matchScore: 62 + index * 3,
+          matchRecommendation: index > 7 ? "Strong Match" : index > 3 ? "Good Match" : "Review",
+          matchedSkills: job.skills.slice(0, 2),
+          missingSkills: job.skills.slice(2),
+          matchSummary: "Seeded candidate profile for realistic demo pipeline.",
+          matchCalculatedAt: new Date()
+        }
+      );
     }
 
-    const candidate = await Candidate.findOneAndUpdate(
-      { user: activeEmployeeUser._id, job: job._id },
+    for (let index = 0; index < employees.length; index += 1) {
+      const employee = employees[index];
+      const shift = shifts.find((item) => item._id.toString() === employee.shift?.toString()) || shifts[0];
+      const baseDate = new Date();
+      baseDate.setHours(0, 0, 0, 0);
+
+      const checkIn = index % 3 === 0 ? atTime(baseDate, 9, 52) : atTime(baseDate, 9, 25);
+      const checkOut = index % 2 === 0 ? atTime(baseDate, 19, 5) : atTime(baseDate, 18, 20);
+      const workMinutes = Math.round((checkOut - checkIn) / (1000 * 60));
+      const lateMinutes = index % 3 === 0 ? 12 : 0;
+      const overtimeMinutes = index % 2 === 0 ? 35 : 0;
+
+      await upsertByKey(
+        Attendance,
+        { employee: employee._id, date: baseDate },
+        {
+          employee: employee._id,
+          client: employee.client,
+          shift: shift._id,
+          date: baseDate,
+          checkIn,
+          checkOut,
+          scheduledStart: atTime(baseDate, Number(shift.startTime.split(":")[0]), Number(shift.startTime.split(":")[1])),
+          scheduledEnd: atTime(baseDate, Number(shift.endTime.split(":")[0]), Number(shift.endTime.split(":")[1])),
+          graceMinutes: shift.graceMinutes,
+          workingHours: Number((workMinutes / 60).toFixed(2)),
+          workMinutes,
+          lateMinutes,
+          earlyLeaveMinutes: 0,
+          overtimeMinutes,
+          smartStatus: lateMinutes ? "Late" : overtimeMinutes ? "Overtime" : "On Time",
+          status: "Present",
+          source: "Manual Upload",
+          remarks: "Seeded live attendance for dashboard demo.",
+          updatedBy: adminUser._id
+        }
+      );
+    }
+
+    for (let index = 0; index < clients.length; index += 1) {
+      const client = clients[index];
+      const monthlyAmount = [285000, 198000, 156000][index];
+      const subTotal = monthlyAmount;
+      const taxAmount = Math.round(subTotal * 0.18);
+
+      await upsertByKey(
+        Invoice,
+        { invoiceNumber: `INV-${currentYear}-${String(index + 1).padStart(4, "0")}` },
+        {
+          invoiceNumber: `INV-${currentYear}-${String(index + 1).padStart(4, "0")}`,
+          client: client._id,
+          month: currentMonth,
+          year: currentYear,
+          dueDate: daysFromNow(index === 1 ? -3 : 10 + index),
+          items: [
+            {
+              description: "Monthly manpower services",
+              quantity: 1,
+              rate: subTotal,
+              amount: subTotal
+            }
+          ],
+          subTotal,
+          taxRate: 18,
+          taxAmount,
+          totalAmount: subTotal + taxAmount,
+          status: index === 0 ? "Paid" : "Sent",
+          notes: "Seeded invoice for executive analytics.",
+          generatedBy: adminUser._id
+        }
+      );
+    }
+
+    const leaveFromDate = daysFromNow(2);
+    const leaveToDate = daysFromNow(3);
+
+    const leave = await upsertByKey(
+      LeaveRequest,
+      { employee: employees[0]._id, fromDate: leaveFromDate },
       {
-        user: activeEmployeeUser._id,
-        job: job._id,
-        client: client._id,
-        phone: "9876543210",
-        currentCompany: "Demo Company",
-        currentDesignation: "Associate",
-        totalExperience: 2,
-        currentSalary: 28000,
-        expectedSalary: 42000,
-        noticePeriod: "Immediate",
-        skills: ["HRMS", "Operations", "Excel"],
-        resumeUrl: "https://example.com/test-employee-resume.pdf",
-        status: "Joined",
-        shortlistedBy: adminUser._id,
-        shortlistedAt: new Date()
-      },
-      { new: true, upsert: true, runValidators: true }
+        employee: employees[0]._id,
+        client: employees[0].client,
+        leaveType: "Casual",
+        fromDate: leaveFromDate,
+        toDate: leaveToDate,
+        totalDays: 2,
+        reason: "Family event",
+        status: "Pending",
+        approver: hrUser._id
+      }
     );
 
-    const earnings = [
-      { name: "Basic", amount: 25000 },
-      { name: "HRA", amount: 10000 },
-      { name: "Special Allowance", amount: 7000 }
-    ];
-
-    const deductions = [
-      { name: "PF", amount: 1800 },
-      { name: "Professional Tax", amount: 200 }
-    ];
-
-    const offer = await Offer.findOneAndUpdate(
-      { candidate: candidate._id },
+    const expense = await upsertByKey(
+      ExpenseClaim,
+      { claimNumber: `CLM-${currentYear}-DEMO-001` },
       {
-        candidate: candidate._id,
-        client: client._id,
-        job: job._id,
-        designation: "Operations Executive",
-        joiningDate: new Date(),
-        earnings,
-        deductions,
-        totalEarnings: 42000,
-        totalDeductions: 2000,
-        netSalary: 40000,
-        ctc: 504000,
-        status: "Accepted",
-        internalApprovalStatus: "Not Required",
-        requiresInternalApproval: false,
-        createdBy: adminUser._id,
-        approvedBy: adminUser._id
-      },
-      { new: true, upsert: true, runValidators: true }
+        employee: employees[1]._id,
+        client: employees[1].client,
+        claimNumber: `CLM-${currentYear}-DEMO-001`,
+        title: "Client visit cab reimbursement",
+        items: [
+          {
+            category: "Travel",
+            expenseDate: daysFromNow(-1),
+            description: "Cab to client office",
+            amount: 1450,
+            receiptUrl: "https://example.com/receipt.pdf"
+          }
+        ],
+        totalAmount: 1450,
+        approver: hrUser._id,
+        status: "Pending"
+      }
     );
 
-    const employee = await Employee.findOneAndUpdate(
-      { user: activeEmployeeUser._id },
+    const workflowSeeds = [
+      ["Leave", "LeaveRequest", leave._id, employees[0].client, employees[0].user, "High", 8],
+      ["Expense", "ExpenseClaim", expense._id, employees[1].client, employees[1].user, "Critical", 4],
+      ["Offer", "Offer", offers[0]._id, offers[0].client, adminUser._id, "Medium", 24]
+    ];
+
+    for (const [requestType, requestModel, requestId, client, requestedBy, priority, slaHours] of workflowSeeds) {
+      await upsertByKey(
+        Workflow,
+        { requestModel, requestId },
+        {
+          client,
+          requestType,
+          requestId,
+          requestModel,
+          requestedBy,
+          steps: [
+            { sequence: 1, approver: hrUser._id, status: "Pending" },
+            { sequence: 2, approver: adminUser._id, status: "Pending" }
+          ],
+          currentStep: 1,
+          priority,
+          slaHours,
+          dueAt: daysFromNow(priority === "Critical" ? -1 : 1),
+          escalationLevel: priority === "Critical" ? 1 : 0,
+          status: "Pending"
+        }
+      );
+    }
+
+    await upsertByKey(
+      ESignRequest,
+      { title: "Demo Appointment Letter - Test Employee", signer: employees[0].user },
       {
-        employeeCode: "DEMO-EMP-0001",
-        user: activeEmployeeUser._id,
-        client: client._id,
-        offer: offer._id,
-        designation: "Operations Executive",
-        department: "Operations",
-        grade: "A",
-        joiningDate: offer.joiningDate,
-        personalDetails: {
-          phone: "9876543210",
-          aadhaar: "123412341234",
-          pan: "ABCDE1234F",
-          address: "Noida, Uttar Pradesh"
-        },
-        bankDetails: {
-          accountHolderName: "Test Employee",
-          accountNumber: "1234567890",
-          bankName: "HDFC Bank",
-          ifscCode: "HDFC0001234"
-        },
-        roster: "General",
-        approvers: [adminUser._id],
-        status: "Active",
+        title: "Demo Appointment Letter - Test Employee",
+        documentType: "Appointment Letter",
+        documentUrl: "https://example.com/appointment-letter.pdf",
+        signedDocumentUrl: "",
+        client: employees[0].client,
+        employee: employees[0]._id,
+        signer: employees[0].user,
+        signerName: "Test Employee",
+        signerEmail: "employee@hrms.com",
+        status: "Pending",
+        expiresAt: daysFromNow(5),
         createdBy: adminUser._id
-      },
-      { new: true, upsert: true, runValidators: true }
+      }
     );
 
-    await Payroll.findOneAndUpdate(
+    await upsertByKey(
+      ESignRequest,
+      { title: "Signed NDA - Priya Sharma", signer: employees[1].user },
       {
-        employee: employee._id,
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear()
-      },
-      {
-        employee: employee._id,
-        client: client._id,
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
-        totalWorkingDays: 30,
-        payableDays: 30,
-        earnings,
-        deductions,
-        grossSalary: 42000,
-        attendanceDeduction: 0,
-        totalDeductions: 2000,
-        netSalary: 40000,
-        status: "Paid",
-        isLocked: true,
-        generatedBy: adminUser._id,
-        confirmedBy: adminUser._id,
-        confirmedAt: new Date(),
-        paidAt: new Date()
-      },
-      { new: true, upsert: true, runValidators: true }
+        title: "Signed NDA - Priya Sharma",
+        documentType: "Agreement",
+        documentUrl: "https://example.com/nda.pdf",
+        signedDocumentUrl: "https://example.com/nda.pdf",
+        client: employees[1].client,
+        employee: employees[1]._id,
+        signer: employees[1].user,
+        signerName: "Priya Sharma",
+        signerEmail: "priya.employee@hrms.com",
+        status: "Signed",
+        signatureText: "Priya Sharma",
+        expiresAt: daysFromNow(30),
+        signedAt: daysFromNow(-2),
+        signerIp: "103.25.42.10",
+        signerUserAgent: "Seeded demo signature",
+        createdBy: adminUser._id
+      }
     );
 
-    console.log("Demo employee portal user ready: employee@hrms.com / Employee@123");
-    console.log("Demo client portal user ready: client@hrms.com / Client@123");
-
+    console.log("");
+    console.log("Demo data ready:");
+    console.log("Admin: admin@hrms.com / Admin@123");
+    console.log("HR: hr@hrms.com / Hr@12345");
+    console.log("Payroll: payroll@hrms.com / Payroll@123");
+    console.log("Client: client@hrms.com / Client@123");
+    console.log("Employee: employee@hrms.com / Employee@123");
+    console.log("Candidate: candidate1@hrms.com / Candidate@123");
+    console.log("");
     console.log("Seed completed successfully");
     process.exit(0);
   } catch (error) {
     console.error(`Seed failed: ${error.message}`);
+    console.error(error);
     process.exit(1);
+  } finally {
+    await mongoose.connection.close();
   }
 };
 
-seedUsers();
+seed();

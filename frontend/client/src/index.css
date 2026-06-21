@@ -2434,6 +2434,51 @@ code {
   gap: 7px;
 }
 
+.demo-access-section {
+  padding: 72px 7vw;
+  background: #f8fafc;
+}
+
+.demo-account-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.demo-account-card {
+  display: grid;
+  gap: 9px;
+  padding: 20px;
+  border: 1px solid #e6ebf3;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 10px 28px rgba(31, 46, 79, 0.06);
+}
+
+.demo-account-card strong {
+  color: #172033;
+  font-size: 17px;
+}
+
+.demo-account-card span {
+  color: #475569;
+}
+
+.demo-account-card code {
+  padding: 7px 9px;
+  border-radius: 9px;
+  background: #eef6ff;
+  color: #2563eb;
+  font-weight: 900;
+}
+
+.demo-account-card a {
+  color: #147a45;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 .esign-grid {
   display: grid;
   gap: 14px;
@@ -2516,7 +2561,8 @@ code {
   .analytics-kpi-grid,
   .analytics-grid,
   .attendance-health-grid,
-  .copilot-grid {
+  .copilot-grid,
+  .demo-account-grid {
     grid-template-columns: 1fr;
   }
 

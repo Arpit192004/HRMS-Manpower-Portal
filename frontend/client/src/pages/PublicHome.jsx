@@ -36,6 +36,13 @@ const services = [
   }
 ];
 
+const demoAccounts = [
+  { role: "Admin", email: "admin@hrms.com", password: "Admin@123", link: "/login" },
+  { role: "Client", email: "client@hrms.com", password: "Client@123", link: "/client/login" },
+  { role: "Employee", email: "employee@hrms.com", password: "Employee@123", link: "/employee/login" },
+  { role: "Candidate", email: "candidate1@hrms.com", password: "Candidate@123", link: "/candidate/login" }
+];
+
 const PublicHome = () => {
   const { settings } = useCompany();
   const [leadForm, setLeadForm] = useState({
@@ -208,6 +215,25 @@ const PublicHome = () => {
           <strong>Admin Control Center</strong>
           <span>Manage recruitment, payroll, approvals and reports.</span>
         </Link>
+      </section>
+
+      <section className="demo-access-section">
+        <div className="section-heading">
+          <span className="eyebrow">Demo Access</span>
+          <h2>Explore the live portal with realistic seeded data</h2>
+          <p>Use these demo accounts to test every role without setting up anything.</p>
+        </div>
+
+        <div className="demo-account-grid">
+          {demoAccounts.map((account) => (
+            <article className="demo-account-card" key={account.role}>
+              <strong>{account.role} Portal</strong>
+              <span>{account.email}</span>
+              <code>{account.password}</code>
+              <Link to={account.link}>Open {account.role}</Link>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="lead-section" id="request-manpower">
