@@ -38,6 +38,7 @@ const links = [
   { path: "/admin/payroll", label: "Payroll", icon: CircleDollarSign },
   { path: "/admin/invoices", label: "Invoices", icon: CircleDollarSign },
   { path: "/admin/compliance", label: "Compliance", icon: FileText },
+  { path: "/admin/integrations", label: "Integration Hub", icon: Settings },
   { path: "/admin/esign", label: "E-Sign Center", icon: FileText },
   { path: "/admin/resignations", label: "Resignations", icon: FileText },
   { path: "/admin/leads", label: "Website Leads", icon: Sparkles },

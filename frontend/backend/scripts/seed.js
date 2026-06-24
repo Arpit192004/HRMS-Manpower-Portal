@@ -10,6 +10,7 @@ const Employee = require("../models/Employee");
 const ESignRequest = require("../models/ESignRequest");
 const ExpenseClaim = require("../models/ExpenseClaim");
 const Invoice = require("../models/Invoice");
+const Integration = require("../models/Integration");
 const Job = require("../models/Job");
 const LeaveRequest = require("../models/LeaveRequest");
 const Offer = require("../models/Offer");
@@ -608,6 +609,125 @@ const seed = async () => {
         createdBy: adminUser._id
       }
     );
+
+    const integrationSeeds = [
+      {
+        name: "Zoho Payroll Sync",
+        provider: "Zoho Payroll",
+        category: "Payroll",
+        status: "Connected",
+        environment: "Production",
+        baseUrl: "https://payroll.zoho.in/api/v1",
+        webhookUrl: "https://hrms-manpower-backend.onrender.com/api/webhooks/zoho-payroll",
+        authType: "OAuth",
+        maskedCredential: "oauth_zoho_****_live",
+        syncDirection: "Export",
+        objects: ["Employees", "Attendance", "Payroll"],
+        lastSyncAt: daysFromNow(-1),
+        nextSyncAt: daysFromNow(1),
+        syncStatus: "Healthy",
+        recordsSynced: 1840,
+        errorRate: 0.4,
+        owner: adminUser._id,
+        syncLogs: [
+          {
+            status: "Success",
+            message: "Attendance and employee master pushed to payroll.",
+            recordsProcessed: 126,
+            durationMs: 920,
+            ranBy: adminUser._id
+          }
+        ]
+      },
+      {
+        name: "Tally Prime Billing",
+        provider: "Tally Prime",
+        category: "Accounting",
+        status: "Connected",
+        environment: "Production",
+        baseUrl: "https://api.tallysolutions.com",
+        webhookUrl: "https://hrms-manpower-backend.onrender.com/api/webhooks/tally",
+        authType: "API Key",
+        maskedCredential: "tally_live_****_84",
+        syncDirection: "Export",
+        objects: ["Invoices", "Clients", "Receipts"],
+        lastSyncAt: daysFromNow(-2),
+        nextSyncAt: daysFromNow(1),
+        syncStatus: "Healthy",
+        recordsSynced: 312,
+        errorRate: 0,
+        owner: payrollUser._id,
+        syncLogs: [
+          {
+            status: "Success",
+            message: "Invoices exported to accounting ledger.",
+            recordsProcessed: 18,
+            durationMs: 640,
+            ranBy: payrollUser._id
+          }
+        ]
+      },
+      {
+        name: "Naukri Recruiter Pipeline",
+        provider: "Naukri",
+        category: "ATS",
+        status: "Needs Attention",
+        environment: "Production",
+        baseUrl: "https://api.naukri.com/recruiter",
+        webhookUrl: "https://hrms-manpower-backend.onrender.com/api/webhooks/naukri",
+        authType: "API Key",
+        maskedCredential: "naukri_****_expired",
+        syncDirection: "Import",
+        objects: ["Candidates", "Applications", "Resumes"],
+        lastSyncAt: daysFromNow(-4),
+        nextSyncAt: daysFromNow(0),
+        syncStatus: "Delayed",
+        recordsSynced: 768,
+        errorRate: 5.2,
+        owner: hrUser._id,
+        syncLogs: [
+          {
+            status: "Warning",
+            message: "Candidate import delayed. API key rotation required.",
+            recordsProcessed: 0,
+            durationMs: 400,
+            ranBy: hrUser._id
+          }
+        ]
+      },
+      {
+        name: "WhatsApp HR Alerts",
+        provider: "WhatsApp Business",
+        category: "Communication",
+        status: "Connected",
+        environment: "Production",
+        baseUrl: "https://graph.facebook.com/v20.0",
+        webhookUrl: "https://hrms-manpower-backend.onrender.com/api/webhooks/whatsapp",
+        authType: "Webhook Secret",
+        maskedCredential: "wa_secret_****_prod",
+        syncDirection: "Export",
+        objects: ["Interview Reminders", "Offer Alerts", "Leave Notifications"],
+        lastSyncAt: daysFromNow(0),
+        nextSyncAt: daysFromNow(1),
+        syncStatus: "Healthy",
+        recordsSynced: 2240,
+        errorRate: 0.8,
+        owner: adminUser._id,
+        syncLogs: [
+          {
+            status: "Success",
+            message: "Candidate interview reminders delivered.",
+            recordsProcessed: 34,
+            durationMs: 780,
+            ranBy: adminUser._id
+          }
+        ]
+      }
+    ];
+
+    for (const item of integrationSeeds) {
+      await upsertByKey(Integration, { provider: item.provider }, item);
+    }
 
     console.log("");
     console.log("Demo data ready:");

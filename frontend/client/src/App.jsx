@@ -27,6 +27,7 @@ import ESignCenter from "./pages/ESignCenter";
 import ExecutiveAnalytics from "./pages/ExecutiveAnalytics";
 import ForgotPassword from "./pages/ForgotPassword";
 import HrCopilot from "./pages/HrCopilot";
+import IntegrationHub from "./pages/IntegrationHub";
 import InvoiceManagement from "./pages/InvoiceManagement";
 import LeadManagement from "./pages/LeadManagement";
 import Login from "./pages/Login";
@@ -145,6 +146,7 @@ const App = () => {
           <Route path="invoices" element={<InvoiceManagement />} />
           <Route path="sla" element={<SlaDashboard />} />
           <Route path="compliance" element={<ComplianceDashboard />} />
+          <Route path="integrations" element={<IntegrationHub />} />
           <Route path="shifts" element={<ShiftRoster />} />
           <Route path="analytics" element={<ExecutiveAnalytics />} />
           <Route path="copilot" element={<HrCopilot />} />

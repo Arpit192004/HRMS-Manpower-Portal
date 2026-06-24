@@ -34,6 +34,7 @@ const shiftRoutes = require("./routes/shiftRoutes");
 const securityLogRoutes = require("./routes/securityLogRoutes");
 const copilotRoutes = require("./routes/copilotRoutes");
 const eSignRoutes = require("./routes/eSignRoutes");
+const integrationRoutes = require("./routes/integrationRoutes");
 
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const { requestId, securityHeaders, rateLimit } = require("./middleware/securityMiddleware");
@@ -151,6 +152,7 @@ app.use("/api/shifts", shiftRoutes);
 app.use("/api/security-logs", securityLogRoutes);
 app.use("/api/copilot", copilotRoutes);
 app.use("/api/esign", eSignRoutes);
+app.use("/api/integrations", integrationRoutes);
 
 // Error middleware hamesha API routes ke baad rahega
 app.use(notFound);
