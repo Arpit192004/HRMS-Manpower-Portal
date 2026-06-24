@@ -2910,3 +2910,200 @@ code {
     grid-template-columns: 1fr;
   }
 }
+
+/* Formal corporate theme */
+:root {
+  --formal-navy: #0b1f3a;
+  --formal-navy-soft: #122b4a;
+  --formal-blue: #1f4e79;
+  --formal-ink: #172033;
+  --formal-muted: #64748b;
+  --formal-border: #d9e2ef;
+  --formal-surface: #ffffff;
+  --formal-page: #f3f6fa;
+}
+
+body {
+  background: var(--formal-page);
+  color: var(--formal-ink);
+}
+
+.login-page {
+  background:
+    linear-gradient(rgba(11, 31, 58, 0.88), rgba(11, 31, 58, 0.9)),
+    linear-gradient(135deg, #0b1f3a, #1f4e79);
+}
+
+.login-card {
+  border: 1px solid rgba(217, 226, 239, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 18px 45px rgba(11, 31, 58, 0.22);
+}
+
+.login-card h1 {
+  color: var(--formal-navy);
+  letter-spacing: -0.02em;
+}
+
+.logo,
+.brand-logo,
+.user-avatar {
+  background: var(--formal-blue);
+  border-radius: 8px;
+}
+
+.login-card button,
+.primary-button {
+  background: var(--formal-blue);
+  border-radius: 7px;
+  font-weight: 800;
+}
+
+.secondary-button {
+  border-color: var(--formal-border);
+  border-radius: 7px;
+  color: var(--formal-navy);
+}
+
+.sidebar,
+.candidate-sidebar,
+.employee-sidebar,
+.client-sidebar {
+  background: var(--formal-navy);
+}
+
+.sidebar a,
+.logout-button,
+.candidate-sidebar a,
+.employee-sidebar a,
+.client-sidebar a {
+  border-radius: 6px;
+}
+
+.sidebar a:hover,
+.sidebar a.active,
+.candidate-sidebar a:hover,
+.candidate-sidebar a.active,
+.employee-sidebar a:hover,
+.employee-sidebar a.active,
+.client-sidebar a:hover,
+.client-sidebar a.active {
+  background: #ffffff;
+  color: var(--formal-navy);
+}
+
+.topbar,
+.page-heading,
+.content-card,
+.stat-card,
+.public-nav,
+.service-card,
+.hero-panel,
+.demo-account-card,
+.demo-guide-card {
+  border-color: var(--formal-border);
+  box-shadow: 0 8px 24px rgba(11, 31, 58, 0.06);
+}
+
+.content-card,
+.stat-card,
+.service-card,
+.hero-panel,
+.demo-account-card,
+.demo-guide-card,
+.public-metrics div {
+  border-radius: 10px;
+}
+
+.page-heading h1,
+.dashboard-hero h1,
+.public-hero h1,
+.demo-guide-hero h1 {
+  color: var(--formal-navy);
+  letter-spacing: -0.035em;
+}
+
+.dashboard-hero {
+  background: #ffffff;
+  border-left: 4px solid var(--formal-blue);
+}
+
+.public-site {
+  background: #f7f9fc;
+}
+
+.public-nav {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--formal-border);
+  border-radius: 0;
+  box-shadow: 0 6px 20px rgba(11, 31, 58, 0.05);
+}
+
+.public-nav-links .nav-button {
+  background: var(--formal-navy);
+  border-radius: 6px;
+}
+
+.public-hero {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.72)),
+    linear-gradient(135deg, #eef3f8, #ffffff);
+  border-bottom: 1px solid var(--formal-border);
+}
+
+.public-hero h1 {
+  font-size: clamp(36px, 4.6vw, 60px);
+}
+
+.eyebrow {
+  color: var(--formal-blue);
+}
+
+.hero-panel {
+  border-top: 4px solid var(--formal-blue);
+}
+
+.hero-card-row {
+  border-radius: 8px;
+}
+
+.public-metrics strong,
+.module-toolbar strong,
+.queue-item svg,
+.readiness-list svg,
+.copilot-sidebar svg {
+  color: var(--formal-blue);
+}
+
+.queue-item:hover {
+  border-color: #9eb6d3;
+  background: #f5f8fc;
+}
+
+.status-pill.submitted-to-client,
+.status-pill.more-profiles-requested,
+.status-pill.connected,
+.status-pill.healthy {
+  background: #e8eef6;
+  color: var(--formal-blue);
+}
+
+.table-wrapper table th {
+  background: #eef3f8;
+  color: var(--formal-navy);
+}
+
+.demo-guide-hero {
+  background:
+    linear-gradient(rgba(11, 31, 58, 0.9), rgba(11, 31, 58, 0.86)),
+    linear-gradient(135deg, #0b1f3a, #1f4e79);
+}
+
+.demo-guide-hero h1,
+.demo-guide-hero p {
+  color: #ffffff;
+}
+
+.integration-endpoints {
+  background: var(--formal-navy);
+}
