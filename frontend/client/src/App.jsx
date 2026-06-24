@@ -18,6 +18,7 @@ import ClientRequirements from "./pages/ClientRequirements";
 import CompanySettings from "./pages/CompanySettings";
 import ComplianceDashboard from "./pages/ComplianceDashboard";
 import Dashboard from "./pages/Dashboard";
+import DemoGuide from "./pages/DemoGuide";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import EmployeeDocuments from "./pages/EmployeeDocuments";
 import EmployeeLogin from "./pages/EmployeeLogin";
@@ -70,6 +71,7 @@ const App = () => {
       <Route path="/contact" element={<PublicInfoPage page="contact" />} />
       <Route path="/privacy" element={<PublicInfoPage page="privacy" />} />
       <Route path="/terms" element={<PublicInfoPage page="terms" />} />
+      <Route path="/demo-guide" element={<DemoGuide />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />

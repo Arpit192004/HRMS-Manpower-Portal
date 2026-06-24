@@ -20,7 +20,13 @@ const statusClass = {
 const SecurityLogs = () => {
   const [logs, setLogs] = useState([]);
   const [summary, setSummary] = useState({});
-  const [filters, setFilters] = useState({ event: "", status: "", email: "" });
+  const [filters, setFilters] = useState({
+    event: "",
+    status: "",
+    email: "",
+    fromDate: "",
+    toDate: ""
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -58,6 +64,46 @@ const SecurityLogs = () => {
     setFilters((current) => ({ ...current, [name]: value }));
   };
 
+  const resetFilters = () => {
+    setFilters({
+      event: "",
+      status: "",
+      email: "",
+      fromDate: "",
+      toDate: ""
+    });
+  };
+
+  const exportCsv = () => {
+    const rows = [
+      ["Time", "User", "Role", "Email", "Event", "Status", "IP Address", "Browser", "Details"],
+      ...logs.map((log) => [
+        new Date(log.createdAt).toLocaleString(),
+        log.user?.name || "",
+        log.user?.role || log.role || "",
+        log.user?.email || log.email || "",
+        eventLabels[log.event] || log.event,
+        log.status,
+        log.ipAddress || "",
+        log.userAgent || "",
+        log.details && Object.keys(log.details).length
+          ? Object.entries(log.details).map(([key, value]) => `${key}: ${value}`).join("; ")
+          : ""
+      ])
+    ];
+
+    const csv = rows
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `security-logs-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <section>
       <div className="page-heading">
@@ -79,7 +125,7 @@ const SecurityLogs = () => {
         ))}
       </div>
 
-      <div className="content-card module-toolbar">
+      <div className="content-card module-toolbar security-filter-toolbar">
         <label>
           Event
           <select value={filters.event} onChange={(event) => setFilter("event", event.target.value)}>
@@ -108,6 +154,31 @@ const SecurityLogs = () => {
             placeholder="user@company.com"
           />
         </label>
+
+        <label>
+          From
+          <input
+            type="date"
+            value={filters.fromDate}
+            onChange={(event) => setFilter("fromDate", event.target.value)}
+          />
+        </label>
+
+        <label>
+          To
+          <input
+            type="date"
+            value={filters.toDate}
+            onChange={(event) => setFilter("toDate", event.target.value)}
+          />
+        </label>
+
+        <div className="security-filter-actions">
+          <button type="button" className="secondary-button" onClick={resetFilters}>Reset</button>
+          <button type="button" className="primary-button" onClick={exportCsv} disabled={!logs.length}>
+            Export CSV
+          </button>
+        </div>
       </div>
 
       <div className="content-card table-card">

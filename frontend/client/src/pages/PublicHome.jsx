@@ -103,6 +103,7 @@ const PublicHome = () => {
           <Link to="/candidate/register">Candidate Apply</Link>
           <Link to="/employee/login">Employee Login</Link>
           <Link to="/client/login">Client Login</Link>
+          <Link to="/demo-guide">Demo Guide</Link>
           <Link to="/login" className="nav-button">Admin Login</Link>
         </div>
       </nav>

@@ -2247,6 +2247,16 @@ code {
   margin-bottom: 18px;
 }
 
+.security-filter-toolbar {
+  grid-template-columns: repeat(6, minmax(130px, 1fr));
+}
+
+.security-filter-actions {
+  align-items: end;
+  display: flex;
+  gap: 10px;
+}
+
 .security-user-agent {
   max-width: 280px;
   color: #64748b;
@@ -2626,6 +2636,120 @@ code {
   background: #f8fafc;
 }
 
+.demo-guide-page {
+  background: #f8fafc;
+  color: #172033;
+  min-height: 100vh;
+}
+
+.demo-guide-hero {
+  align-items: center;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.25), transparent 28%),
+    linear-gradient(135deg, #0f172a, #1d4ed8);
+  color: #ffffff;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 72px 7vw;
+}
+
+.demo-guide-hero h1 {
+  font-size: clamp(34px, 5vw, 62px);
+  line-height: 1;
+  margin: 10px 0 16px;
+  max-width: 760px;
+}
+
+.demo-guide-hero p {
+  color: #dbeafe;
+  font-size: 18px;
+  max-width: 780px;
+}
+
+.demo-guide-section {
+  padding: 42px 7vw;
+}
+
+.demo-guide-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+}
+
+.demo-guide-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 11px;
+  padding: 22px;
+}
+
+.demo-guide-card h3,
+.demo-guide-section h2 {
+  margin: 0;
+}
+
+.demo-guide-card p {
+  color: #64748b;
+  min-height: 62px;
+}
+
+.demo-guide-card code {
+  background: #eff6ff;
+  border-radius: 9px;
+  color: #1d4ed8;
+  padding: 8px 10px;
+}
+
+.demo-guide-card a {
+  color: #147a45;
+  font-weight: 900;
+}
+
+.two-column-demo {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.demo-flow-list {
+  color: #334155;
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding-left: 22px;
+}
+
+.feature-check-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.feature-check-grid span {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  color: #166534;
+  font-weight: 800;
+  padding: 11px 12px;
+}
+
+.demo-closing-card {
+  background: linear-gradient(135deg, #ffffff, #eff6ff);
+}
+
+.demo-closing-card p {
+  color: #334155;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
 .demo-account-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(180px, 1fr));
@@ -2749,8 +2873,20 @@ code {
   .analytics-grid,
   .attendance-health-grid,
   .copilot-grid,
+  .demo-guide-grid,
+  .feature-check-grid,
+  .security-filter-toolbar,
   .demo-account-grid {
     grid-template-columns: 1fr;
+  }
+
+  .two-column-demo {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-guide-hero {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .copilot-input {
