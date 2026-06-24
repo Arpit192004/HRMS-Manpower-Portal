@@ -49,9 +49,9 @@ const registerCandidate = async (req, res, next) => {
 
     await sendEmail({
       to: user.email,
-      subject: "Welcome to HRMS Manpower Portal",
-      text: `Hi ${user.name}, your candidate account has been created. You can now apply for jobs and track applications.`,
-      html: `<p>Hi ${user.name},</p><p>Your candidate account has been created. You can now apply for jobs and track applications.</p>`
+      subject: "Welcome to Niyukti",
+      text: `Hi ${user.name}, your Niyukti candidate account has been created. You can now apply for jobs and track applications.`,
+      html: `<p>Hi ${user.name},</p><p>Your Niyukti candidate account has been created. You can now apply for jobs and track applications.</p>`
     });
 
     res.status(201).json({
@@ -268,9 +268,9 @@ const forgotPassword = async (req, res, next) => {
 
     await sendEmail({
       to: user.email,
-      subject: "Reset your HRMS password",
-      text: `Use this link to reset your HRMS password: ${resetUrl}. This link expires in 15 minutes.`,
-      html: `<p>Use this link to reset your HRMS password:</p><p><a href="${resetUrl}">${resetUrl}</a></p><p>This link expires in 15 minutes.</p>`
+      subject: "Reset your Niyukti password",
+      text: `Use this link to reset your Niyukti password: ${resetUrl}. This link expires in 15 minutes.`,
+      html: `<p>Use this link to reset your Niyukti password:</p><p><a href="${resetUrl}">${resetUrl}</a></p><p>This link expires in 15 minutes.</p>`
     });
 
     res.json({

@@ -5,12 +5,12 @@ const companySettingSchema = new mongoose.Schema(
     companyName: {
       type: String,
       required: true,
-      default: "HRMS Manpower Portal",
+      default: "Niyukti",
       trim: true
     },
     tagline: {
       type: String,
-      default: "Complete HRMS and manpower services platform",
+      default: "From hiring to workforce management",
       trim: true
     },
     logoUrl: {
@@ -51,7 +51,7 @@ const companySettingSchema = new mongoose.Schema(
     },
     footerText: {
       type: String,
-      default: "Thank you for choosing our HRMS manpower services.",
+      default: "Thank you for choosing Niyukti workforce services.",
       trim: true
     },
     updatedBy: {

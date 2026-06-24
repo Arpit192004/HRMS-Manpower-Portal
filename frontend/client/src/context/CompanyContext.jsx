@@ -2,14 +2,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/axios";
 
 const defaultSettings = {
-  companyName: "HRMS Manpower Portal",
-  tagline: "Complete HRMS and manpower services platform",
+  companyName: "Niyukti",
+  tagline: "From hiring to workforce management",
   logoUrl: "",
   email: "",
   phone: "",
   website: "",
   address: "",
-  footerText: "Thank you for choosing our HRMS manpower services."
+  footerText: "Thank you for choosing Niyukti workforce services."
 };
 
 const CompanyContext = createContext({

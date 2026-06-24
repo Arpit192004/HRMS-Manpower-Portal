@@ -67,7 +67,7 @@ const Sidebar = () => {
           <div className="brand-logo">HR</div>
         )}
         <div>
-          <strong>{settings.companyName || "HRMS Portal"}</strong>
+          <strong>{settings.companyName || "Niyukti"}</strong>
           <small>{user?.role}</small>
         </div>
       </div>

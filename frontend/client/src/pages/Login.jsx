@@ -46,7 +46,7 @@ const Login = () => {
       <form className="login-card" onSubmit={handleSubmit}>
         <div className="logo">HR</div>
 
-        <h1>HRMS Manpower Portal</h1>
+        <h1>Niyukti</h1>
         <p>Sign in to manage your workforce</p>
 
         {error && <div className="error-message">{error}</div>}

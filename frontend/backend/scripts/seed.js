@@ -6,6 +6,7 @@ const Attendance = require("../models/Attendance");
 const Candidate = require("../models/Candidate");
 const Client = require("../models/Client");
 const ClientRequirement = require("../models/ClientRequirement");
+const CompanySetting = require("../models/CompanySetting");
 const Employee = require("../models/Employee");
 const ESignRequest = require("../models/ESignRequest");
 const ExpenseClaim = require("../models/ExpenseClaim");
@@ -74,6 +75,25 @@ const seed = async () => {
       password: "Admin@123",
       role: "Super Admin"
     });
+
+    await CompanySetting.findOneAndUpdate(
+      {},
+      {
+        companyName: "Niyukti",
+        tagline: "From hiring to workforce management",
+        email: "hello@niyukti.example",
+        phone: "+91 98765 43210",
+        website: "https://hrms-manpower-portal.vercel.app",
+        address: "Delhi NCR, India",
+        footerText: "Thank you for choosing Niyukti workforce services.",
+        updatedBy: adminUser._id
+      },
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true
+      }
+    );
 
     const hrUser = await ensureUser({
       name: "HR Administrator",

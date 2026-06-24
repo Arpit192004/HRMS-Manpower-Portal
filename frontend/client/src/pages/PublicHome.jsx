@@ -111,9 +111,9 @@ const PublicHome = () => {
       <section className="public-hero">
         <div>
           <span className="eyebrow">Full-stack HRMS + Manpower Services</span>
-          <h1>{settings.tagline || "Modern HRMS built for staffing, payroll and manpower operations."}</h1>
+          <h1>{settings.tagline || "From hiring to workforce management."}</h1>
           <p>
-            A production-ready HRMS workflow for staffing companies: candidates apply,
+            Niyukti is a production-ready workflow for staffing companies: candidates apply,
             HR processes hiring, employees manage self-service, and clients track manpower.
           </p>
 

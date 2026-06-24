@@ -108,8 +108,8 @@ const createESignRequest = async (req, res, next) => {
     await sendEmail({
       to: signerUser.email,
       subject: `Document signature requested: ${title}`,
-      text: `Please login to HRMS Manpower Portal and sign: ${title}.`,
-      html: `<p>Please login to HRMS Manpower Portal and sign:</p><p><strong>${title}</strong></p>`
+      text: `Please login to Niyukti and sign: ${title}.`,
+      html: `<p>Please login to Niyukti and sign:</p><p><strong>${title}</strong></p>`
     });
 
     res.status(201).json({

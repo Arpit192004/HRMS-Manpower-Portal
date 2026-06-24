@@ -62,7 +62,7 @@ const DemoGuide = () => {
       <section className="demo-guide-hero">
         <div>
           <span className="eyebrow">Demo Playbook</span>
-          <h1>HRMS Manpower Portal Demo Guide</h1>
+          <h1>Niyukti Demo Guide</h1>
           <p>
             Use this page during client presentations to show the complete real-world
             HR, staffing, payroll, client and employee workflow.
@@ -116,7 +116,7 @@ const DemoGuide = () => {
         <div className="content-card demo-closing-card">
           <h2>Final client pitch</h2>
           <p>
-            "This is an end-to-end HRMS and manpower operations platform where clients raise
+            "Niyukti is an end-to-end HRMS and manpower operations platform where clients raise
             requirements, HR manages hiring, employees use self-service, payroll and invoices
             stay visible, and leadership gets analytics with audit-ready security."
           </p>

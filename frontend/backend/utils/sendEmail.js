@@ -7,7 +7,7 @@ const isSmtpConfigured = () =>
 const isBrevoConfigured = () => Boolean(process.env.BREVO_API_KEY);
 
 const parseSender = () => {
-  const from = process.env.MAIL_FROM || process.env.SMTP_USER || "HRMS Manpower Portal <no-reply@hrms.local>";
+  const from = process.env.MAIL_FROM || process.env.SMTP_USER || "Niyukti <no-reply@niyukti.local>";
   const match = from.match(/^(.*)<(.+)>$/);
 
   if (match) {
@@ -18,7 +18,7 @@ const parseSender = () => {
   }
 
   return {
-    name: "HRMS Manpower Portal",
+    name: "Niyukti",
     email: from.trim()
   };
 };

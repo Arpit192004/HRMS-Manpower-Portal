@@ -1,4 +1,4 @@
-# HRMS Manpower Portal Deployment
+# Niyukti Deployment
 
 ## Recommended Hosting
 
@@ -39,7 +39,7 @@ JWT_EXPIRES_IN=7d
 CLIENT_URL=https://hrms-manpower-portal.vercel.app
 
 BREVO_API_KEY=your_brevo_api_key
-MAIL_FROM=HRMS Manpower Portal <your_verified_sender@example.com>
+MAIL_FROM=Niyukti <your_verified_sender@example.com>
 
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key

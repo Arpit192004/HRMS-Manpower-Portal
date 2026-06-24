@@ -35,7 +35,7 @@ const drawHeader = (doc, title) => {
   doc
     .fontSize(20)
     .fillColor("#172033")
-    .text("HRMS Manpower Portal", { align: "center" })
+    .text("Niyukti", { align: "center" })
     .moveDown(0.35)
     .fontSize(13)
     .fillColor("#475569")
@@ -208,7 +208,7 @@ const downloadOfferLetter = async (req, res, next) => {
       );
       doc.moveDown(2);
       doc.font("Helvetica-Bold").text("Authorized Signatory");
-      doc.text("HRMS Manpower Portal");
+      doc.text("Niyukti");
     });
   } catch (error) {
     next(error);
@@ -240,7 +240,7 @@ const downloadAppointmentLetter = async (req, res, next) => {
       );
       doc.moveDown(2);
       doc.font("Helvetica-Bold").text("Authorized Signatory");
-      doc.text("HRMS Manpower Portal");
+      doc.text("Niyukti");
     });
   } catch (error) {
     next(error);

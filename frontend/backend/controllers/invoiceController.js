@@ -215,7 +215,7 @@ const downloadInvoice = async (req, res, next) => {
     res.setHeader("Content-Disposition", `attachment; filename="${invoice.invoiceNumber}.pdf"`);
 
     doc.pipe(res);
-    doc.fontSize(22).fillColor("#172033").text("HRMS Manpower Portal", { align: "center" });
+    doc.fontSize(22).fillColor("#172033").text("Niyukti", { align: "center" });
     doc.fontSize(14).fillColor("#475569").text("Tax Invoice", { align: "center" });
     doc.moveDown(1.4).fillColor("#172033");
 
