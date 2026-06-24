@@ -5,12 +5,12 @@ const pageContent = {
   about: {
     title: "About Us",
     eyebrow: "About our company",
-    text: "We help organizations manage hiring, staffing, employee operations and manpower deployment through a connected digital workflow.",
+    text: "We provide a digital operating system for manpower, recruitment, HR operations, payroll coordination and client workforce visibility.",
     points: [
-      "End-to-end recruitment and staffing operations",
-      "Employee self-service and payroll workflows",
-      "Client-facing manpower tracking",
-      "Transparent approvals, logs and reports"
+      "End-to-end recruitment, offer, onboarding and staffing operations",
+      "Employee self-service, attendance, payroll and document workflows",
+      "Client-facing requirement, candidate and manpower tracking",
+      "Transparent approvals, integrations, audit logs and executive reports"
     ]
   },
   services: {
@@ -21,7 +21,8 @@ const pageContent = {
       "Recruitment and candidate pipeline management",
       "Manpower deployment and client coordination",
       "Attendance, leave, tour and expense workflows",
-      "Payroll, payslips, offer letters and document vault"
+      "Payroll, payslips, invoices, e-sign letters and document vault",
+      "Security logs, SLA dashboards and external integration monitoring"
     ]
   },
   industries: {
@@ -29,10 +30,10 @@ const pageContent = {
     eyebrow: "Where we operate",
     text: "The portal is built for manpower-heavy operations where speed, visibility and accountability matter.",
     points: [
-      "Manufacturing and industrial staffing",
-      "Warehousing and logistics",
-      "Facility management",
-      "Corporate and back-office staffing"
+      "IT services, BPO and back-office staffing",
+      "Warehousing, logistics and fulfilment operations",
+      "Retail, facility management and security services",
+      "Healthcare support and administrative manpower"
     ]
   },
   contact: {
@@ -44,11 +45,13 @@ const pageContent = {
   privacy: {
     title: "Privacy Policy",
     eyebrow: "Data protection",
-    text: "We collect only the information needed to manage HR, manpower, recruitment and service workflows. Access is role-based and protected.",
+    text: "We collect only the information required to operate recruitment, HR, manpower, payroll, billing and client service workflows.",
     points: [
-      "Candidate and employee data is used for operational HR workflows",
-      "Uploaded documents are stored securely via configured cloud storage",
-      "Users can contact the administrator for data updates or access requests"
+      "Candidate, employee and client data is used only for authorized operational workflows",
+      "Uploaded documents are stored through configured cloud storage and are visible based on role access",
+      "Security logs are maintained for login, password reset and sensitive account activity",
+      "Users can contact the administrator for data correction, access requests or account deactivation",
+      "Production deployments should rotate credentials and restrict database/network access"
     ]
   },
   terms: {
@@ -58,7 +61,9 @@ const pageContent = {
     points: [
       "Users must keep their login credentials secure",
       "Uploaded documents must be accurate and lawful",
-      "Administrators may audit activity for security and compliance"
+      "Administrators may audit activity for security, compliance and service quality",
+      "Role-based access must not be bypassed or shared with unauthorized users",
+      "Demo credentials are for evaluation only and should be replaced before real employee rollout"
     ]
   }
 };
