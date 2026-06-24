@@ -92,28 +92,44 @@ const seed = async () => {
     const clients = [];
     const clientSeeds = [
       {
-        name: "TechNova Solutions",
-        code: "TECH",
-        industry: "IT Services",
-        contactPerson: { name: "Aarav Mehta", email: "aarav@technova.example", phone: "9876500011" },
-        address: { line1: "Sector 62", city: "Noida", state: "Uttar Pradesh", postalCode: "201301" },
-        gstNumber: "09TECH1234F1Z5"
+        name: "Apex Digital Services Pvt. Ltd.",
+        code: "APEX",
+        industry: "IT Services & BPO",
+        contactPerson: { name: "Aarav Mehta", email: "aarav.mehta@apexdigital.example", phone: "9876500011" },
+        address: { line1: "Tower B, Sector 62", city: "Noida", state: "Uttar Pradesh", postalCode: "201301" },
+        gstNumber: "09APEX1234F1Z5"
       },
       {
-        name: "QuickServe Logistics",
-        code: "QSL",
-        industry: "Logistics",
-        contactPerson: { name: "Nisha Kapoor", email: "nisha@quickserve.example", phone: "9876500022" },
-        address: { line1: "NH-48 Hub", city: "Gurugram", state: "Haryana", postalCode: "122001" },
-        gstNumber: "06QSL1234F1Z7"
+        name: "NorthGate Logistics India Pvt. Ltd.",
+        code: "NGL",
+        industry: "Logistics & Warehousing",
+        contactPerson: { name: "Nisha Kapoor", email: "nisha.kapoor@northgate.example", phone: "9876500022" },
+        address: { line1: "NH-48 Fulfilment Hub", city: "Gurugram", state: "Haryana", postalCode: "122001" },
+        gstNumber: "06NGL1234F1Z7"
       },
       {
-        name: "RetailEdge Mart",
-        code: "REM",
-        industry: "Retail",
-        contactPerson: { name: "Kabir Suri", email: "kabir@retailedge.example", phone: "9876500033" },
+        name: "UrbanKart Retail Network Ltd.",
+        code: "UKR",
+        industry: "Retail & E-Commerce",
+        contactPerson: { name: "Kabir Suri", email: "kabir.suri@urbankart.example", phone: "9876500033" },
         address: { line1: "Connaught Place", city: "Delhi", state: "Delhi", postalCode: "110001" },
-        gstNumber: "07REM1234F1Z9"
+        gstNumber: "07UKR1234F1Z9"
+      },
+      {
+        name: "MetroCare Hospital Services Pvt. Ltd.",
+        code: "MCH",
+        industry: "Healthcare Staffing",
+        contactPerson: { name: "Dr. Rhea Bansal", email: "rhea.bansal@metrocare.example", phone: "9876500044" },
+        address: { line1: "Medicentre Road, Sector 14", city: "Faridabad", state: "Haryana", postalCode: "121007" },
+        gstNumber: "06MCH1234F1Z6"
+      },
+      {
+        name: "Zenith Facility Management Pvt. Ltd.",
+        code: "ZFM",
+        industry: "Facility Management",
+        contactPerson: { name: "Manav Arora", email: "manav.arora@zenithfm.example", phone: "9876500055" },
+        address: { line1: "Industrial Area Phase II", city: "Ghaziabad", state: "Uttar Pradesh", postalCode: "201010" },
+        gstNumber: "09ZFM1234F1Z8"
       }
     ];
 
@@ -127,7 +143,7 @@ const seed = async () => {
     }
 
     const clientUser = await ensureUser({
-      name: "TechNova Client Approver",
+      name: "Apex Client Approver",
       email: "client@hrms.com",
       password: "Client@123",
       role: "Client Approver",
@@ -138,7 +154,9 @@ const seed = async () => {
     const shiftSeeds = [
       { client: clients[0], name: "General Shift", code: "GEN", startTime: "09:30", endTime: "18:30", graceMinutes: 10 },
       { client: clients[1], name: "Warehouse Morning", code: "MORN", startTime: "08:00", endTime: "17:00", graceMinutes: 15 },
-      { client: clients[2], name: "Retail Evening", code: "EVE", startTime: "12:00", endTime: "21:00", graceMinutes: 10 }
+      { client: clients[2], name: "Retail Evening", code: "EVE", startTime: "12:00", endTime: "21:00", graceMinutes: 10 },
+      { client: clients[3], name: "Hospital Day Shift", code: "HOSP-D", startTime: "07:00", endTime: "16:00", graceMinutes: 10 },
+      { client: clients[4], name: "Facility General", code: "FAC-G", startTime: "08:30", endTime: "17:30", graceMinutes: 15 }
     ];
 
     for (const item of shiftSeeds) {
@@ -164,9 +182,16 @@ const seed = async () => {
     const jobs = [];
     const jobSeeds = [
       { client: clients[0], title: "React Frontend Developer", department: "Engineering", grade: "A", vacancies: 4, location: "Noida", skills: ["React", "JavaScript", "REST API"], min: 45000, max: 90000 },
-      { client: clients[0], title: "HR Operations Executive", department: "Operations", grade: "A", vacancies: 2, location: "Noida", skills: ["HRMS", "Excel", "Payroll"], min: 30000, max: 55000 },
+      { client: clients[0], title: "HR Operations Executive", department: "Operations", grade: "A", vacancies: 3, location: "Noida", skills: ["HRMS", "Excel", "Payroll"], min: 30000, max: 55000 },
+      { client: clients[0], title: "Customer Support Associate", department: "BPO Operations", grade: "B", vacancies: 15, location: "Noida", skills: ["CRM", "Email Support", "English Communication"], min: 22000, max: 38000 },
       { client: clients[1], title: "Warehouse Supervisor", department: "Logistics", grade: "B", vacancies: 6, location: "Gurugram", skills: ["Inventory", "Team Handling", "Shift Planning"], min: 28000, max: 52000 },
-      { client: clients[2], title: "Store Associate", department: "Retail", grade: "C", vacancies: 12, location: "Delhi", skills: ["Customer Service", "POS", "Sales"], min: 18000, max: 32000 }
+      { client: clients[1], title: "Picker Packer", department: "Warehouse", grade: "C", vacancies: 30, location: "Gurugram", skills: ["Barcode Scanning", "Packing", "Dispatch"], min: 16000, max: 24000 },
+      { client: clients[2], title: "Store Associate", department: "Retail", grade: "C", vacancies: 12, location: "Delhi", skills: ["Customer Service", "POS", "Sales"], min: 18000, max: 32000 },
+      { client: clients[2], title: "Retail Floor Supervisor", department: "Retail", grade: "B", vacancies: 5, location: "Delhi", skills: ["Visual Merchandising", "Team Handling", "Sales"], min: 28000, max: 45000 },
+      { client: clients[3], title: "Patient Care Assistant", department: "Nursing Support", grade: "C", vacancies: 18, location: "Faridabad", skills: ["Patient Care", "Vitals", "Ward Support"], min: 19000, max: 30000 },
+      { client: clients[3], title: "Hospital Front Desk Executive", department: "Administration", grade: "B", vacancies: 4, location: "Faridabad", skills: ["OPD Desk", "Billing", "Patient Coordination"], min: 24000, max: 38000 },
+      { client: clients[4], title: "Facility Supervisor", department: "Operations", grade: "B", vacancies: 7, location: "Ghaziabad", skills: ["Housekeeping", "Vendor Coordination", "Checklist Audit"], min: 26000, max: 42000 },
+      { client: clients[4], title: "Security Coordinator", department: "Security", grade: "B", vacancies: 8, location: "Ghaziabad", skills: ["Patrolling", "Incident Reporting", "Shift Rostering"], min: 24000, max: 38000 }
     ];
 
     for (const jobData of jobSeeds) {
@@ -221,11 +246,30 @@ const seed = async () => {
 
     const employeeSeeds = [
       ["employee@hrms.com", "Test Employee", clients[0], jobs[1], shifts[0], "Operations Executive", "Operations", "A", 42000],
-      ["priya.employee@hrms.com", "Priya Sharma", clients[0], jobs[0], shifts[0], "Frontend Developer", "Engineering", "A", 68000],
-      ["rahul.employee@hrms.com", "Rahul Verma", clients[0], jobs[0], shifts[0], "Frontend Developer", "Engineering", "A", 72000],
-      ["sana.employee@hrms.com", "Sana Khan", clients[1], jobs[2], shifts[1], "Warehouse Supervisor", "Logistics", "B", 46000],
-      ["vikram.employee@hrms.com", "Vikram Singh", clients[1], jobs[2], shifts[1], "Shift Lead", "Logistics", "B", 39000],
-      ["isha.employee@hrms.com", "Isha Malhotra", clients[2], jobs[3], shifts[2], "Store Associate", "Retail", "C", 26000]
+      ["priya.sharma@hrms.com", "Priya Sharma", clients[0], jobs[0], shifts[0], "Frontend Developer", "Engineering", "A", 68000],
+      ["rahul.verma@hrms.com", "Rahul Verma", clients[0], jobs[0], shifts[0], "Frontend Developer", "Engineering", "A", 72000],
+      ["neha.gupta@hrms.com", "Neha Gupta", clients[0], jobs[1], shifts[0], "HR Operations Executive", "Operations", "A", 48000],
+      ["farhan.ali@hrms.com", "Farhan Ali", clients[0], jobs[2], shifts[0], "Customer Support Associate", "BPO Operations", "B", 31000],
+      ["sana.khan@hrms.com", "Sana Khan", clients[1], jobs[3], shifts[1], "Warehouse Supervisor", "Logistics", "B", 46000],
+      ["vikram.singh@hrms.com", "Vikram Singh", clients[1], jobs[3], shifts[1], "Shift Lead", "Logistics", "B", 39000],
+      ["rohit.kumar@hrms.com", "Rohit Kumar", clients[1], jobs[4], shifts[1], "Picker Packer", "Warehouse", "C", 22000],
+      ["kavita.yadav@hrms.com", "Kavita Yadav", clients[1], jobs[4], shifts[1], "Dispatch Associate", "Warehouse", "C", 23000],
+      ["manoj.patel@hrms.com", "Manoj Patel", clients[1], jobs[4], shifts[1], "Inventory Associate", "Warehouse", "C", 24000],
+      ["isha.malhotra@hrms.com", "Isha Malhotra", clients[2], jobs[5], shifts[2], "Store Associate", "Retail", "C", 26000],
+      ["ankit.batra@hrms.com", "Ankit Batra", clients[2], jobs[5], shifts[2], "Cashier", "Retail", "C", 25000],
+      ["simran.kaur@hrms.com", "Simran Kaur", clients[2], jobs[6], shifts[2], "Retail Floor Supervisor", "Retail", "B", 39000],
+      ["deepak.rawat@hrms.com", "Deepak Rawat", clients[2], jobs[6], shifts[2], "Visual Merchandiser", "Retail", "B", 36000],
+      ["meera.joshi@hrms.com", "Meera Joshi", clients[2], jobs[5], shifts[2], "Customer Service Associate", "Retail", "C", 27000],
+      ["anjali.mehra@hrms.com", "Anjali Mehra", clients[3], jobs[7], shifts[3], "Patient Care Assistant", "Nursing Support", "C", 28000],
+      ["suresh.pal@hrms.com", "Suresh Pal", clients[3], jobs[7], shifts[3], "Ward Assistant", "Nursing Support", "C", 24000],
+      ["rhea.singh@hrms.com", "Rhea Singh", clients[3], jobs[8], shifts[3], "Front Desk Executive", "Administration", "B", 34000],
+      ["arjun.nair@hrms.com", "Arjun Nair", clients[3], jobs[8], shifts[3], "Billing Coordinator", "Administration", "B", 36000],
+      ["pooja.saini@hrms.com", "Pooja Saini", clients[3], jobs[7], shifts[3], "Patient Coordinator", "Nursing Support", "C", 29000],
+      ["sandeep.yadav@hrms.com", "Sandeep Yadav", clients[4], jobs[9], shifts[4], "Facility Supervisor", "Operations", "B", 38000],
+      ["lata.mishra@hrms.com", "Lata Mishra", clients[4], jobs[9], shifts[4], "Housekeeping Supervisor", "Operations", "B", 32000],
+      ["nitin.chauhan@hrms.com", "Nitin Chauhan", clients[4], jobs[10], shifts[4], "Security Coordinator", "Security", "B", 35000],
+      ["geeta.rana@hrms.com", "Geeta Rana", clients[4], jobs[9], shifts[4], "Checklist Auditor", "Operations", "B", 33000],
+      ["aman.tyagi@hrms.com", "Aman Tyagi", clients[4], jobs[10], shifts[4], "Shift Security Lead", "Security", "B", 34000]
     ];
 
     const employees = [];
@@ -385,11 +429,22 @@ const seed = async () => {
     }
 
     const candidateStages = ["Applied", "Shortlisted", "Interview", "Submitted to Client", "Client Shortlisted", "Offered"];
-    for (let index = 0; index < 12; index += 1) {
+    const candidateNames = [
+      "Aditi Rao", "Mohit Bansal", "Tanya Arora", "Harsh Vardhan", "Ritu Sethi",
+      "Imran Sheikh", "Kunal Dagar", "Nandini Roy", "Yogesh Malik", "Shreya Jain",
+      "Vivek Tomar", "Pallavi Nair", "Gaurav Saxena", "Nikita Ghosh", "Aftab Khan",
+      "Raman Gill", "Swati Mishra", "Devansh Kapoor", "Bhavna Tiwari", "Prakash Chauhan",
+      "Mansi Bedi", "Jatin Grover", "Kirti Rawal", "Sameer Qureshi", "Lavanya Iyer",
+      "Varun Sood", "Payal Dutta", "Chirag Ahuja", "Komal Thakur", "Rakesh Bisht"
+    ];
+
+    for (let index = 0; index < candidateNames.length; index += 1) {
       const job = jobs[index % jobs.length];
+      const candidateName = candidateNames[index];
+      const emailName = candidateName.toLowerCase().replace(/\s+/g, ".");
       const user = await ensureUser({
-        name: `Candidate ${index + 1}`,
-        email: `candidate${index + 1}@hrms.com`,
+        name: candidateName,
+        email: index === 0 ? "candidate1@hrms.com" : `${emailName}@talent.hrms.com`,
         password: "Candidate@123",
         role: "Candidate"
       });
