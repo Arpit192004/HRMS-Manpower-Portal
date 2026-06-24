@@ -519,7 +519,7 @@ const seed = async () => {
 
     for (let index = 0; index < clients.length; index += 1) {
       const client = clients[index];
-      const monthlyAmount = [285000, 198000, 156000][index];
+      const monthlyAmount = [285000, 198000, 156000, 224000, 176000][index] || 125000;
       const subTotal = monthlyAmount;
       const taxAmount = Math.round(subTotal * 0.18);
 
