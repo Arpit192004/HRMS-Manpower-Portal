@@ -56,7 +56,7 @@ const LeadManagement = () => {
     try {
       const { data } = await api.post(`/leads/${leadId}/convert`, {});
       setSuccess(
-        `Converted to client: ${data.client?.name}. Client login email: ${data.user?.email}`
+        `Converted to department workspace: ${data.client?.name}. Manager login email: ${data.user?.email}`
       );
       await loadLeads();
     } catch (requestError) {
@@ -69,7 +69,7 @@ const LeadManagement = () => {
       <div className="page-heading">
         <div>
           <h1>Website Leads</h1>
-          <p>Manage manpower enquiries submitted from the public website.</p>
+          <p>Manage hiring requests submitted from the public website.</p>
         </div>
         <div className="page-actions">
           <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>

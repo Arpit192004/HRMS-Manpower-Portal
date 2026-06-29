@@ -5,21 +5,21 @@ const pageContent = {
   about: {
     title: "About Us",
     eyebrow: "About our company",
-    text: "We provide a digital operating system for manpower, recruitment, HR operations, payroll coordination and client workforce visibility.",
+    text: "Niyukti is an internal HRMS for companies to manage hiring, employees, attendance, payroll, documents, approvals and workforce visibility.",
     points: [
-      "End-to-end recruitment, offer, onboarding and staffing operations",
+      "End-to-end recruitment, offer, onboarding and employee lifecycle operations",
       "Employee self-service, attendance, payroll and document workflows",
-      "Client-facing requirement, candidate and manpower tracking",
+      "Manager-facing hiring requests, applicant reviews and team visibility",
       "Transparent approvals, integrations, audit logs and executive reports"
     ]
   },
   services: {
     title: "Services",
     eyebrow: "What we provide",
-    text: "Our platform supports manpower businesses with operational modules for staffing, HR, compliance and employee lifecycle management.",
+    text: "Our platform supports internal HR teams with operational modules for recruitment, HR service delivery, compliance and employee lifecycle management.",
     points: [
       "Recruitment and candidate pipeline management",
-      "Manpower deployment and client coordination",
+      "Department hiring requests and manager approvals",
       "Attendance, leave, tour and expense workflows",
       "Payroll, payslips, invoices, e-sign letters and document vault",
       "Security logs, SLA dashboards and external integration monitoring"
@@ -28,26 +28,26 @@ const pageContent = {
   industries: {
     title: "Industries",
     eyebrow: "Where we operate",
-    text: "The portal is built for manpower-heavy operations where speed, visibility and accountability matter.",
+    text: "The portal is built for companies where hiring speed, employee operations, visibility and accountability matter.",
     points: [
       "IT services, BPO and back-office staffing",
       "Warehousing, logistics and fulfilment operations",
       "Retail, facility management and security services",
-      "Healthcare support and administrative manpower"
+      "Healthcare, operations and administrative teams"
     ]
   },
   contact: {
     title: "Contact",
     eyebrow: "Talk to us",
-    text: "Send us your manpower requirement from the homepage or contact our team directly.",
+    text: "Send a hiring or HRMS inquiry from the homepage or contact the HR team directly.",
     points: []
   },
   privacy: {
     title: "Privacy Policy",
     eyebrow: "Data protection",
-    text: "We collect only the information required to operate recruitment, HR, manpower, payroll, billing and client service workflows.",
+    text: "We collect only the information required to operate recruitment, HR, payroll, employee service and manager approval workflows.",
     points: [
-      "Candidate, employee and client data is used only for authorized operational workflows",
+      "Candidate, employee and manager data is used only for authorized operational workflows",
       "Uploaded documents are stored through configured cloud storage and are visible based on role access",
       "Security logs are maintained for login, password reset and sensitive account activity",
       "Users can contact the administrator for data correction, access requests or account deactivation",
@@ -57,7 +57,7 @@ const pageContent = {
   terms: {
     title: "Terms",
     eyebrow: "Usage terms",
-    text: "This portal is intended for authorized candidates, employees, clients and HR administrators.",
+    text: "This portal is intended for authorized candidates, employees, managers and HR administrators.",
     points: [
       "Users must keep their login credentials secure",
       "Uploaded documents must be accurate and lawful",
@@ -109,7 +109,7 @@ const PublicInfoPage = ({ page }) => {
             {settings.email && <span>Email: {settings.email}</span>}
             {settings.phone && <span>Phone: {settings.phone}</span>}
             {settings.address && <span>{settings.address}</span>}
-            <Link className="primary-button" to="/#request-manpower">Submit Requirement</Link>
+            <Link className="primary-button" to="/#request-workforce">Submit Hiring Request</Link>
           </div>
         )}
       </section>

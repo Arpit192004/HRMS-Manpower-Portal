@@ -66,7 +66,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
         setRecords(data[selected.key] || []);
       }
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to load client portal data");
+      setError(requestError.response?.data?.message || "Unable to load manager workspace data");
     } finally {
       setLoading(false);
     }
@@ -91,9 +91,9 @@ const ClientDashboard = ({ module = "dashboard" }) => {
     try {
       await api.patch(`/candidates/${candidateId}/client-review`, {
         decision,
-        remarks: `Client marked candidate as ${decision}`
+        remarks: `Manager marked applicant as ${decision}`
       });
-      setSuccess("Candidate review submitted");
+      setSuccess("Applicant review submitted");
       await loadData();
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Unable to submit candidate review");
@@ -102,10 +102,10 @@ const ClientDashboard = ({ module = "dashboard" }) => {
 
   if (module === "dashboard") {
     const cards = [
-      { title: "Client Jobs", value: summary.jobs, icon: Briefcase, color: "blue" },
-      { title: "Requirements", value: summary.requirements, icon: ClipboardList, color: "orange" },
-      { title: "Candidate Pipeline", value: summary.candidates, icon: FileText, color: "purple" },
-      { title: "Assigned Employees", value: summary.employees, icon: Users, color: "green" },
+      { title: "Open Roles", value: summary.jobs, icon: Briefcase, color: "blue" },
+      { title: "Hiring Requests", value: summary.requirements, icon: ClipboardList, color: "orange" },
+      { title: "Applicant Pipeline", value: summary.candidates, icon: FileText, color: "purple" },
+      { title: "Team Members", value: summary.employees, icon: Users, color: "green" },
       { title: "Invoices", value: summary.invoices, icon: CircleDollarSign, color: "blue" }
     ];
 
@@ -113,15 +113,15 @@ const ClientDashboard = ({ module = "dashboard" }) => {
       <section>
         <div className="client-heading">
           <div>
-            <h1>Client Dashboard</h1>
-            <p>Track your manpower jobs, candidates and assigned employees.</p>
+            <h1>Manager Dashboard</h1>
+            <p>Track department hiring, applicant reviews and team workforce updates.</p>
           </div>
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
         {loading ? (
-          <div className="content-card">Loading client dashboard...</div>
+          <div className="content-card">Loading manager dashboard...</div>
         ) : (
           <div className="stats-grid">
             {cards.map(({ title, value, icon: Icon, color }) => (
@@ -148,7 +148,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
       <div className="client-heading">
         <div>
           <h1>{selected.title}</h1>
-          <p>Client-filtered {selected.title.toLowerCase()} records.</p>
+          <p>Department-linked {selected.title.toLowerCase()} records.</p>
         </div>
         <button className="secondary-button" onClick={loadData}>Refresh</button>
       </div>
@@ -162,7 +162,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
         ) : records.length === 0 ? (
           <div className="empty-state">
             <h3>No records found</h3>
-            <p>Records linked to your client account will appear here.</p>
+            <p>Records linked to your manager workspace will appear here.</p>
           </div>
         ) : (
           <div className="table-wrapper">
@@ -185,7 +185,7 @@ const ClientDashboard = ({ module = "dashboard" }) => {
                     ))}
                     {module === "candidates" && (
                       <td>
-                        {record.status === "Submitted to Client" ? (
+                        {record.status === "Submitted to Client" || record.status === "Submitted to Manager" ? (
                           <div className="row-actions">
                             <button
                               className="mini-button"

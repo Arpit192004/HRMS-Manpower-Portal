@@ -38,11 +38,11 @@ const Dashboard = () => {
 
   const cards = [
     {
-      title: "Active Clients",
+      title: "Departments",
       value: report.totalClients || 0,
       icon: Building2,
       color: "blue",
-      helper: "Companies using manpower services"
+      helper: "Business units managed in Niyukti"
     },
     {
       title: "Active Employees",
@@ -101,7 +101,7 @@ const Dashboard = () => {
           <span className="eyebrow">Super Admin Control Center</span>
           <h1>HR operations dashboard</h1>
           <p>
-            Track hiring, manpower allocation, approvals, payroll and documents from one place.
+            Track hiring, workforce allocation, approvals, payroll and documents from one place.
           </p>
         </div>
 

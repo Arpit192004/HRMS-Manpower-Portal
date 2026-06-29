@@ -12,6 +12,13 @@ const stages = [
   "Joined"
 ];
 
+const stageLabels = {
+  "Submitted to Client": "Submitted to Manager",
+  "Client Shortlisted": "Manager Shortlisted"
+};
+
+const displayStage = (stage) => stageLabels[stage] || stage;
+
 const CandidateApplications = () => {
   const [applications, setApplications] = useState([]);
   const [error, setError] = useState("");
@@ -79,10 +86,10 @@ const CandidateApplications = () => {
                 <div className="application-header">
                   <div>
                     <h3>{application.job?.title || "Job"}</h3>
-                    <p>{application.client?.name || "Client"} • {application.job?.department || "Department"}</p>
+                    <p>{application.department?.name || "Department"} - {application.job?.department || "Department"}</p>
                   </div>
                   <span className={`status-pill ${application.status === "Rejected" ? "danger" : ""}`}>
-                    {application.status}
+                    {displayStage(application.status)}
                   </span>
                 </div>
 
@@ -93,7 +100,7 @@ const CandidateApplications = () => {
                       key={stage}
                     >
                       <span>{index + 1}</span>
-                      <small>{stage}</small>
+                      <small>{displayStage(stage)}</small>
                     </div>
                   ))}
                 </div>
@@ -123,3 +130,4 @@ const CandidateApplications = () => {
 };
 
 export default CandidateApplications;
+

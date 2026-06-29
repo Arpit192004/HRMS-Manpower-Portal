@@ -45,7 +45,7 @@ const SlaDashboard = ({ clientView = false }) => {
     <section>
       <div className={clientView ? "client-heading" : "page-heading"}>
         <div>
-          <h1>Client SLA Dashboard</h1>
+          <h1>HR SLA Dashboard</h1>
           <p>Track requirement delivery, hiring funnel and invoice risk.</p>
         </div>
         <button className="secondary-button" onClick={loadReport}>Refresh</button>
@@ -75,7 +75,7 @@ const SlaDashboard = ({ clientView = false }) => {
               <table>
                 <thead>
                   <tr>
-                    <th>Client</th>
+                    <th>Department</th>
                     <th>Requirement</th>
                     <th>Vacancies</th>
                     <th>Submitted</th>
@@ -88,7 +88,7 @@ const SlaDashboard = ({ clientView = false }) => {
                 <tbody>
                   {report.requirements.map((row) => (
                     <tr key={row.id}>
-                      <td>{row.client?.name || "-"}</td>
+                      <td>{row.department?.name || "-"}</td>
                       <td>{row.title}</td>
                       <td>{row.vacancies}</td>
                       <td>{row.submitted}</td>
@@ -117,7 +117,7 @@ const SlaDashboard = ({ clientView = false }) => {
                 <thead>
                   <tr>
                     <th>Invoice</th>
-                    <th>Client</th>
+                    <th>Department</th>
                     <th>Period</th>
                     <th>Total</th>
                     <th>Due Date</th>
@@ -129,7 +129,7 @@ const SlaDashboard = ({ clientView = false }) => {
                   {report.invoices.map((invoice) => (
                     <tr key={invoice.id}>
                       <td>{invoice.invoiceNumber}</td>
-                      <td>{invoice.client?.name || "-"}</td>
+                      <td>{invoice.department?.name || "-"}</td>
                       <td>{invoice.period}</td>
                       <td>Rs. {Number(invoice.totalAmount || 0).toFixed(2)}</td>
                       <td>{invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : "-"}</td>

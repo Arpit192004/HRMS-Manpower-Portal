@@ -15,6 +15,14 @@ const stages = [
   "Rejected"
 ];
 
+const stageLabels = {
+  "Submitted to Client": "Submitted to Manager",
+  "Client Shortlisted": "Manager Shortlisted",
+  "Client Rejected": "Manager Rejected"
+};
+
+const displayStage = (stage) => stageLabels[stage] || stage;
+
 const PipelineBoard = () => {
   const [candidates, setCandidates] = useState([]);
   const [error, setError] = useState("");
@@ -54,7 +62,7 @@ const PipelineBoard = () => {
 
     try {
       await api.patch(`/candidates/${candidate._id}/status`, { status });
-      setSuccess(`${candidate.user?.name || "Candidate"} moved to ${status}`);
+      setSuccess(`${candidate.user?.name || "Candidate"} moved to ${displayStage(status)}`);
       await loadCandidates();
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Unable to move candidate");
@@ -87,16 +95,16 @@ const PipelineBoard = () => {
     }
   };
 
-  const submitToClient = async (candidate) => {
+  const submitToManager = async (candidate) => {
     setError("");
     setSuccess("");
 
     try {
       await api.patch(`/candidates/${candidate._id}/submit-to-client`);
-      setSuccess(`${candidate.user?.name || "Candidate"} submitted to client`);
+      setSuccess(`${candidate.user?.name || "Candidate"} submitted to manager`);
       await loadCandidates();
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to submit candidate to client");
+      setError(requestError.response?.data?.message || "Unable to submit candidate to manager");
     }
   };
 
@@ -123,14 +131,14 @@ const PipelineBoard = () => {
           {stages.map((stage) => (
             <div className="pipeline-column" key={stage}>
               <div className="pipeline-column-header">
-                <strong>{stage}</strong>
+                <strong>{displayStage(stage)}</strong>
                 <span>{grouped[stage]?.length || 0}</span>
               </div>
 
               {(grouped[stage] || []).map((candidate) => (
                 <article className="pipeline-card" key={candidate._id}>
                   <h3>{candidate.user?.name || "Candidate"}</h3>
-                  <p>{candidate.job?.title || "Job"} - {candidate.client?.name || "Client"}</p>
+                  <p>{candidate.job?.title || "Job"} - {candidate.department?.name || "Department"}</p>
                   <small>{candidate.totalExperience || 0} yrs exp | Expected Rs. {candidate.expectedSalary || 0}</small>
                   <div className="match-meter">
                     <div>
@@ -152,15 +160,15 @@ const PipelineBoard = () => {
                     onChange={(event) => moveCandidate(candidate, event.target.value)}
                   >
                     {stages.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <option key={option} value={option}>{displayStage(option)}</option>
                     ))}
                   </select>
                   <button className="mini-button" onClick={() => refreshMatch(candidate)}>
                     Recalculate Match
                   </button>
                   {["Shortlisted", "Interview", "Pre-Offer"].includes(candidate.status) && (
-                    <button className="mini-button" onClick={() => submitToClient(candidate)}>
-                      Submit to Client
+                    <button className="mini-button" onClick={() => submitToManager(candidate)}>
+                      Submit to Manager
                     </button>
                   )}
                 </article>

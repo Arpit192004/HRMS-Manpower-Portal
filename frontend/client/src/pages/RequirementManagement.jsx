@@ -17,7 +17,7 @@ const RequirementManagement = () => {
       const { data } = await api.get("/requirements");
       setRequirements(data.requirements || []);
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to load requirements");
+      setError(requestError.response?.data?.message || "Unable to load hiring requests");
     } finally {
       setLoading(false);
     }
@@ -40,10 +40,10 @@ const RequirementManagement = () => {
 
     try {
       await api.post(`/requirements/${id}/convert`, {});
-      setSuccess("Requirement converted to open job");
+      setSuccess("Hiring request converted to open role");
       await loadRequirements();
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to convert requirement");
+      setError(requestError.response?.data?.message || "Unable to convert hiring request");
     }
   };
 
@@ -53,10 +53,10 @@ const RequirementManagement = () => {
 
     try {
       await api.patch(`/requirements/${id}`, { status });
-      setSuccess("Requirement status updated");
+      setSuccess("Hiring request status updated");
       await loadRequirements();
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to update requirement");
+      setError(requestError.response?.data?.message || "Unable to update hiring request");
     }
   };
 
@@ -64,8 +64,8 @@ const RequirementManagement = () => {
     <section>
       <div className="page-heading">
         <div>
-          <h1>Client Requirements</h1>
-          <p>Approve manpower requests and convert them into open jobs.</p>
+          <h1>Hiring Requests</h1>
+          <p>Approve department hiring requests and convert them into open roles.</p>
         </div>
         <button className="secondary-button" onClick={loadRequirements}>Refresh</button>
       </div>
@@ -84,18 +84,18 @@ const RequirementManagement = () => {
 
       <div className="content-card table-card">
         {loading ? (
-          <p className="table-padding">Loading requirements...</p>
+          <p className="table-padding">Loading hiring requests...</p>
         ) : requirements.length === 0 ? (
           <div className="empty-state">
-            <h3>No requirements found</h3>
-            <p>Client manpower requests will appear here.</p>
+            <h3>No hiring requests found</h3>
+            <p>Department hiring requests from managers will appear here.</p>
           </div>
         ) : (
           <div className="table-wrapper">
             <table>
               <thead>
                 <tr>
-                  <th>Client</th>
+                  <th>Department</th>
                   <th>Title</th>
                   <th>Vacancies</th>
                   <th>Location</th>
@@ -127,7 +127,7 @@ const RequirementManagement = () => {
                         </select>
                         {!requirement.job && requirement.status !== "Rejected" && (
                           <button className="mini-button" onClick={() => convertToJob(requirement._id)}>
-                            Convert to Job
+                            Convert to Role
                           </button>
                         )}
                       </div>

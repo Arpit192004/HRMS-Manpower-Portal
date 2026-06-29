@@ -144,7 +144,7 @@ const ApprovalCommandCenter = () => {
               <div>
                 <span className={`status-pill ${statusClass[workflow.status] || ""}`}>{workflow.status}</span>
                 <h3>{workflow.requestType} Approval</h3>
-                <p>{workflow.client?.name || "Client"} • Requested by {workflow.requestedBy?.name || "-"}</p>
+                <p>{workflow.department?.name || "Department"} - Requested by {workflow.requestedBy?.name || "-"}</p>
               </div>
               <span className={`priority-badge ${workflow.priority?.toLowerCase()}`}>{workflow.priority}</span>
             </div>
@@ -221,3 +221,4 @@ const ApprovalCommandCenter = () => {
 };
 
 export default ApprovalCommandCenter;
+

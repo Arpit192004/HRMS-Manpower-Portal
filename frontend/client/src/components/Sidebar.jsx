@@ -21,10 +21,10 @@ import { useCompany } from "../context/CompanyContext";
 
 const links = [
   { path: "/admin", label: "Dashboard", icon: BarChart3 },
-  { path: "/admin/clients", label: "Clients", icon: Building2 },
+  { path: "/admin/clients", label: "Departments", icon: Building2 },
   { path: "/admin/policies", label: "Policies", icon: Settings },
   { path: "/admin/jobs", label: "Jobs", icon: Briefcase },
-  { path: "/admin/requirements", label: "Requirements", icon: Briefcase },
+  { path: "/admin/requirements", label: "Hiring Requests", icon: Briefcase },
   { path: "/admin/pipeline", label: "Pipeline Board", icon: UserRound },
   { path: "/admin/candidates", label: "Candidates", icon: UserRound },
   { path: "/admin/interviews", label: "Interviews", icon: FileText },

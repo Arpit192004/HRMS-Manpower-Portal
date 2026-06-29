@@ -42,7 +42,7 @@ const CandidateRegister = () => {
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
         <div className="logo">CP</div>
         <h1>Create Candidate Account</h1>
-        <p>Register once and apply for open manpower roles.</p>
+        <p>Register once and apply for open company roles.</p>
 
         {error && <div className="error-message">{error}</div>}
 

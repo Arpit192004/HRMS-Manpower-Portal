@@ -20,9 +20,9 @@ const ClientLogin = () => {
       <div className="candidate-auth-page">
         <div className="candidate-auth-card">
           <div className="logo">CL</div>
-          <h1>Client Portal</h1>
+          <h1>Manager Portal</h1>
           <div className="error-message">
-            You are logged in as {user.role}. Please logout before client login.
+            You are logged in as {user.role}. Please logout before manager login.
           </div>
           <button type="button" onClick={logout}>Logout</button>
           <p className="login-switch">
@@ -43,13 +43,13 @@ const ClientLogin = () => {
 
       if (loggedInUser.role !== "Client Approver") {
         logout();
-        setError("Only client accounts can login here.");
+        setError("Only manager accounts can login here.");
         return;
       }
 
       navigate("/client/dashboard");
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Client login failed");
+      setError(requestError.response?.data?.message || "Manager login failed");
     } finally {
       setLoading(false);
     }
@@ -59,8 +59,8 @@ const ClientLogin = () => {
     <div className="candidate-auth-page">
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
         <div className="logo">CL</div>
-        <h1>Client Login</h1>
-        <p>Track manpower jobs, candidates and assigned employees.</p>
+        <h1>Manager Login</h1>
+        <p>Review hiring requests, applicants and team workforce information.</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -81,7 +81,7 @@ const ClientLogin = () => {
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Login as Client"}
+          {loading ? "Signing in..." : "Login as Manager"}
         </button>
 
         <p className="login-switch">

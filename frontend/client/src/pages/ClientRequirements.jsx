@@ -32,7 +32,7 @@ const ClientRequirements = () => {
       const { data } = await api.get("/requirements");
       setRequirements(data.requirements || []);
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to load requirements");
+      setError(requestError.response?.data?.message || "Unable to load hiring requests");
     } finally {
       setLoading(false);
     }
@@ -54,11 +54,11 @@ const ClientRequirements = () => {
 
     try {
       await api.post("/requirements", form);
-      setSuccess("Requirement submitted successfully");
+      setSuccess("Hiring request submitted successfully");
       setForm(initialForm);
       await loadRequirements();
     } catch (requestError) {
-      setError(requestError.response?.data?.message || "Unable to submit requirement");
+      setError(requestError.response?.data?.message || "Unable to submit hiring request");
     } finally {
       setSaving(false);
     }
@@ -68,8 +68,8 @@ const ClientRequirements = () => {
     <section>
       <div className="client-heading">
         <div>
-          <h1>Manpower Requirements</h1>
-          <p>Raise staffing requirements and track conversion to jobs.</p>
+          <h1>Hiring Requests</h1>
+          <p>Raise department hiring needs and track conversion to open roles.</p>
         </div>
       </div>
 
@@ -118,21 +118,21 @@ const ClientRequirements = () => {
           <input value={form.skills} onChange={(event) => handleChange("skills", event.target.value)} placeholder="Excel, Machine Operator" />
         </label>
         <label className="wide-field">
-          Requirement Details
+          Hiring Request Details
           <textarea value={form.description} onChange={(event) => handleChange("description", event.target.value)} required />
         </label>
         <button className="primary-button" disabled={saving}>
-          {saving ? "Submitting..." : "Submit Requirement"}
+          {saving ? "Submitting..." : "Submit Hiring Request"}
         </button>
       </form>
 
       <div className="content-card table-card">
         {loading ? (
-          <p className="table-padding">Loading requirements...</p>
+          <p className="table-padding">Loading hiring requests...</p>
         ) : requirements.length === 0 ? (
           <div className="empty-state">
-            <h3>No requirements submitted</h3>
-            <p>Your submitted manpower requests will appear here.</p>
+            <h3>No hiring requests submitted</h3>
+            <p>Your submitted department hiring requests will appear here.</p>
           </div>
         ) : (
           <div className="table-wrapper">

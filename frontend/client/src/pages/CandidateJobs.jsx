@@ -117,9 +117,9 @@ const CandidateJobs = () => {
     <section className="candidate-jobs-page">
       <div className="candidate-hero">
         <div>
-          <span className="candidate-kicker">Verified workforce openings</span>
+          <span className="candidate-kicker">Verified company openings</span>
           <h1>Open Jobs</h1>
-          <p>Apply to active manpower requirements from verified client companies.</p>
+          <p>Apply to active roles published by the company HR team.</p>
 
           <div className="candidate-hero-stats">
             <span><strong>{jobs.length}</strong> live roles</span>
@@ -142,7 +142,7 @@ const CandidateJobs = () => {
             <div>
               <h3>Apply for {selectedJob.title}</h3>
               <p>
-                {selectedJob.client?.name || "Client"} | {selectedJob.location} | {selectedJob.department}
+                {selectedJob.department || "Department"} | {selectedJob.location}
               </p>
             </div>
             <button type="button" className="secondary-button" onClick={() => setSelectedJob(null)}>
@@ -264,7 +264,7 @@ const CandidateJobs = () => {
 
                   <div className="job-title-block">
                     <h3>{job.title}</h3>
-                    <p>{job.client?.name || "Client"} | {job.location}</p>
+                    <p>{job.department || "Department"} | {job.location}</p>
                   </div>
 
                   <div className="job-meta premium-job-meta">

@@ -91,7 +91,7 @@ const ExecutiveAnalytics = ({ clientView = false }) => {
         title: clientView ? "Assigned Employees" : "Active Employees",
         value: kpis.activeEmployees || 0,
         icon: Users,
-        helper: "Current manpower strength"
+        helper: "Current workforce strength"
       },
       {
         title: "Hiring Pipeline",
@@ -131,8 +131,8 @@ const ExecutiveAnalytics = ({ clientView = false }) => {
     <section>
       <div className={clientView ? "client-heading" : "page-heading"}>
         <div>
-          <h1>{clientView ? "Client Analytics" : "Executive Analytics"}</h1>
-          <p>Live business intelligence across manpower, hiring, payroll, SLA and compliance.</p>
+          <h1>{clientView ? "Manager Analytics" : "Executive Analytics"}</h1>
+          <p>Live business intelligence across workforce, hiring, payroll, SLA and compliance.</p>
         </div>
         <button className="secondary-button" onClick={loadAnalytics}>Refresh</button>
       </div>
@@ -204,14 +204,14 @@ const ExecutiveAnalytics = ({ clientView = false }) => {
           {!clientView && (
             <div className="content-card table-card">
               <div className="table-section-heading">
-                <h3>Client Manpower Scorecard</h3>
-                <p>Top clients by active employee allocation.</p>
+                <h3>Department Workforce Scorecard</h3>
+                <p>Top departments by active employee allocation.</p>
               </div>
               <div className="table-wrapper">
                 <table>
                   <thead>
                     <tr>
-                      <th>Client</th>
+                      <th>Department</th>
                       <th>Code</th>
                       <th>Active Employees</th>
                     </tr>
@@ -226,7 +226,7 @@ const ExecutiveAnalytics = ({ clientView = false }) => {
                     ))}
                     {!analytics?.clientManpower?.length && (
                       <tr>
-                        <td colSpan="3">No manpower data yet</td>
+                        <td colSpan="3">No workforce data yet</td>
                       </tr>
                     )}
                   </tbody>

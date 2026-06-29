@@ -80,7 +80,7 @@ const Login = () => {
         </p>
 
         <p className="login-switch">
-          Client ho? <Link to="/client/login">Client Portal</Link>
+          Manager ho? <Link to="/client/login">Manager Portal</Link>
         </p>
 
         <p className="login-switch">

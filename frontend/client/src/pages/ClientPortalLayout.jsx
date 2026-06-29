@@ -3,11 +3,11 @@ import { Briefcase, Building2, CalendarDays, CircleDollarSign, FileText, LogOut,
 import { useAuth } from "../context/AuthContext";
 
 const links = [
-  { path: "/client/dashboard", label: "Dashboard", icon: Building2 },
-  { path: "/client/jobs", label: "Jobs", icon: Briefcase },
-  { path: "/client/requirements", label: "Requirements", icon: Briefcase },
-  { path: "/client/candidates", label: "Candidates", icon: FileText },
-  { path: "/client/employees", label: "Employees", icon: Users },
+  { path: "/client/dashboard", label: "Manager Dashboard", icon: Building2 },
+  { path: "/client/jobs", label: "Open Roles", icon: Briefcase },
+  { path: "/client/requirements", label: "Hiring Requests", icon: Briefcase },
+  { path: "/client/candidates", label: "Applicant Reviews", icon: FileText },
+  { path: "/client/employees", label: "Team Members", icon: Users },
   { path: "/client/attendance-health", label: "Attendance Health", icon: CalendarDays },
   { path: "/client/invoices", label: "Invoices", icon: CircleDollarSign },
   { path: "/client/analytics", label: "Analytics", icon: Building2 },
@@ -23,9 +23,9 @@ const ClientPortalLayout = () => {
     <div className="client-portal">
       <aside className="client-sidebar">
         <div className="brand">
-          <div className="brand-logo">CL</div>
+          <div className="brand-logo">MP</div>
           <div>
-            <strong>Client Portal</strong>
+            <strong>Manager Portal</strong>
             <small>{user?.name}</small>
           </div>
         </div>

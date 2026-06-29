@@ -76,7 +76,7 @@ const InvoiceManagement = ({ clientView = false }) => {
       <div className={clientView ? "client-heading" : "page-heading"}>
         <div>
           <h1>Invoices</h1>
-          <p>{clientView ? "View client billing and download invoices." : "Generate and manage client manpower billing."}</p>
+          <p>{clientView ? "View department billing and download invoices." : "Generate and manage department workforce billing."}</p>
         </div>
         <button className="secondary-button" onClick={loadInvoices}>Refresh</button>
       </div>
@@ -87,7 +87,7 @@ const InvoiceManagement = ({ clientView = false }) => {
       {!clientView && (
         <form className="content-card form-grid" onSubmit={createInvoice}>
           <label>
-            Client ID
+            Department ID
             <input value={form.client} onChange={(event) => handleChange("client", event.target.value)} required />
           </label>
           <label>
@@ -130,7 +130,7 @@ const InvoiceManagement = ({ clientView = false }) => {
               <thead>
                 <tr>
                   <th>Invoice</th>
-                  <th>Client</th>
+                  <th>Department</th>
                   <th>Period</th>
                   <th>Total</th>
                   <th>Status</th>

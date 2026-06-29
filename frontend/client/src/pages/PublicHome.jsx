@@ -15,7 +15,7 @@ import { useCompany } from "../context/CompanyContext";
 
 const services = [
   {
-    title: "Recruitment & Staffing",
+    title: "Recruitment Management",
     text: "Publish jobs, receive applications and move candidates through hiring stages.",
     icon: Briefcase
   },
@@ -25,8 +25,8 @@ const services = [
     icon: Users
   },
   {
-    title: "Client Manpower Tracking",
-    text: "Clients can review jobs, candidates and assigned manpower status.",
+    title: "Manager Hiring Workspace",
+    text: "Department managers can raise hiring requests and review shortlisted applicants.",
     icon: Building2
   },
   {
@@ -93,22 +93,22 @@ const PublicHome = () => {
           <Link to="/services">Services</Link>
           <Link to="/industries">Industries</Link>
           <Link to="/candidate/jobs">Open Jobs</Link>
-          <a href="#request-manpower">Request Manpower</a>
+          <a href="#request-workforce">Hiring Request</a>
           <a href="#portal-access" className="nav-button">Portal Login</a>
         </div>
       </nav>
 
       <section className="public-hero">
         <div>
-          <span className="eyebrow">Full-stack HRMS + Manpower Services</span>
+          <span className="eyebrow">Internal HRMS for modern companies</span>
           <h1>{settings.tagline || "From hiring to workforce management."}</h1>
           <p>
-            Niyukti is a production-ready workflow for staffing companies: candidates apply,
-            HR processes hiring, employees manage self-service, and clients track manpower.
+            Niyukti helps HR teams manage hiring, employees, attendance, payroll,
+            documents, approvals and workforce reporting from one secure system.
           </p>
 
           <div className="hero-actions">
-            <a href="#request-manpower" className="primary-button">Request Manpower</a>
+            <a href="#request-workforce" className="primary-button">Raise Hiring Request</a>
             <a href="#portal-access" className="secondary-button">Portal Login</a>
           </div>
         </div>
@@ -175,7 +175,7 @@ const PublicHome = () => {
       <section className="service-section">
         <div className="section-heading">
           <span className="eyebrow">What this portal handles</span>
-          <h2>Built for real HR and manpower workflows</h2>
+          <h2>Built for real internal HR operations</h2>
         </div>
 
         <div className="service-grid">
@@ -194,7 +194,7 @@ const PublicHome = () => {
           <span className="eyebrow">Portal login</span>
           <h2>Choose your workspace</h2>
           <p>
-            One clean access area for candidates, employees, clients and internal HR teams.
+            One clean access area for candidates, employees, managers and internal HR teams.
           </p>
         </div>
 
@@ -205,9 +205,9 @@ const PublicHome = () => {
             <Link to="/candidate/register">Register as Candidate</Link>
           </article>
           <article className="access-card">
-            <strong>Client Access</strong>
-            <span>Client accounts are provisioned after business onboarding.</span>
-            <Link to="/client/login">Client Login</Link>
+            <strong>Manager Access</strong>
+            <span>Hiring managers can review applicants and track department requests.</span>
+            <Link to="/client/login">Manager Login</Link>
           </article>
           <article className="access-card">
             <strong>Employee Access</strong>
@@ -222,13 +222,13 @@ const PublicHome = () => {
         </div>
       </section>
 
-      <section className="lead-section" id="request-manpower">
+      <section className="lead-section" id="request-workforce">
         <div>
-          <span className="eyebrow">Need manpower?</span>
-          <h2>Send your requirement. Our team will contact you.</h2>
+          <span className="eyebrow">Hiring request</span>
+          <h2>Need to hire for a department?</h2>
           <p>
-            Share your staffing need and we will respond with candidates, hiring support and
-            manpower deployment options.
+            Share the role, department, location and urgency. HR can convert approved
+            requests into open jobs and track the hiring pipeline.
           </p>
           <div className="lead-contact-card">
             {settings.email && <span>Email: {settings.email}</span>}
@@ -275,16 +275,16 @@ const PublicHome = () => {
             />
           </label>
           <label className="wide-field">
-            Requirement
+            Hiring Requirement
             <textarea
               value={leadForm.requirement}
               onChange={(event) => handleLeadChange("requirement", event.target.value)}
-              placeholder="Example: Need 20 warehouse staff in Delhi within 10 days"
+              placeholder="Example: Need 2 HR executives for the Noida office within 30 days"
               required
             />
           </label>
           <button className="primary-button" disabled={leadSaving}>
-            {leadSaving ? "Submitting..." : "Submit Requirement"}
+            {leadSaving ? "Submitting..." : "Submit Hiring Request"}
           </button>
         </form>
       </section>
