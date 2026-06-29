@@ -93,10 +93,8 @@ const PublicHome = () => {
           <Link to="/services">Services</Link>
           <Link to="/industries">Industries</Link>
           <Link to="/candidate/jobs">Open Jobs</Link>
-          <Link to="/candidate/register">Candidate Apply</Link>
-          <Link to="/employee/login">Employee Login</Link>
-          <Link to="/client/login">Client Login</Link>
-          <Link to="/login" className="nav-button">Admin Login</Link>
+          <a href="#request-manpower">Request Manpower</a>
+          <a href="#portal-access" className="nav-button">Portal Login</a>
         </div>
       </nav>
 
@@ -110,8 +108,8 @@ const PublicHome = () => {
           </p>
 
           <div className="hero-actions">
-            <Link to="/candidate/register" className="primary-button">Apply as Candidate</Link>
-            <Link to="/login" className="secondary-button">Open Admin Portal</Link>
+            <a href="#request-manpower" className="primary-button">Request Manpower</a>
+            <a href="#portal-access" className="secondary-button">Portal Login</a>
           </div>
         </div>
 
@@ -191,32 +189,12 @@ const PublicHome = () => {
         </div>
       </section>
 
-      <section className="portal-cta-grid">
-        <Link to="/candidate/login">
-          <strong>Candidate Portal</strong>
-          <span>View jobs, apply and track application status.</span>
-        </Link>
-        <Link to="/employee/login">
-          <strong>Employee Portal</strong>
-          <span>Attendance, leaves, expenses and salary slips.</span>
-        </Link>
-        <Link to="/client/login">
-          <strong>Client Portal</strong>
-          <span>Track jobs, candidates and assigned manpower.</span>
-        </Link>
-        <Link to="/login">
-          <strong>Admin Control Center</strong>
-          <span>Manage recruitment, payroll, approvals and reports.</span>
-        </Link>
-      </section>
-
-      <section className="access-section">
+      <section className="access-section" id="portal-access">
         <div className="section-heading">
-          <span className="eyebrow">Secure role access</span>
-          <h2>Portals are available only for authorized users</h2>
+          <span className="eyebrow">Portal login</span>
+          <h2>Choose your workspace</h2>
           <p>
-            Candidates can create an account and apply for open roles. Employee, client
-            and admin access is issued by the organization after verification.
+            One clean access area for candidates, employees, clients and internal HR teams.
           </p>
         </div>
 
