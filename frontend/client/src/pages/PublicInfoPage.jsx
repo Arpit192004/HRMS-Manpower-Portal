@@ -39,7 +39,7 @@ const pageContent = {
   contact: {
     title: "Contact",
     eyebrow: "Talk to us",
-    text: "Send a hiring or HRMS inquiry from the homepage or contact the HR team directly.",
+    text: "Contact the HR team directly for portal access, hiring updates or employee support.",
     points: []
   },
   privacy: {
@@ -109,7 +109,7 @@ const PublicInfoPage = ({ page }) => {
             {settings.email && <span>Email: {settings.email}</span>}
             {settings.phone && <span>Phone: {settings.phone}</span>}
             {settings.address && <span>{settings.address}</span>}
-            <Link className="primary-button" to="/#request-workforce">Submit Hiring Request</Link>
+            <Link className="primary-button" to="/login">Portal Login</Link>
           </div>
         )}
       </section>

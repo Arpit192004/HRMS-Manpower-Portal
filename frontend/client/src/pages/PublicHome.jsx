@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import {
   BadgeCheck,
   Briefcase,
@@ -10,7 +9,6 @@ import {
   ShieldCheck,
   Users
 } from "lucide-react";
-import api from "../api/axios";
 import { useCompany } from "../context/CompanyContext";
 
 const services = [
@@ -26,7 +24,7 @@ const services = [
   },
   {
     title: "Manager Hiring Workspace",
-    text: "Department managers can raise hiring requests and review shortlisted applicants.",
+    text: "Department managers can review shortlisted applicants and team workforce updates.",
     icon: Building2
   },
   {
@@ -38,43 +36,6 @@ const services = [
 
 const PublicHome = () => {
   const { settings } = useCompany();
-  const [leadForm, setLeadForm] = useState({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    requirement: ""
-  });
-  const [leadMessage, setLeadMessage] = useState("");
-  const [leadError, setLeadError] = useState("");
-  const [leadSaving, setLeadSaving] = useState(false);
-
-  const handleLeadChange = (name, value) => {
-    setLeadForm((current) => ({ ...current, [name]: value }));
-  };
-
-  const submitLead = async (event) => {
-    event.preventDefault();
-    setLeadSaving(true);
-    setLeadError("");
-    setLeadMessage("");
-
-    try {
-      const { data } = await api.post("/leads", leadForm);
-      setLeadMessage(data.message || "Requirement submitted successfully.");
-      setLeadForm({
-        name: "",
-        company: "",
-        email: "",
-        phone: "",
-        requirement: ""
-      });
-    } catch (requestError) {
-      setLeadError(requestError.response?.data?.message || "Unable to submit requirement");
-    } finally {
-      setLeadSaving(false);
-    }
-  };
 
   return (
     <main className="public-site">
@@ -93,7 +54,6 @@ const PublicHome = () => {
           <Link to="/services">Services</Link>
           <Link to="/industries">Industries</Link>
           <Link to="/candidate/jobs">Open Jobs</Link>
-          <a href="#request-workforce">Hiring Request</a>
           <a href="#portal-access" className="nav-button">Portal Login</a>
         </div>
       </nav>
@@ -108,8 +68,8 @@ const PublicHome = () => {
           </p>
 
           <div className="hero-actions">
-            <a href="#request-workforce" className="primary-button">Raise Hiring Request</a>
-            <a href="#portal-access" className="secondary-button">Portal Login</a>
+            <a href="#portal-access" className="primary-button">Portal Login</a>
+            <Link to="/candidate/jobs" className="secondary-button">View Open Jobs</Link>
           </div>
         </div>
 
@@ -220,73 +180,6 @@ const PublicHome = () => {
             <Link to="/login">Admin Login</Link>
           </article>
         </div>
-      </section>
-
-      <section className="lead-section" id="request-workforce">
-        <div>
-          <span className="eyebrow">Hiring request</span>
-          <h2>Need to hire for a department?</h2>
-          <p>
-            Share the role, department, location and urgency. HR can convert approved
-            requests into open jobs and track the hiring pipeline.
-          </p>
-          <div className="lead-contact-card">
-            {settings.email && <span>Email: {settings.email}</span>}
-            {settings.phone && <span>Phone: {settings.phone}</span>}
-            {settings.address && <span>{settings.address}</span>}
-          </div>
-        </div>
-
-        <form className="lead-form-card" onSubmit={submitLead}>
-          {leadMessage && <div className="success-message">{leadMessage}</div>}
-          {leadError && <div className="error-message">{leadError}</div>}
-
-          <label>
-            Your Name
-            <input
-              value={leadForm.name}
-              onChange={(event) => handleLeadChange("name", event.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Company
-            <input
-              value={leadForm.company}
-              onChange={(event) => handleLeadChange("company", event.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Email
-            <input
-              type="email"
-              value={leadForm.email}
-              onChange={(event) => handleLeadChange("email", event.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Phone
-            <input
-              value={leadForm.phone}
-              onChange={(event) => handleLeadChange("phone", event.target.value)}
-              required
-            />
-          </label>
-          <label className="wide-field">
-            Hiring Requirement
-            <textarea
-              value={leadForm.requirement}
-              onChange={(event) => handleLeadChange("requirement", event.target.value)}
-              placeholder="Example: Need 2 HR executives for the Noida office within 30 days"
-              required
-            />
-          </label>
-          <button className="primary-button" disabled={leadSaving}>
-            {leadSaving ? "Submitting..." : "Submit Hiring Request"}
-          </button>
-        </form>
       </section>
 
       <footer className="public-footer">
