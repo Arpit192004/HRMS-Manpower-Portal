@@ -60,7 +60,7 @@ const EmployeeLogin = () => {
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
         <div className="logo">EP</div>
         <h1>Employee Login</h1>
-        <p>Open your attendance, leave, expense and payroll portal.</p>
+        <p>Sign in with your official employee email account.</p>
 
         {error && <div className="error-message">{error}</div>}
 

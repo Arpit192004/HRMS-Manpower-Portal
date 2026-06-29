@@ -19,7 +19,7 @@ const ClientLogin = () => {
     return (
       <div className="candidate-auth-page">
         <div className="candidate-auth-card">
-          <div className="logo">CL</div>
+          <div className="logo">MP</div>
           <h1>Manager Portal</h1>
           <div className="error-message">
             You are logged in as {user.role}. Please logout before manager login.
@@ -58,9 +58,9 @@ const ClientLogin = () => {
   return (
     <div className="candidate-auth-page">
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
-        <div className="logo">CL</div>
+        <div className="logo">MP</div>
         <h1>Manager Login</h1>
-        <p>Review hiring requests, applicants and team workforce information.</p>
+        <p>Sign in with the manager account issued by HR.</p>
 
         {error && <div className="error-message">{error}</div>}
 

@@ -24,7 +24,7 @@ const endpointConfiguration = {
 const formConfigurations = {
   users: [
     { name: "name", label: "Full Name", placeholder: "Amit Kumar" },
-    { name: "email", label: "Email", placeholder: "amit@hrms.com" },
+    { name: "email", label: "Official Email", placeholder: "name@company.com" },
     { name: "password", label: "Password", type: "password" },
     {
       name: "role",
@@ -40,7 +40,7 @@ const formConfigurations = {
         "Candidate"
       ]
     },
-    { name: "client", label: "Client ID optional", placeholder: "Paste client _id" }
+    { name: "client", label: "Department ID optional", placeholder: "Paste department _id" }
   ],
   clients: [
     { name: "name", label: "Client Name", placeholder: "ABC Technologies" },

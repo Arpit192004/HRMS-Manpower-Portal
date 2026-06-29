@@ -47,7 +47,7 @@ const Login = () => {
         <div className="logo">HR</div>
 
         <h1>Niyukti</h1>
-        <p>Sign in to manage your workforce</p>
+        <p>Sign in with your official company email account</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -76,15 +76,15 @@ const Login = () => {
         </p>
 
         <p className="login-switch">
-          Candidate ho? <Link to="/candidate/login">Candidate Login</Link>
+          Candidate account? <Link to="/candidate/login">Candidate Login</Link>
         </p>
 
         <p className="login-switch">
-          Manager ho? <Link to="/client/login">Manager Portal</Link>
+          Manager account? <Link to="/client/login">Manager Portal</Link>
         </p>
 
         <p className="login-switch">
-          Employee ho? <Link to="/employee/login">Employee Portal</Link>
+          Employee account? <Link to="/employee/login">Employee Portal</Link>
         </p>
       </form>
     </div>

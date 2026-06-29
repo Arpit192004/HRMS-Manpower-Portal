@@ -42,7 +42,7 @@ const CandidateLogin = () => {
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
         <div className="logo">CP</div>
         <h1>Candidate Login</h1>
-        <p>Track jobs, applications and hiring status.</p>
+        <p>Sign in with the email used during candidate registration.</p>
 
         {error && <div className="error-message">{error}</div>}
 
