@@ -14,8 +14,8 @@ router.use(protect);
 
 router
   .route("/")
-  .get(authorize("Super Admin", "HR Admin", "Client Approver"), getRequirements)
-  .post(authorize("Super Admin", "HR Admin", "Client Approver"), createRequirement);
+  .get(authorize("Super Admin", "HR Admin", "Client Approver", "Manager"), getRequirements)
+  .post(authorize("Super Admin", "HR Admin", "Client Approver", "Manager"), createRequirement);
 
 router.post(
   "/:id/convert",
@@ -25,7 +25,7 @@ router.post(
 
 router.patch(
   "/:id",
-  authorize("Super Admin", "HR Admin", "Client Approver"),
+  authorize("Super Admin", "HR Admin", "Client Approver", "Manager"),
   updateRequirement
 );
 

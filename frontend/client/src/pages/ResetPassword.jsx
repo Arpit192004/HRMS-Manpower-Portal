@@ -15,7 +15,7 @@ const ResetPassword = () => {
   const getHomePath = (user) => {
     if (user.role === "Candidate") return "/candidate/jobs";
     if (user.role === "Employee") return "/employee/dashboard";
-    if (user.role === "Client Approver") return "/client/dashboard";
+    if (["Client Approver", "Manager"].includes(user.role)) return "/client/dashboard";
     return "/admin";
   };
 

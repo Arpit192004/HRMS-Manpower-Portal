@@ -7,7 +7,7 @@ const getRequirements = async (req, res, next) => {
   try {
     const filter = {};
 
-    if (req.user.role === "Client Approver") {
+    if (["Client Approver", "Manager"].includes(req.user.role)) {
       filter.client = req.user.client;
     } else if (req.query.client) {
       filter.client = req.query.client;
@@ -30,7 +30,7 @@ const getRequirements = async (req, res, next) => {
 
 const createRequirement = async (req, res, next) => {
   try {
-    const client = req.user.role === "Client Approver" ? req.user.client : req.body.client;
+    const client = ["Client Approver", "Manager"].includes(req.user.role) ? req.user.client : req.body.client;
     const {
       title,
       department,
@@ -98,7 +98,7 @@ const updateRequirement = async (req, res, next) => {
     }
 
     if (
-      req.user.role === "Client Approver" &&
+      ["Client Approver", "Manager"].includes(req.user.role) &&
       requirement.client.toString() !== req.user.client?.toString()
     ) {
       res.status(403);
@@ -107,7 +107,7 @@ const updateRequirement = async (req, res, next) => {
 
     const oldData = requirement.toObject();
     const allowedFields =
-      req.user.role === "Client Approver"
+      ["Client Approver", "Manager"].includes(req.user.role)
         ? ["title", "department", "location", "vacancies", "requiredBy", "budgetMin", "budgetMax", "experienceMin", "experienceMax", "skills", "description", "priority"]
         : ["status", "remarks", "priority"];
 

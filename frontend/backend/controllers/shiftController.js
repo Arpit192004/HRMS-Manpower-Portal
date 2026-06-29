@@ -5,7 +5,7 @@ const Shift = require("../models/Shift");
 const getShiftFilter = (req) => {
   const filter = {};
 
-  if (req.user.role === "Client Approver") {
+  if (["Client Approver", "Manager"].includes(req.user.role)) {
     filter.client = req.user.client;
   } else if (req.query.client) {
     filter.client = req.query.client;
@@ -155,7 +155,7 @@ const assignShiftToEmployee = async (req, res, next) => {
 const getAttendanceHealth = async (req, res, next) => {
   try {
     const client =
-      req.user.role === "Client Approver" ? req.user.client : req.query.client;
+      ["Client Approver", "Manager"].includes(req.user.role) ? req.user.client : req.query.client;
 
     const employeeFilter = { status: "Active" };
     const attendanceFilter = {};

@@ -19,7 +19,7 @@ router.use(protect);
 
 router.get(
   "/compliance",
-  authorize("Super Admin", "HR Admin", "Client Approver"),
+  authorize("Super Admin", "HR Admin", "Client Approver", "Manager"),
   getComplianceReport
 );
 
@@ -37,14 +37,14 @@ router.get(
 
 router.get(
   "/appointment/:id",
-  authorize("Super Admin", "HR Admin", "Employee", "Client Approver"),
+  authorize("Super Admin", "HR Admin", "Employee", "Client Approver", "Manager"),
   downloadAppointmentLetter
 );
 
 router
   .route("/employees/:employeeId")
   .get(
-    authorize("Super Admin", "HR Admin", "Employee", "Client Approver"),
+    authorize("Super Admin", "HR Admin", "Employee", "Client Approver", "Manager"),
     getEmployeeDocuments
   )
   .post(

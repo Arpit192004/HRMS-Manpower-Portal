@@ -12,7 +12,7 @@ const ClientLogin = () => {
   const [loading, setLoading] = useState(false);
 
   if (user) {
-    if (user.role === "Client Approver") {
+    if (["Client Approver", "Manager"].includes(user.role)) {
       return <Navigate to="/client/dashboard" replace />;
     }
 
@@ -41,7 +41,7 @@ const ClientLogin = () => {
     try {
       const loggedInUser = await login(email, password);
 
-      if (loggedInUser.role !== "Client Approver") {
+      if (!["Client Approver", "Manager"].includes(loggedInUser.role)) {
         logout();
         setError("Only manager accounts can login here.");
         return;

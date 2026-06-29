@@ -11,7 +11,7 @@ const Workflow = require("../models/Workflow");
 const getClientScopedFilter = (req) => {
   const filter = {};
 
-  if (req.user.role === "Client Approver") {
+  if (["Client Approver", "Manager"].includes(req.user.role)) {
     filter.client = req.user.client;
   } else if (req.query.client) {
     filter.client = req.query.client;
@@ -168,7 +168,7 @@ const getSlaReport = async (req, res, next) => {
   try {
     const clientFilter = {};
 
-    if (req.user.role === "Client Approver") {
+    if (["Client Approver", "Manager"].includes(req.user.role)) {
       clientFilter.client = req.user.client;
     } else if (req.query.client) {
       clientFilter.client = req.query.client;
@@ -514,10 +514,10 @@ const getExecutiveAnalytics = async (req, res, next) => {
     res.json({
       success: true,
       analytics: {
-        scope: req.user.role === "Client Approver" ? "Client" : "Admin",
+        scope: ["Client Approver", "Manager"].includes(req.user.role) ? "Client" : "Admin",
         generatedAt: new Date(),
         kpis: {
-          totalClients: req.user.role === "Client Approver" ? 1 : totalClients,
+          totalClients: ["Client Approver", "Manager"].includes(req.user.role) ? 1 : totalClients,
           activeEmployees,
           totalCandidates,
           openRequirements,

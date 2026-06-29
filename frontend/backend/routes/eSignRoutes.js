@@ -17,7 +17,7 @@ router.use(protect);
 router
   .route("/")
   .get(
-    authorize("Super Admin", "HR Admin", "Candidate", "Employee", "Client Approver"),
+    authorize("Super Admin", "HR Admin", "Candidate", "Employee", "Client Approver", "Manager"),
     getESignRequests
   )
   .post(authorize("Super Admin", "HR Admin"), createESignRequest);

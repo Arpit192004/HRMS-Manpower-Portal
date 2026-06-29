@@ -91,7 +91,7 @@ const ensureEmployeeAccess = async (req, employeeId) => {
   }
 
   if (
-    req.user.role === "Client Approver" &&
+    ["Client Approver", "Manager"].includes(req.user.role) &&
     employee.client._id.toString() !== req.user.client?.toString()
   ) {
     const error = new Error("You cannot access this client employee document");
@@ -296,7 +296,7 @@ const getComplianceReport = async (req, res, next) => {
   try {
     const filter = {};
 
-    if (req.user.role === "Client Approver") {
+    if (["Client Approver", "Manager"].includes(req.user.role)) {
       filter.client = req.user.client;
     } else if (req.query.client) {
       filter.client = req.query.client;

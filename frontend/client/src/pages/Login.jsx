@@ -27,7 +27,7 @@ const Login = () => {
     try {
       const loggedInUser = await login(email, password);
 
-      if (["Candidate", "Employee", "Client Approver"].includes(loggedInUser.role)) {
+      if (["Candidate", "Employee", "Client Approver", "Manager"].includes(loggedInUser.role)) {
         logout();
         setError("Please use your dedicated portal login.");
         return;

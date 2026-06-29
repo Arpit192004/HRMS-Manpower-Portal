@@ -44,7 +44,7 @@ router.patch(
 
 router.patch(
   "/:id/client-review",
-  authorize("Client Approver"),
+  authorize("Client Approver", "Manager"),
   reviewCandidateByClient
 );
 

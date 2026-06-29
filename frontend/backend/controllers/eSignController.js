@@ -24,7 +24,7 @@ const getESignRequests = async (req, res, next) => {
     if (req.query.status) filter.status = req.query.status;
     if (req.query.documentType) filter.documentType = req.query.documentType;
 
-    if (req.user.role === "Client Approver") {
+    if (["Client Approver", "Manager"].includes(req.user.role)) {
       filter.client = req.user.client;
     } else if (req.query.client) {
       filter.client = req.query.client;

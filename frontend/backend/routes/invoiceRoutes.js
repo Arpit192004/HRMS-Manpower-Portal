@@ -12,9 +12,9 @@ const router = express.Router();
 
 router.use(protect);
 
-router.get("/", authorize("Super Admin", "HR Admin", "Payroll Team", "Client Approver"), getInvoices);
+router.get("/", authorize("Super Admin", "HR Admin", "Payroll Team", "Client Approver", "Manager"), getInvoices);
 router.post("/", authorize("Super Admin", "HR Admin", "Payroll Team"), createInvoice);
-router.get("/:id/pdf", authorize("Super Admin", "HR Admin", "Payroll Team", "Client Approver"), downloadInvoice);
+router.get("/:id/pdf", authorize("Super Admin", "HR Admin", "Payroll Team", "Client Approver", "Manager"), downloadInvoice);
 router.patch("/:id/status", authorize("Super Admin", "HR Admin", "Payroll Team"), updateInvoiceStatus);
 
 module.exports = router;

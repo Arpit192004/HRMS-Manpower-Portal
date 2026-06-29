@@ -13,7 +13,7 @@ const AdminRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (["Candidate", "Employee", "Client Approver"].includes(user.role)) {
+  if (["Candidate", "Employee", "Client Approver", "Manager"].includes(user.role)) {
     return <UnauthorizedAccess area="the admin portal" loginPath="/login" />;
   }
 

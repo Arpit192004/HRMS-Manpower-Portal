@@ -12,7 +12,7 @@ const ClientRoute = () => {
     return <Navigate to="/client/login" replace />;
   }
 
-  if (user.role !== "Client Approver") {
+  if (!["Client Approver", "Manager"].includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 

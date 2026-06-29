@@ -14,7 +14,7 @@ const currency = (value) =>
   }).format(Number(value || 0));
 
 const getClientFilter = (req) => {
-  if (req.user.role === "Client Approver") {
+  if (["Client Approver", "Manager"].includes(req.user.role)) {
     return { client: req.user.client };
   }
 
@@ -148,7 +148,7 @@ const answerQuestion = (question, context, role) => {
         context.outstandingInvoices.amount
       )}. ${context.overdueInvoices} invoices are overdue.`,
       actions: [
-        { label: role === "Client Approver" ? "Open Client Invoices" : "Open Invoices", path: role === "Client Approver" ? "/client/invoices" : "/admin/invoices" }
+        { label: ["Client Approver", "Manager"].includes(role) ? "Open Manager Invoices" : "Open Invoices", path: ["Client Approver", "Manager"].includes(role) ? "/client/invoices" : "/admin/invoices" }
       ]
     };
   }
@@ -172,7 +172,7 @@ const answerQuestion = (question, context, role) => {
         context.attendance.overtime || 0
       } overtime cases.`,
       actions: [
-        { label: role === "Client Approver" ? "Open Attendance Health" : "Open Shift Roster", path: role === "Client Approver" ? "/client/attendance-health" : "/admin/shifts" }
+        { label: ["Client Approver", "Manager"].includes(role) ? "Open Attendance Health" : "Open Shift Roster", path: ["Client Approver", "Manager"].includes(role) ? "/client/attendance-health" : "/admin/shifts" }
       ]
     };
   }
@@ -182,7 +182,7 @@ const answerQuestion = (question, context, role) => {
       title: "Hiring pipeline",
       answer: `There are ${context.candidates} candidates in the pipeline and ${context.joined} joined candidates. Open requirements: ${context.openRequirements}.`,
       actions: [
-        { label: role === "Client Approver" ? "Open Candidates" : "Open Pipeline", path: role === "Client Approver" ? "/client/candidates" : "/admin/pipeline" }
+        { label: ["Client Approver", "Manager"].includes(role) ? "Open Candidates" : "Open Pipeline", path: ["Client Approver", "Manager"].includes(role) ? "/client/candidates" : "/admin/pipeline" }
       ]
     };
   }
@@ -194,7 +194,7 @@ const answerQuestion = (question, context, role) => {
         context.payroll.netSalary
       )} and gross salary ${currency(context.payroll.grossSalary)}.`,
       actions: [
-        { label: "Open Analytics", path: role === "Client Approver" ? "/client/analytics" : "/admin/analytics" }
+        { label: "Open Analytics", path: ["Client Approver", "Manager"].includes(role) ? "/client/analytics" : "/admin/analytics" }
       ]
     };
   }
@@ -204,7 +204,7 @@ const answerQuestion = (question, context, role) => {
       title: "Document compliance",
       answer: `${context.missingDocs} active employees have missing, pending, rejected or expired documents.`,
       actions: [
-        { label: "Open Compliance", path: role === "Client Approver" ? "/client/compliance" : "/admin/compliance" }
+        { label: "Open Compliance", path: ["Client Approver", "Manager"].includes(role) ? "/client/compliance" : "/admin/compliance" }
       ]
     };
   }
@@ -215,7 +215,7 @@ const answerQuestion = (question, context, role) => {
       context.outstandingInvoices.amount
     )} outstanding invoices.`,
     actions: [
-      { label: "Open Executive Analytics", path: role === "Client Approver" ? "/client/analytics" : "/admin/analytics" }
+      { label: "Open Executive Analytics", path: ["Client Approver", "Manager"].includes(role) ? "/client/analytics" : "/admin/analytics" }
     ]
   };
 };
@@ -246,7 +246,7 @@ const askCopilot = async (req, res, next) => {
 const getCopilotSuggestions = async (req, res, next) => {
   try {
     const suggestions =
-      req.user.role === "Client Approver"
+      ["Client Approver", "Manager"].includes(req.user.role)
         ? [
             "Summarize my attendance health today",
             "Do I have overdue invoices?",

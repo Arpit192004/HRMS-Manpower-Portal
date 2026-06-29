@@ -17,7 +17,7 @@ const getCandidates = async (req, res, next) => {
       filter.user = req.user._id;
     }
 
-    if (req.user.role === "Client Approver") {
+    if (["Client Approver", "Manager"].includes(req.user.role)) {
       filter.client = req.user.client;
     }
 
