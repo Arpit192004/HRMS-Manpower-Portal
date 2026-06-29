@@ -2631,7 +2631,7 @@ code {
   gap: 7px;
 }
 
-.demo-access-section {
+.access-section {
   padding: 72px 7vw;
   background: #f8fafc;
 }
@@ -2750,14 +2750,14 @@ code {
   margin-top: 12px;
 }
 
-.demo-account-grid {
+.access-card-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(180px, 1fr));
   gap: 16px;
   margin-top: 22px;
 }
 
-.demo-account-card {
+.access-card {
   display: grid;
   gap: 9px;
   padding: 20px;
@@ -2767,16 +2767,16 @@ code {
   box-shadow: 0 10px 28px rgba(31, 46, 79, 0.06);
 }
 
-.demo-account-card strong {
+.access-card strong {
   color: #172033;
   font-size: 17px;
 }
 
-.demo-account-card span {
+.access-card span {
   color: #475569;
 }
 
-.demo-account-card code {
+.access-card code {
   padding: 7px 9px;
   border-radius: 9px;
   background: #eef6ff;
@@ -2784,7 +2784,7 @@ code {
   font-weight: 900;
 }
 
-.demo-account-card a {
+.access-card a {
   color: #147a45;
   font-weight: 900;
   text-decoration: none;
@@ -2876,7 +2876,7 @@ code {
   .demo-guide-grid,
   .feature-check-grid,
   .security-filter-toolbar,
-  .demo-account-grid {
+  .access-card-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2999,7 +2999,7 @@ body {
 .public-nav,
 .service-card,
 .hero-panel,
-.demo-account-card,
+.access-card,
 .demo-guide-card {
   border-color: var(--formal-border);
   box-shadow: 0 8px 24px rgba(11, 31, 58, 0.06);
@@ -3009,7 +3009,7 @@ body {
 .stat-card,
 .service-card,
 .hero-panel,
-.demo-account-card,
+.access-card,
 .demo-guide-card,
 .public-metrics div {
   border-radius: 10px;

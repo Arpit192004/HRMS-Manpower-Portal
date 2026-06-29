@@ -138,7 +138,7 @@ const clearData = async () => {
 
     await Client.deleteMany({});
     const defaultClient = await Client.create({
-      name: "Niyukti Demo Client",
+      name: "Niyukti Primary Client",
       code: "NDC",
       industry: "Workforce Services",
       contactPerson: {

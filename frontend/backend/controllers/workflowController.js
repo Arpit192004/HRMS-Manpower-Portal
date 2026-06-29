@@ -371,59 +371,6 @@ const escalateWorkflow = async (req, res, next) => {
   }
 };
 
-const seedDemoWorkflows = async (req, res, next) => {
-  try {
-    const currentUser = await User.findById(req.user._id);
-
-    const demoClient = req.user.client || req.body.client;
-
-    if (!demoClient) {
-      res.status(400);
-      throw new Error("Client is required to create demo workflows");
-    }
-
-    const samples = [
-      ["Leave", "LeaveRequest", "665000000000000000000001", "High", 8],
-      ["Expense", "ExpenseClaim", "665000000000000000000002", "Critical", 4],
-      ["Tour", "TourRequest", "665000000000000000000003", "Medium", 24]
-    ];
-
-    const created = [];
-
-    for (const [requestType, requestModel, requestId, priority, slaHours] of samples) {
-      const existing = await Workflow.findOne({ requestModel, requestId });
-
-      if (!existing) {
-        const workflow = await Workflow.create({
-          client: demoClient,
-          requestType,
-          requestId,
-          requestModel,
-          requestedBy: req.user._id,
-          priority,
-          slaHours,
-          dueAt: new Date(Date.now() + slaHours * 60 * 60 * 1000),
-          steps: [
-            {
-              sequence: 1,
-              approver: currentUser._id
-            }
-          ]
-        });
-        created.push(workflow);
-      }
-    }
-
-    res.status(201).json({
-      success: true,
-      message: "Demo approval workflows ready",
-      created
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports = {
   getWorkflows,
   getWorkflowSummary,
@@ -431,6 +378,5 @@ module.exports = {
   createWorkflow,
   processWorkflowStep,
   cancelWorkflow,
-  escalateWorkflow,
-  seedDemoWorkflows
+  escalateWorkflow
 };

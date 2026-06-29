@@ -63,7 +63,7 @@ const pageContent = {
       "Uploaded documents must be accurate and lawful",
       "Administrators may audit activity for security, compliance and service quality",
       "Role-based access must not be bypassed or shared with unauthorized users",
-      "Demo credentials are for evaluation only and should be replaced before real employee rollout"
+      "Credentials, documents and payroll information must be handled through authorized accounts only"
     ]
   }
 };

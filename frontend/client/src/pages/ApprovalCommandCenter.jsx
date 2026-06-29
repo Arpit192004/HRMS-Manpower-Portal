@@ -16,7 +16,6 @@ const isOverdue = (workflow) =>
 const ApprovalCommandCenter = () => {
   const [workflows, setWorkflows] = useState([]);
   const [summary, setSummary] = useState({});
-  const [clients, setClients] = useState([]);
   const [filters, setFilters] = useState({ status: "", requestType: "", priority: "", overdue: "" });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -35,15 +34,13 @@ const ApprovalCommandCenter = () => {
     setError("");
 
     try {
-      const [workflowRes, summaryRes, clientRes] = await Promise.all([
+      const [workflowRes, summaryRes] = await Promise.all([
         api.get(`/workflows?${query}`),
-        api.get("/workflows/summary"),
-        api.get("/clients")
+        api.get("/workflows/summary")
       ]);
 
       setWorkflows(workflowRes.data.workflows || []);
       setSummary(summaryRes.data.summary || {});
-      setClients(clientRes.data.clients || []);
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Unable to load approvals");
     } finally {
@@ -68,17 +65,6 @@ const ApprovalCommandCenter = () => {
     }
   };
 
-  const createDemoWorkflows = async () => {
-    const client = clients[0]?._id;
-
-    if (!client) {
-      setError("Create a client first to generate demo approvals");
-      return;
-    }
-
-    await runAction("Demo approvals", () => api.post("/workflows/demo", { client }));
-  };
-
   return (
     <section>
       <div className="page-heading">
@@ -87,7 +73,6 @@ const ApprovalCommandCenter = () => {
           <p>Track approval SLA, overdue requests and high-priority workflows in one place.</p>
         </div>
         <div className="page-actions">
-          <button className="secondary-button" onClick={createDemoWorkflows}>Generate Demo Queue</button>
           <button className="secondary-button" onClick={loadData}>Refresh</button>
         </div>
       </div>
@@ -227,7 +212,7 @@ const ApprovalCommandCenter = () => {
         {!workflows.length && (
           <div className="empty-state content-card">
             <h3>{loading ? "Loading approvals..." : "No workflows found"}</h3>
-            <p>Generate a demo queue or create workflows from approval modules.</p>
+            <p>Approval requests from leave, expense, offer and resignation workflows will appear here.</p>
           </div>
         )}
       </div>

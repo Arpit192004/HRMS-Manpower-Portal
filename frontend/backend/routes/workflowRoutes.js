@@ -7,8 +7,7 @@ const {
   createWorkflow,
   processWorkflowStep,
   cancelWorkflow,
-  escalateWorkflow,
-  seedDemoWorkflows
+  escalateWorkflow
 } = require("../controllers/workflowController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -33,12 +32,6 @@ router
   );
 
 router.get("/summary", getWorkflowSummary);
-
-router.post(
-  "/demo",
-  authorize("Super Admin", "HR Admin"),
-  seedDemoWorkflows
-);
 
 router.patch(
   "/:id/process",

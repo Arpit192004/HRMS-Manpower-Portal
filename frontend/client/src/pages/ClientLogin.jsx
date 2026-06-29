@@ -6,8 +6,8 @@ const ClientLogin = () => {
   const { user, login, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("client@hrms.com");
-  const [password, setPassword] = useState("Client@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 

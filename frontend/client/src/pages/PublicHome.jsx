@@ -36,13 +36,6 @@ const services = [
   }
 ];
 
-const demoAccounts = [
-  { role: "Admin", email: "admin@hrms.com", password: "Admin@123", link: "/login" },
-  { role: "Client", email: "client@hrms.com", password: "Client@123", link: "/client/login" },
-  { role: "Employee", email: "employee@hrms.com", password: "Employee@123", link: "/employee/login" },
-  { role: "Candidate", email: "candidate1@hrms.com", password: "Candidate@123", link: "/candidate/login" }
-];
-
 const PublicHome = () => {
   const { settings } = useCompany();
   const [leadForm, setLeadForm] = useState({
@@ -103,7 +96,6 @@ const PublicHome = () => {
           <Link to="/candidate/register">Candidate Apply</Link>
           <Link to="/employee/login">Employee Login</Link>
           <Link to="/client/login">Client Login</Link>
-          <Link to="/demo-guide">Demo Guide</Link>
           <Link to="/login" className="nav-button">Admin Login</Link>
         </div>
       </nav>
@@ -218,22 +210,37 @@ const PublicHome = () => {
         </Link>
       </section>
 
-      <section className="demo-access-section">
+      <section className="access-section">
         <div className="section-heading">
-          <span className="eyebrow">Demo Access</span>
-          <h2>Explore the live portal with realistic seeded data</h2>
-          <p>Use these demo accounts to test every role without setting up anything.</p>
+          <span className="eyebrow">Secure role access</span>
+          <h2>Portals are available only for authorized users</h2>
+          <p>
+            Candidates can create an account and apply for open roles. Employee, client
+            and admin access is issued by the organization after verification.
+          </p>
         </div>
 
-        <div className="demo-account-grid">
-          {demoAccounts.map((account) => (
-            <article className="demo-account-card" key={account.role}>
-              <strong>{account.role} Portal</strong>
-              <span>{account.email}</span>
-              <code>{account.password}</code>
-              <Link to={account.link}>Open {account.role}</Link>
-            </article>
-          ))}
+        <div className="access-card-grid">
+          <article className="access-card">
+            <strong>Candidate Access</strong>
+            <span>Create your account, apply for jobs and track your hiring progress.</span>
+            <Link to="/candidate/register">Register as Candidate</Link>
+          </article>
+          <article className="access-card">
+            <strong>Client Access</strong>
+            <span>Client accounts are provisioned after business onboarding.</span>
+            <Link to="/client/login">Client Login</Link>
+          </article>
+          <article className="access-card">
+            <strong>Employee Access</strong>
+            <span>Employee accounts are created after joining and verification.</span>
+            <Link to="/employee/login">Employee Login</Link>
+          </article>
+          <article className="access-card">
+            <strong>Admin Access</strong>
+            <span>Admin and HR access is restricted to authorized internal users.</span>
+            <Link to="/login">Admin Login</Link>
+          </article>
         </div>
       </section>
 
