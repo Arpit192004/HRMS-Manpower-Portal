@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
 
 const CandidateLogin = () => {
   const { user, login, logout } = useAuth();
@@ -9,7 +10,9 @@ const CandidateLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
 
   if (user) {
     return <Navigate to={user.role === "Candidate" ? "/candidate/jobs" : "/"} replace />;
@@ -18,6 +21,7 @@ const CandidateLogin = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+    setMessage("");
     setLoading(true);
 
     try {
@@ -37,6 +41,21 @@ const CandidateLogin = () => {
     }
   };
 
+  const resendVerification = async () => {
+    setError("");
+    setMessage("");
+    setResending(true);
+
+    try {
+      const { data } = await api.post("/auth/resend-verification", { email });
+      setMessage(data.message || "Verification link sent if required.");
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || "Unable to resend verification link");
+    } finally {
+      setResending(false);
+    }
+  };
+
   return (
     <div className="candidate-auth-page">
       <form className="candidate-auth-card" onSubmit={handleSubmit}>
@@ -45,6 +64,7 @@ const CandidateLogin = () => {
         <p>Sign in with the email used during candidate registration.</p>
 
         {error && <div className="error-message">{error}</div>}
+        {message && <div className="success-message">{message}</div>}
 
         <label>Email</label>
         <input
@@ -64,6 +84,10 @@ const CandidateLogin = () => {
 
         <button type="submit" disabled={loading}>
           {loading ? "Signing in..." : "Login as Candidate"}
+        </button>
+
+        <button type="button" className="secondary-button" onClick={resendVerification} disabled={resending || !email}>
+          {resending ? "Sending..." : "Resend Email Verification"}
         </button>
 
         <p className="login-switch">

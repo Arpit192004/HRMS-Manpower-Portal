@@ -62,6 +62,18 @@ const userSchema = new mongoose.Schema(
       select: false
     },
     passwordChangedAt: Date,
+    emailVerified: {
+      type: Boolean,
+      default: true
+    },
+    emailVerificationToken: {
+      type: String,
+      select: false
+    },
+    emailVerificationExpires: {
+      type: Date,
+      select: false
+    },
     tokenVersion: {
       type: Number,
       default: 0,
@@ -127,6 +139,19 @@ userSchema.methods.createPasswordResetToken = function () {
   this.passwordResetExpires = Date.now() + 15 * 60 * 1000;
 
   return resetToken;
+};
+
+userSchema.methods.createEmailVerificationToken = function () {
+  const verificationToken = crypto.randomBytes(32).toString("hex");
+
+  this.emailVerificationToken = crypto
+    .createHash("sha256")
+    .update(verificationToken)
+    .digest("hex");
+
+  this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000;
+
+  return verificationToken;
 };
 
 module.exports = mongoose.model("User", userSchema);

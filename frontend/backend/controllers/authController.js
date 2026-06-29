@@ -12,6 +12,7 @@ const formatUserResponse = (user) => ({
   role: user.role,
   client: user.client,
   isActive: user.isActive,
+  emailVerified: user.emailVerified,
   lastLoginAt: user.lastLoginAt,
   passwordChangedAt: user.passwordChangedAt
 });
@@ -44,21 +45,107 @@ const registerCandidate = async (req, res, next) => {
       name,
       email,
       password,
-      role: "Candidate"
+      role: "Candidate",
+      emailVerified: false
     });
+
+    const verificationToken = user.createEmailVerificationToken();
+    await user.save({ validateBeforeSave: false });
+
+    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    const verificationUrl = `${frontendUrl}/verify-email/${verificationToken}`;
 
     await sendEmail({
       to: user.email,
-      subject: "Welcome to Niyukti",
-      text: `Hi ${user.name}, your Niyukti candidate account has been created. You can now apply for jobs and track applications.`,
-      html: `<p>Hi ${user.name},</p><p>Your Niyukti candidate account has been created. You can now apply for jobs and track applications.</p>`
+      subject: "Verify your Niyukti account",
+      text: `Hi ${user.name}, verify your Niyukti account using this link: ${verificationUrl}. This link expires in 24 hours.`,
+      html: `<p>Hi ${user.name},</p><p>Please verify your Niyukti account before signing in:</p><p><a href="${verificationUrl}">${verificationUrl}</a></p><p>This link expires in 24 hours.</p>`
     });
 
     res.status(201).json({
       success: true,
-      message: "Candidate registered successfully",
-      token: generateToken(user),
-      user: formatUserResponse(user)
+      message: "Account created. Please verify your email before login."
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const verifyEmail = async (req, res, next) => {
+  try {
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      emailVerificationToken: hashedToken,
+      emailVerificationExpires: { $gt: Date.now() }
+    }).select("+emailVerificationToken +emailVerificationExpires");
+
+    if (!user) {
+      res.status(400);
+      throw new Error("Email verification link is invalid or expired");
+    }
+
+    user.emailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    await logSecurityEvent(req, {
+      user: user._id,
+      email: user.email,
+      role: user.role,
+      event: "EMAIL_VERIFIED",
+      status: "Success"
+    });
+
+    res.json({
+      success: true,
+      message: "Email verified successfully. You can login now."
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resendVerification = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      res.status(400);
+      throw new Error("Email is required");
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() }).select(
+      "+emailVerificationToken +emailVerificationExpires"
+    );
+
+    if (!user || user.emailVerified) {
+      return res.json({
+        success: true,
+        message: "If verification is required, a new link has been sent"
+      });
+    }
+
+    const verificationToken = user.createEmailVerificationToken();
+    await user.save({ validateBeforeSave: false });
+
+    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    const verificationUrl = `${frontendUrl}/verify-email/${verificationToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: "Verify your Niyukti account",
+      text: `Verify your Niyukti account using this link: ${verificationUrl}. This link expires in 24 hours.`,
+      html: `<p>Please verify your Niyukti account:</p><p><a href="${verificationUrl}">${verificationUrl}</a></p><p>This link expires in 24 hours.</p>`
+    });
+
+    res.json({
+      success: true,
+      message: "If verification is required, a new link has been sent"
     });
   } catch (error) {
     next(error);
@@ -123,6 +210,11 @@ const login = async (req, res, next) => {
     if (!user.isActive) {
       res.status(403);
       throw new Error("Your account is inactive");
+    }
+
+    if (user.emailVerified === false) {
+      res.status(403);
+      throw new Error("Please verify your email before login");
     }
 
     await user.registerSuccessfulLogin();
@@ -342,6 +434,8 @@ const resetPassword = async (req, res, next) => {
 
 module.exports = {
   registerCandidate,
+  verifyEmail,
+  resendVerification,
   login,
   getCurrentUser,
   changePassword,

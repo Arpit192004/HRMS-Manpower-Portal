@@ -42,6 +42,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SecurityCenter from "./pages/SecurityCenter";
 import SecurityLogs from "./pages/SecurityLogs";
 import ShiftRoster from "./pages/ShiftRoster";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const modules = [
   ["clients", "Clients"],
@@ -73,6 +74,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
+      <Route path="/verify-email/:token" element={<VerifyEmail />} />
       <Route path="/client/login" element={<ClientLogin />} />
       <Route path="/employee/login" element={<EmployeeLogin />} />
       <Route path="/candidate/login" element={<CandidateLogin />} />
