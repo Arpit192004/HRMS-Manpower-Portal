@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { isEmployeeRole } from "../utils/roles";
 
 const EmployeeRoute = () => {
   const { user, authChecking } = useAuth();
@@ -12,7 +13,7 @@ const EmployeeRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.role !== "Employee") {
+  if (!isEmployeeRole(user.role)) {
     return <Navigate to="/" replace />;
   }
 

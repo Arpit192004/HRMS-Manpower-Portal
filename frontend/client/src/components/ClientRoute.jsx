@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { isManagerRole } from "../utils/roles";
 
 const ClientRoute = () => {
   const { user, authChecking } = useAuth();
@@ -12,7 +13,7 @@ const ClientRoute = () => {
     return <Navigate to="/client/login" replace />;
   }
 
-  if (!["Client Approver", "Manager"].includes(user.role)) {
+  if (!isManagerRole(user.role)) {
     return <Navigate to="/" replace />;
   }
 

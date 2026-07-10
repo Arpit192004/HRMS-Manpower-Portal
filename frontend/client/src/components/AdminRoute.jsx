@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import UnauthorizedAccess from "../pages/UnauthorizedAccess";
+import { isAdminRole } from "../utils/roles";
 
 const AdminRoute = () => {
   const { user, authChecking } = useAuth();
@@ -13,7 +14,7 @@ const AdminRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (["Candidate", "Employee", "Client Approver", "Manager"].includes(user.role)) {
+  if (!isAdminRole(user.role)) {
     return <UnauthorizedAccess area="the admin portal" loginPath="/login" />;
   }
 

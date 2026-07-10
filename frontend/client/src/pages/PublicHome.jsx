@@ -160,24 +160,14 @@ const PublicHome = () => {
 
         <div className="access-card-grid">
           <article className="access-card">
+            <strong>Company Login</strong>
+            <span>Admin, HR, managers and employees sign in with their official company account.</span>
+            <Link to="/login">Sign in to Niyukti</Link>
+          </article>
+          <article className="access-card">
             <strong>Candidate Access</strong>
             <span>Create your account, apply for jobs and track your hiring progress.</span>
             <Link to="/candidate/register">Register as Candidate</Link>
-          </article>
-          <article className="access-card">
-            <strong>Manager Access</strong>
-            <span>Hiring managers can review applicants and track department requests.</span>
-            <Link to="/client/login">Manager Login</Link>
-          </article>
-          <article className="access-card">
-            <strong>Employee Access</strong>
-            <span>Employee accounts are created after joining and verification.</span>
-            <Link to="/employee/login">Employee Login</Link>
-          </article>
-          <article className="access-card">
-            <strong>Admin Access</strong>
-            <span>Admin and HR access is restricted to authorized internal users.</span>
-            <Link to="/login">Admin Login</Link>
           </article>
         </div>
       </section>

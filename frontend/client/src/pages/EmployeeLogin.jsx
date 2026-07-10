@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { isEmployeeRole } from "../utils/roles";
 
 const EmployeeLogin = () => {
   const { user, login, logout } = useAuth();
@@ -12,7 +13,7 @@ const EmployeeLogin = () => {
   const [loading, setLoading] = useState(false);
 
   if (user) {
-    if (user.role === "Employee") {
+    if (isEmployeeRole(user.role)) {
       return <Navigate to="/employee/dashboard" replace />;
     }
 
@@ -41,7 +42,7 @@ const EmployeeLogin = () => {
     try {
       const loggedInUser = await login(email, password);
 
-      if (loggedInUser.role !== "Employee") {
+      if (!isEmployeeRole(loggedInUser.role)) {
         logout();
         setError("Only employee accounts can login here.");
         return;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getRoleHomePath, isCandidateRole } from "../utils/roles";
 
 const Login = () => {
   const { user, login, logout } = useAuth();
@@ -11,12 +12,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const getHomePath = (loggedInUser) => {
-    return "/admin";
-  };
-
   if (user) {
-    return <Navigate to={getHomePath(user)} replace />;
+    return <Navigate to={getRoleHomePath(user)} replace />;
   }
 
   const handleSubmit = async (event) => {
@@ -27,13 +24,13 @@ const Login = () => {
     try {
       const loggedInUser = await login(email, password);
 
-      if (["Candidate", "Employee", "Client Approver", "Manager"].includes(loggedInUser.role)) {
+      if (isCandidateRole(loggedInUser.role)) {
         logout();
-        setError("Please use your dedicated portal login.");
+        setError("Candidate accounts use the candidate login area.");
         return;
       }
 
-      navigate(getHomePath(loggedInUser));
+      navigate(getRoleHomePath(loggedInUser));
     } catch (requestError) {
       setError(requestError.response?.data?.message || "Login failed");
     } finally {
@@ -47,7 +44,7 @@ const Login = () => {
         <div className="logo">HR</div>
 
         <h1>Niyukti</h1>
-        <p>Sign in with your official company email account</p>
+        <p>Sign in with your official company account</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -77,14 +74,6 @@ const Login = () => {
 
         <p className="login-switch">
           Candidate account? <Link to="/candidate/login">Candidate Login</Link>
-        </p>
-
-        <p className="login-switch">
-          Manager account? <Link to="/client/login">Manager Portal</Link>
-        </p>
-
-        <p className="login-switch">
-          Employee account? <Link to="/employee/login">Employee Portal</Link>
         </p>
       </form>
     </div>

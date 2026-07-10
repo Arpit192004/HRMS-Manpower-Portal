@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { isManagerRole } from "../utils/roles";
 
 const ClientLogin = () => {
   const { user, login, logout } = useAuth();
@@ -12,7 +13,7 @@ const ClientLogin = () => {
   const [loading, setLoading] = useState(false);
 
   if (user) {
-    if (["Client Approver", "Manager"].includes(user.role)) {
+    if (isManagerRole(user.role)) {
       return <Navigate to="/client/dashboard" replace />;
     }
 
@@ -41,7 +42,7 @@ const ClientLogin = () => {
     try {
       const loggedInUser = await login(email, password);
 
-      if (!["Client Approver", "Manager"].includes(loggedInUser.role)) {
+      if (!isManagerRole(loggedInUser.role)) {
         logout();
         setError("Only manager accounts can login here.");
         return;
