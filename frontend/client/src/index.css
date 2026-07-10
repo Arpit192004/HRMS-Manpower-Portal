@@ -3421,3 +3421,138 @@ body {
     padding: 14px;
   }
 }
+
+/* Clean professional public landing */
+.public-site {
+  background: #f6f8fb;
+}
+
+.public-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 16px 7vw;
+  border-bottom: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: none;
+}
+
+.public-brand span {
+  color: #0f172a;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.public-nav-links {
+  gap: 22px;
+}
+
+.public-nav-links a {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.public-nav-links .nav-button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #0f172a;
+}
+
+.public-hero {
+  min-height: 560px;
+  padding: 78px 7vw;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.78)),
+    linear-gradient(135deg, #eef3f8, #ffffff);
+}
+
+.public-hero h1 {
+  max-width: 760px;
+  margin: 16px 0;
+  color: #0f172a;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.02;
+}
+
+.public-hero p {
+  max-width: 620px;
+  color: #475569;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.eyebrow {
+  padding: 0;
+  background: transparent;
+  color: #1f4e79;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-actions {
+  margin-top: 30px;
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 8px;
+  padding: 12px 18px;
+}
+
+.hero-panel {
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-top: 4px solid #1f4e79;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
+.hero-card-row {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.service-section,
+.access-section {
+  padding: 54px 7vw;
+}
+
+.section-heading {
+  margin-bottom: 24px;
+}
+
+.section-heading h2 {
+  margin: 10px 0;
+  color: #0f172a;
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.service-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.service-card,
+.access-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.access-section {
+  background: #ffffff;
+}
+
+.access-card-grid {
+  max-width: 860px;
+  margin-inline: auto;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+}
+
+.access-card {
+  min-height: 170px;
+}

@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom";
 import {
-  BadgeCheck,
   Briefcase,
-  Building2,
   CalendarCheck,
-  FileText,
-  MailCheck,
   ShieldCheck,
   Users
 } from "lucide-react";
@@ -13,23 +9,18 @@ import { useCompany } from "../context/CompanyContext";
 
 const services = [
   {
-    title: "Recruitment Management",
-    text: "Publish jobs, receive applications and move candidates through hiring stages.",
+    title: "Hiring",
+    text: "Jobs, applications, interviews and offers.",
     icon: Briefcase
   },
   {
-    title: "Employee Self Service",
-    text: "Attendance, leaves, tours, expenses, payroll and resignation in one portal.",
+    title: "Workforce",
+    text: "Employees, attendance, leave and payroll.",
     icon: Users
   },
   {
-    title: "Manager Hiring Workspace",
-    text: "Department managers can review shortlisted applicants and team workforce updates.",
-    icon: Building2
-  },
-  {
-    title: "HR Compliance",
-    text: "Policies, approvals, audit logs and reports for day-to-day HR operations.",
+    title: "Control",
+    text: "Roles, approvals, documents and audit logs.",
     icon: ShieldCheck
   }
 ];
@@ -50,92 +41,63 @@ const PublicHome = () => {
         </div>
 
         <div className="public-nav-links">
-          <Link to="/about">About</Link>
-          <Link to="/services">Services</Link>
-          <Link to="/industries">Industries</Link>
           <Link to="/candidate/jobs">Open Jobs</Link>
-          <a href="#portal-access" className="nav-button">Portal Login</a>
+          <Link to="/candidate/register">Candidate Signup</Link>
+          <Link to="/login" className="nav-button">Company Login</Link>
         </div>
       </nav>
 
       <section className="public-hero">
         <div>
-          <span className="eyebrow">Internal HRMS for modern companies</span>
-          <h1>{settings.tagline || "From hiring to workforce management."}</h1>
+          <span className="eyebrow">Secure HR Management System</span>
+          <h1>{settings.tagline || "Manage hiring, people and operations in one place."}</h1>
           <p>
-            Niyukti helps HR teams manage hiring, employees, attendance, payroll,
-            documents, approvals and workforce reporting from one secure system.
+            Niyukti is a role-based HR portal for administrators, HR teams,
+            managers, employees and candidates.
           </p>
 
           <div className="hero-actions">
-            <a href="#portal-access" className="primary-button">Portal Login</a>
-            <Link to="/candidate/jobs" className="secondary-button">View Open Jobs</Link>
+            <Link to="/login" className="primary-button">Company Login</Link>
+            <Link to="/candidate/register" className="secondary-button">Candidate Signup</Link>
           </div>
         </div>
 
         <div className="hero-panel">
           <div className="hero-panel-header">
-            <span className="status-pill">Live Production Portal</span>
-            <strong>End-to-end workflow</strong>
+            <span className="status-pill">Production Ready</span>
+            <strong>Core Workspaces</strong>
           </div>
 
           <div className="hero-card-row">
-            <BadgeCheck />
+            <Briefcase />
             <div>
-              <strong>Live Hiring Flow</strong>
-              <span>Job to candidate to interview to offer to employee</span>
+              <strong>Candidate Portal</strong>
+              <span>Register, verify email and apply for open jobs</span>
+            </div>
+          </div>
+
+          <div className="hero-card-row">
+            <Users />
+            <div>
+              <strong>Employee Portal</strong>
+              <span>Attendance, leave, payroll and documents</span>
             </div>
           </div>
 
           <div className="hero-card-row">
             <CalendarCheck />
             <div>
-              <strong>Employee Operations</strong>
-              <span>Attendance, leaves, tours and claims</span>
+              <strong>Admin & Manager Portal</strong>
+              <span>Hiring, approvals, workforce data and reports</span>
             </div>
           </div>
-
-          <div className="hero-card-row">
-            <FileText />
-            <div>
-              <strong>Reports & Audit Logs</strong>
-              <span>Management visibility for every module</span>
-            </div>
-          </div>
-
-          <div className="hero-card-row">
-            <MailCheck />
-            <div>
-              <strong>Email & Document Ready</strong>
-              <span>Password reset, uploads and generated PDFs</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="public-metrics">
-        <div>
-          <strong>4</strong>
-          <span>Role-based portals</span>
-        </div>
-        <div>
-          <strong>18+</strong>
-          <span>Business modules</span>
-        </div>
-        <div>
-          <strong>Live</strong>
-          <span>MongoDB, email and uploads</span>
-        </div>
-        <div>
-          <strong>PDF</strong>
-          <span>Payslip and letters</span>
         </div>
       </section>
 
       <section className="service-section">
         <div className="section-heading">
-          <span className="eyebrow">What this portal handles</span>
-          <h2>Built for real internal HR operations</h2>
+          <span className="eyebrow">Platform Scope</span>
+          <h2>Everything HR needs to run daily operations</h2>
         </div>
 
         <div className="service-grid">
@@ -151,10 +113,10 @@ const PublicHome = () => {
 
       <section className="access-section" id="portal-access">
         <div className="section-heading">
-          <span className="eyebrow">Portal login</span>
-          <h2>Choose your workspace</h2>
+          <span className="eyebrow">Access</span>
+          <h2>Sign in to your workspace</h2>
           <p>
-            One clean access area for candidates, employees, managers and internal HR teams.
+            Internal users sign in with company-created accounts. Candidates can create a public account.
           </p>
         </div>
 
@@ -175,7 +137,7 @@ const PublicHome = () => {
       <footer className="public-footer">
         <span>{settings.companyName}</span>
         <div>
-          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/about">About</Link>
           <Link to="/terms">Terms</Link>
           <Link to="/contact">Contact</Link>
         </div>
