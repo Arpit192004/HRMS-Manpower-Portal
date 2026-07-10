@@ -1,4 +1,5 @@
 const ClientRequirement = require("../models/ClientRequirement");
+const Client = require("../models/Client");
 const Job = require("../models/Job");
 const createAuditLog = require("../utils/auditLog");
 const createNotification = require("../utils/createNotification");
@@ -30,7 +31,7 @@ const getRequirements = async (req, res, next) => {
 
 const createRequirement = async (req, res, next) => {
   try {
-    const client = ["Client Approver", "Manager"].includes(req.user.role) ? req.user.client : req.body.client;
+    let client = ["Client Approver", "Manager"].includes(req.user.role) ? req.user.client : req.body.client;
     const {
       title,
       department,
@@ -46,9 +47,35 @@ const createRequirement = async (req, res, next) => {
       priority
     } = req.body;
 
+    if (!client && ["Client Approver", "Manager"].includes(req.user.role)) {
+      const departmentCode = String(department || "DEFAULT").trim().toUpperCase().replace(/\s+/g, "-");
+      const fallbackDepartment = await Client.findOneAndUpdate(
+        { code: departmentCode || "DEFAULT" },
+        {
+          name: department || "Primary Department",
+          code: departmentCode || "DEFAULT",
+          industry: "Internal Department",
+          contactPerson: {
+            name: req.user.name,
+            email: req.user.email,
+            phone: ""
+          },
+          address: {
+            city: location || "",
+            country: "India"
+          },
+          isActive: true,
+          createdBy: req.user._id
+        },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+
+      client = fallbackDepartment._id;
+    }
+
     if (!client || !title || !department || !location || !vacancies || !requiredBy || !description) {
       res.status(400);
-      throw new Error("Client, title, department, location, vacancies, required by and description are required");
+      throw new Error("Title, department, location, vacancies, required by and description are required");
     }
 
     const requirement = await ClientRequirement.create({
