@@ -56,10 +56,6 @@ const PublicHome = () => {
             managers, employees and candidates.
           </p>
 
-          <div className="hero-actions">
-            <Link to="/login" className="primary-button">Company Login</Link>
-            <Link to="/candidate/register" className="secondary-button">Candidate Signup</Link>
-          </div>
         </div>
 
         <div className="hero-panel">
