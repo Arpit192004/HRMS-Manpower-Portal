@@ -1,4 +1,4 @@
-# 🚀 Niyukti – Full-Stack Human Resource Management System (HRMS)
+# Niyukti – Full-Stack Human Resource Management System (HRMS)
 
 **Niyukti** is a production-style, cloud-based Human Resource Management System designed to streamline the complete employee lifecycle — from recruitment and onboarding to workforce operations, payroll, approvals, documents, security, and AI-assisted HR workflows.
 
